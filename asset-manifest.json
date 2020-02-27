@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/zizibuwang/static/css/main.eb6c3837.chunk.css",
+    "main.js": "/zizibuwang/static/js/main.e02d3736.chunk.js",
+    "main.js.map": "/zizibuwang/static/js/main.e02d3736.chunk.js.map",
+    "runtime-main.js": "/zizibuwang/static/js/runtime-main.3fcb1d39.js",
+    "runtime-main.js.map": "/zizibuwang/static/js/runtime-main.3fcb1d39.js.map",
+    "static/js/2.5e943e47.chunk.js": "/zizibuwang/static/js/2.5e943e47.chunk.js",
+    "static/js/2.5e943e47.chunk.js.map": "/zizibuwang/static/js/2.5e943e47.chunk.js.map",
+    "index.html": "/zizibuwang/index.html",
+    "precache-manifest.ae857e600b00d952edef0ac10e512b2d.js": "/zizibuwang/precache-manifest.ae857e600b00d952edef0ac10e512b2d.js",
+    "service-worker.js": "/zizibuwang/service-worker.js",
+    "static/css/main.eb6c3837.chunk.css.map": "/zizibuwang/static/css/main.eb6c3837.chunk.css.map",
+    "static/js/2.5e943e47.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.5e943e47.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3fcb1d39.js",
+    "static/js/2.5e943e47.chunk.js",
+    "static/css/main.eb6c3837.chunk.css",
+    "static/js/main.e02d3736.chunk.js"
+  ]
+}
