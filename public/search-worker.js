@@ -58,6 +58,17 @@ const methods = {
   },
 };
 
+// aliases
+methods['='] = methods['is'];
+methods['=='] = methods['is'];
+methods['i='] = methods['iis'];
+methods['!='] = methods['!is'];
+
+methods['has'] = methods['contains'];
+methods['ihas'] = methods['icontains'];
+methods['!has'] = methods['!contains'];
+
+// handle messages
 self.onmessage = ({ data }) => {
   try {
     switch (data.type) {

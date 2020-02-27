@@ -17,7 +17,7 @@ const search = async (query, data) => {
       throw new RangeError('Must have at last one condition');
     }
 
-    const searchWorker = new Worker('/search-worker.js');
+    const searchWorker = new Worker(process.env.PUBLIC_URL + '/search-worker.js');
 
     searchWorker.postMessage({
       type: 'SEARCH',
