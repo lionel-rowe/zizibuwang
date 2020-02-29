@@ -34,11 +34,16 @@ const parseCcCedict = () => {
           .replace(/\[[^\]]*u:[^\]]*\]/g, m => m.replace(/u:/g, 'v'));
       }
 
-      words.push(`${entry.trad}\t${entry.simp}\t${entry.pinyin}\t${entry.def}`);
+      words.push(entry);
     }
   });
 
-  return words.join('\n');
+  return words
+    .sort((a, b) => {
+      return a.pinyin.localeCompare(b.pinyin);
+    })
+    .map(entry => `${entry.trad}\t${entry.simp}\t${entry.pinyin}\t${entry.def}`)
+    .join('\n');
 };
 
 const header = ['trad', 'simp', 'pinyin', 'def'].join('\t');
@@ -51,6 +56,6 @@ console.log('Bytes in', Buffer.byteLength(txt, 'utf8'));
 console.log('Bytes out', Buffer.byteLength(out, 'utf8'));
 
 fs.writeFileSync(
-    path.join(__dirname, '../public/cc-cedict.tsv'),
+    path.join(__dirname, '../src/assets/cc-cedict.tsv'),
     out
 )
