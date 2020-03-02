@@ -47,18 +47,16 @@
 
         <script type="text/javascript">
             ;(function(l) {
-                if (l.search) {
-                    var m = /(?:^|[?&])redirect=([^?&]+)/
+                var m = l.search.match(/(?:^|[?&])redirect=([^?&]+)/)
 
-                    if (m) {
-                        var to = m[1]
+                if (m) {
+                    var to = m[1]
 
-                        window.history.replaceState(
-                            null,
-                            null,
-                            decodeURIComponent(to),
-                        )
-                    }
+                    window.history.replaceState(
+                        null,
+                        null,
+                        decodeURIComponent(to),
+                    )
                 }
             })(window.location)
         </script>
