@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "098f4e73098baf130169c22ab0650f94",
+    "revision": "ec8bbc33709f2402bd215f3fcff35904",
     "url": "/zizibuwang/index.html"
   },
   {
