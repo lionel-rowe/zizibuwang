@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Redirecting…</title>
+
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+
+        <script type="text/javascript">
+            var segmentCount = 1
+
+            var l = window.location
+            l.replace(
+                l.protocol +
+                    '//' +
+                    l.hostname +
+                    (l.port ? ':' + l.port : '') +
+                    l.pathname
+                        .split('/')
+                        .slice(0, 1 + segmentCount)
+                        .join('/') +
+                    '?redirect=' +
+                    encodeURIComponent(l.pathname + l.search + l.hash),
+            )
+        </script>
+    </head>
+    <body></body>
+</html>

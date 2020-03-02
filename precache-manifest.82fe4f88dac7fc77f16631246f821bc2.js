@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d6b7a38e068674f8eb369453d8c6d914",
+    "revision": "098f4e73098baf130169c22ab0650f94",
     "url": "/zizibuwang/index.html"
   },
   {
-    "revision": "d51bf70562dc352968bd",
-    "url": "/zizibuwang/static/css/main.39f56889.chunk.css"
+    "revision": "8cba9fe45fe335713367",
+    "url": "/zizibuwang/static/css/main.2a32cfb6.chunk.css"
   },
   {
-    "revision": "430b7485f6f5b79ef9ce",
-    "url": "/zizibuwang/static/js/2.39e7a57e.chunk.js"
+    "revision": "bb9b29ab4ee17417458f",
+    "url": "/zizibuwang/static/js/2.cd2f3657.chunk.js"
   },
   {
-    "revision": "3adc01bea76e7956dc3633ee898f6936",
-    "url": "/zizibuwang/static/js/2.39e7a57e.chunk.js.LICENSE.txt"
+    "revision": "6f5f1c4a5f7f6e382b8aeca1b4ac8d96",
+    "url": "/zizibuwang/static/js/2.cd2f3657.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "d51bf70562dc352968bd",
-    "url": "/zizibuwang/static/js/main.cb9cad61.chunk.js"
+    "revision": "8cba9fe45fe335713367",
+    "url": "/zizibuwang/static/js/main.f3bd2d53.chunk.js"
   },
   {
     "revision": "e3c699305932e917d128",
