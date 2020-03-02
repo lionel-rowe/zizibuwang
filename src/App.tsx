@@ -1,54 +1,36 @@
-import React from 'react';
-import { Container, Typography, Link } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import React from 'react'
+import { ThemeProvider } from '@material-ui/core/styles'
 
-import './lib/load-fonts';
+import './lib/load-fonts'
 
-import { theme } from './lib/theme';
+import { theme } from './lib/theme'
 
-import Header from './components/Header';
-import PageBackground from './components/PageBackground';
-import SearchAndResults from './components/SearchAndResults';
-import ErrorBoundary from './components/ErrorBoundary';
+import PageBackground from './components/PageBackground'
+import SearchPage from './pages/SearchPage'
+import MainLayout from './layouts/MainLayout'
 
-const App = () => {
+import { Router } from '@reach/router'
+import DocsPage from './pages/DocsPage'
+import { Container } from '@material-ui/core'
+import Footer from './components/Footer'
+
+const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <PageBackground />
-            <Header />
-            <main>
-                <Container maxWidth='sm'>
-                    <ErrorBoundary>
-                        <SearchAndResults />
-                    </ErrorBoundary>
+            <div className='everything-container'>
+                <MainLayout className='content-container'>
+                    <Router basepath={process.env.PUBLIC_URL}>
+                        <SearchPage path='/' />
+                        <DocsPage path='/instructions' />
+                    </Router>
+                </MainLayout>
+                <Container className='footer-container' maxWidth='sm'>
+                    <Footer />
                 </Container>
-            </main>
-            <footer>
-                <Container maxWidth='sm' style={{ margin: '2em auto' }}>
-                    <hr style={{ opacity: 0.3 }} />
-                    <Typography variant='body1' component='p'>
-                        Data from{' '}
-                        <Link
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            href='https://cc-cedict.org/wiki/'
-                        >
-                            CC-CEDICT
-                        </Link>{' '}
-                        (
-                        <Link
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            href='https://creativecommons.org/licenses/by-sa/3.0/'
-                        >
-                            CC BY-SA 3.0
-                        </Link>
-                        ).
-                    </Typography>
-                </Container>
-            </footer>
+            </div>
         </ThemeProvider>
-    );
-};
+    )
+}
 
-export default App;
+export default App

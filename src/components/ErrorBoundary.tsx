@@ -1,33 +1,36 @@
-import React from 'react';
+import React from 'react'
 
 interface ErrorInfoObject {
-    componentStack: any;
+    componentStack: any
 }
 
-interface ErrorBoundaryState { error?: Error; errorInfo?: ErrorInfoObject }
+interface ErrorBoundaryState {
+    error?: Error
+    errorInfo?: ErrorInfoObject
+}
 
 class ErrorBoundary extends React.Component {
     constructor(props: any) {
-        super(props);
+        super(props)
 
         const state: ErrorBoundaryState = {
             error: undefined,
             errorInfo: undefined,
-        };
+        }
 
-        this.state = state;
+        this.state = state
     }
 
     componentDidCatch(error: Error, errorInfo: ErrorInfoObject) {
         this.setState({
             error: error,
             errorInfo: errorInfo,
-        });
+        })
     }
 
     render() {
-        const { error, errorInfo } = this.state as ErrorBoundaryState;
-        const { children } = this.props;
+        const { error, errorInfo } = this.state as ErrorBoundaryState
+        const { children } = this.props
 
         if (error) {
             return (
@@ -39,10 +42,10 @@ class ErrorBoundary extends React.Component {
                         {errorInfo?.componentStack}
                     </details>
                 </div>
-            );
+            )
         }
-        return children;
+        return children
     }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary

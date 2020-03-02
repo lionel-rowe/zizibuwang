@@ -1,24 +1,28 @@
 interface CedictEntry {
-    trad: string;
-    simp: string;
-    pinyin: string;
-    def: string;
+    trad: string
+    simp: string
+    pinyin: string
+    def: string
 }
 
 interface SearchCondition {
-    prop: string;
-    method: string;
-    arg: string;
+    prop: string
+    method: string
+    arg: string
 }
 
-type urlString = string;
+type urlString = string
 
 declare module '*.ttf' {
-    const content: urlString;
-    export default content;
+    const content: urlString
+    export default content
 }
 
 declare module '*.tsv' {
-    const content: urlString;
-    export default content;
+    const content: urlString
+    export default content
+}
+
+declare module "snarkdown" {
+  export default function (markdown: string): string;
 }

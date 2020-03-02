@@ -50,10 +50,10 @@ const header = ['trad', 'simp', 'pinyin', 'def'].join('\t');
 
 const out = [header, parseCcCedict()].join('\n');
 
-console.log('lines', out.split('\n').length);
-console.log('cells', out.split(/[\n\t]/).length);
-console.log('Bytes in', Buffer.byteLength(txt, 'utf8'));
-console.log('Bytes out', Buffer.byteLength(out, 'utf8'));
+console.info('lines', out.split('\n').length);
+console.info('cells', out.split(/[\n\t]/).length);
+console.info('Bytes in', Buffer.byteLength(txt, 'utf8'));
+console.info('Bytes out', Buffer.byteLength(out, 'utf8'));
 
 fs.writeFileSync(
     path.join(__dirname, '../src/assets/cc-cedict.tsv'),

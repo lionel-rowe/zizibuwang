@@ -1,20 +1,20 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
     palette: {
         common: { black: '#000', white: '#fff' },
         type: 'dark',
         primary: {
-            main: '#357',
-            light: 'rgb(91,119,146)',
-            dark: 'rgb(35,59,83)',
-            contrastText: '#fff',
-        },
-        secondary: {
             main: '#26c6dd',
             light: 'rgb(81,209,227)',
             dark: 'rgb(26,138,154)',
             contrastText: 'rgba(0,0,0,0.87)',
+        },
+        secondary: {
+            main: '#357',
+            light: 'rgb(91,119,146)',
+            dark: 'rgb(35,59,83)',
+            contrastText: '#fff',
         },
         error: {
             light: '#e57373',
@@ -78,6 +78,6 @@ const theme = createMuiTheme({
             disabledBackground: 'rgba(255,255,255,0.12)',
         },
     },
-});
+})
 
-export { theme };
+export { theme }
