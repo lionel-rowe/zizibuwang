@@ -1,20 +1,31 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     FormControl,
-    TextField,
-    Button,
     InputLabel,
-    Input,
     InputAdornment,
     IconButton,
     FilledInput,
     Tooltip,
 } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
+import { AppContext, loadResultsFromQuery } from '../state/Context'
+import { deleteQueryParam } from '../lib/query-param-helper'
 
-const SearchForm: React.FC<{
-    submitForm: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
-}> = ({ submitForm }) => {
+const SearchForm: React.FC = () => {
+    const { dispatch, state } = useContext(AppContext)
+
+    const { searchQuery } = state
+
+    const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+        loadResultsFromQuery(searchQuery, dispatch, true)
+
+        deleteQueryParam('page', false)
+
+        dispatch({ page: null })
+    }
+
     return (
         <form
             id='search-form'
@@ -31,7 +42,10 @@ const SearchForm: React.FC<{
                         fontFamily:
                             'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
                     }}
-                    // variant='filled'
+                    value={searchQuery}
+                    onChange={e => {
+                        dispatch({ searchQuery: e.currentTarget.value })
+                    }}
                     multiline
                     autoComplete='off'
                     autoCorrect='off'
@@ -52,8 +66,6 @@ const SearchForm: React.FC<{
                                         right: 0,
                                         marginRight: 6,
                                     }}
-                                    // onClick={handleClickShowPassword}
-                                    // onMouseDown={handleMouseDownPassword}
                                 >
                                     <SearchIcon />
                                 </IconButton>
@@ -61,31 +73,7 @@ const SearchForm: React.FC<{
                         </InputAdornment>
                     }
                 />
-
-                {/* <TextField
-                    id='search-conditions'
-                    InputProps={{
-                        style: {
-                            fontFamily:
-                                'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
-                        },
-                    }}
-                    label='Search query'
-                    variant='filled'
-                    multiline
-                    autoComplete='off'
-                    autoCorrect='off'
-                    autoCapitalize='off'
-                    spellCheck='false'
-                    name='search-conditions'
-                    placeholder='Syntax: subject verb object'
-                /> */}
             </FormControl>
-            {/* <FormControl style={{ margin: '1em 0' }}>
-                <Button type='submit' variant='contained' color='primary'>
-                    Search
-                </Button>
-            </FormControl> */}
         </form>
     )
 }

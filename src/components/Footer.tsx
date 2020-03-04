@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Container } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import Link from './Link'
 import { makeStyles } from '@material-ui/core/styles'
 

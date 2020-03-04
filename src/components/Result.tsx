@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { prettify } from '../lib/pinyinize'
 import { makeStyles } from '@material-ui/core/styles'
+import { AppContext } from '../state/Context'
 
 const useStyles = makeStyles(theme => ({
     root: { marginBottom: '2em' },
@@ -10,21 +11,22 @@ const useStyles = makeStyles(theme => ({
     headwordNoRuby: { fontSize: '2.5em' },
 }))
 
-const charTypeSelected: 'simp' | 'trad' = 'simp'
-
 const Result: React.FC<{
     entry: CedictEntry
-    index: number
     isLast: boolean
-}> = ({ entry, index, isLast }) => {
+}> = ({ entry, isLast }) => {
     const classes = useStyles()
+
+    const { state } = useContext(AppContext)
+
+    const { charSet } = state
 
     const { pinyin, def } = entry
 
-const currentCharVersion = entry[charTypeSelected]
+    const currentCharVersion = entry[charSet]
 
     const chars = Array.from(currentCharVersion)
-    const oppCharTypeName = charTypeSelected === 'simp' ? 'trad' : 'simp'
+    const oppCharTypeName = charSet === 'simp' ? 'trad' : 'simp'
     const oppCharVersion = entry[oppCharTypeName]
 
     const pinyinSyls: (string | null)[] = pinyin
@@ -37,11 +39,12 @@ const currentCharVersion = entry[charTypeSelected]
         process.env.NODE_ENV === 'development' && console.log(entry)
     } else {
         chars.forEach((char, idx) => {
-            const py = pinyinSyls[idx]
+            const py = pinyinSyls[idx] as string
+
             if (py === 'xx') {
                 pinyinSyls[idx] = null
             } else if (py === char) {
-               // noop
+                // noop
             } else {
                 renderRuby = true
             }
@@ -49,12 +52,12 @@ const currentCharVersion = entry[charTypeSelected]
     }
 
     return (
-        <div className={classes.root} style={isLast ? { marginBottom: 0 } : {}}>
+        <div className={classes.root}>
             <div className={classes.charGloss}>
                 {chars.map((char, idx) => {
                     if (!renderRuby) {
                         return (
-                            <span className={classes.headwordNoRuby}>
+                            <span key={idx} className={classes.headwordNoRuby}>
                                 {char}
                             </span>
                         )

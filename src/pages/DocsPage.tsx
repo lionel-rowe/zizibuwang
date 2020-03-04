@@ -1,9 +1,9 @@
 import React from 'react'
 import { RouteComponentProps } from '@reach/router'
-import { setB64QueryParam } from '../lib/query-param-helper'
 import Link from '../components/Link'
 
 import content from '../content/instructions'
+import { encodeB64UrlSafe } from '../lib/b64'
 
 const { samples, instructions } = content
 
@@ -13,14 +13,7 @@ const DocsPage: React.FC<RouteComponentProps> = () => {
             <div dangerouslySetInnerHTML={{ __html: instructions }} />
             <ul>
                 {samples.map(({ title, query }) => {
-                    const url = new URL(
-                        process.env.PUBLIC_URL,
-                        window.location.origin,
-                    )
-
-                    setB64QueryParam('q', `# ${title}\n\n${query}`, url)
-
-                    const queryString = url.search
+                    const queryString = `?q=${encodeB64UrlSafe(`# ${title}\n\n${query}`)}`
 
                     return (
                         <li key={title}>

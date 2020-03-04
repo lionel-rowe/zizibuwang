@@ -1,45 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { RouteComponentProps } from '@reach/router'
 import { Typography } from '@material-ui/core'
-import {
-    getB64QueryParam,
-    deleteQueryParam,
-    setB64QueryParam,
-} from '../lib/query-param-helper'
-import Cedict from '../repos/cedict'
-import { search } from '../lib/search'
-import Swal from 'sweetalert2'
+import { getB64QueryParam, deleteQueryParam, getQueryParam } from '../lib/query-param-helper'
+import Cedict from '../repositories/cedict'
 import { NoDataError } from '../lib/errors'
 import ResultsDisplay from '../components/ResultsDisplay'
 import SearchForm from '../components/SearchForm'
+import { AppContext, loadResultsFromQuery } from '../state/Context'
 
 const SearchPage: React.FC<RouteComponentProps> = () => {
-    const [results, setResults] = useState(null as CedictEntry[] | null)
-    const [resultsLoading, setResultsLoading] = useState(false)
-    const [cedictDataLoading, setCedictDataLoading] = useState(true)
-    const [cedictDataError, setCedictDataError] = useState(
-        null as NoDataError | null,
-    )
+    const { state, dispatch } = useContext(AppContext)
+
+    const { error } = state
 
     const handleQueryParams = () => {
         try {
             const text = getB64QueryParam('q')
+            const page = getQueryParam('page') || '1'
 
             if (text) {
-                ;(document.querySelector(
-                    '#search-conditions',
-                ) as HTMLTextAreaElement).value = text
+                dispatch({ searchQuery: text, page: +page })
 
-                submitForm(null)
+                loadResultsFromQuery(text, dispatch)
             } else {
-                ;(document.querySelector(
-                    '#search-conditions',
-                ) as HTMLTextAreaElement).value = ''
+                deleteQueryParam('page')
 
-                setResults(null)
+                dispatch({
+                    page: null,
+                    searchQuery: '',
+                    results: null,
+                    resultsLoading: false,
+                })
             }
         } catch (e) {
             deleteQueryParam('q')
+            deleteQueryParam('page')
 
             console.error(e)
         }
@@ -49,54 +44,22 @@ const SearchPage: React.FC<RouteComponentProps> = () => {
         handleQueryParams()
 
         window.addEventListener('popstate', handleQueryParams)
-
         ;(async () => {
             try {
                 await Cedict.all
             } catch (e) {
                 if (e instanceof NoDataError) {
-                    console.log(1)
-                    setCedictDataError(e)
-                    console.log(2)
+                    dispatch({ error: e })
                 }
             }
 
-            setCedictDataLoading(false)
+            dispatch({ cedictDataLoading: false })
         })()
 
         return () => window.removeEventListener('popstate', handleQueryParams)
-    }, [])
+    }, [dispatch])
 
-    const submitForm = async (e: React.FormEvent<HTMLFormElement> | null) => {
-        if (e) {
-            e.preventDefault()
-        }
-
-        setResults(null)
-        setResultsLoading(true)
-
-        const query = new FormData(
-            document.querySelector('#search-form') as HTMLFormElement,
-        ).get('search-conditions') as string
-
-        const data = await Cedict.all
-
-        const { results, error } = await search(query, data)
-
-        if (error) {
-            Swal.fire({ text: error.message, icon: 'error' })
-
-            setResultsLoading(false)
-            setResults(null)
-        } else {
-            setResultsLoading(false)
-            setResults(results as CedictEntry[])
-
-            setB64QueryParam('q', query)
-        }
-    }
-
-    return cedictDataError ? (
+    return error && error instanceof NoDataError ? (
         <>
             <Typography variant='h4' paragraph component='h2'>
                 No dictionary data loaded
@@ -113,8 +76,8 @@ const SearchPage: React.FC<RouteComponentProps> = () => {
         </>
     ) : (
         <>
-            <SearchForm submitForm={submitForm} />
-            <ResultsDisplay results={results} resultsLoading={resultsLoading} />
+            <SearchForm />
+            <ResultsDisplay />
         </>
     )
 }

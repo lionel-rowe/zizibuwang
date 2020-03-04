@@ -1,102 +1,42 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import { CircularProgress } from '@material-ui/core'
 
-import {
-    List,
-    WindowScroller,
-    CellMeasurerCache,
-    CellMeasurer,
-} from 'react-virtualized'
+import Pagination from '@material-ui/lab/Pagination'
 
-import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer'
 import Result from '../components/Result'
+import { AppContext } from '../state/Context'
+import { setQueryParam } from '../lib/query-param-helper'
 
-const rowRenderer = (results: CedictEntry[], cache: CellMeasurerCache) => ({
-    index,
-    key,
-    style,
-    parent,
-}: {
-    index: number
-    key: any
-    style: object
-    parent: MeasuredCellParent
+const PER_PAGE = 50
+
+const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
+    results,
+    page,
 }) => {
     return (
-        <CellMeasurer
-            key={key}
-            cache={cache}
-            parent={parent}
-            columnIndex={0}
-            rowIndex={index}
-        >
-            <div key={key} style={style}>
-                <Result index={index} entry={results[index]} isLast={index === results.length - 1} />
-            </div>
-        </CellMeasurer>
+        <>
+            {results
+                .slice((page - 1) * PER_PAGE, page * PER_PAGE)
+                .map((result, idx) => {
+                    return (
+                        <Result
+                            key={idx}
+                            entry={result}
+                            isLast={idx === results.length - 1}
+                        />
+                    )
+                })}
+        </>
     )
 }
 
-const initCellMeasurerCache = () =>
-    new CellMeasurerCache({
-        defaultHeight: 100,
-        minHeight: 75,
-        fixedWidth: true,
-    })
+const ResultsDisplay: React.FC = () => {
+    const { state, dispatch } = useContext(AppContext)
 
-const ResultsList: React.FC<{ results: CedictEntry[] }> = ({ results }) => {
-    const [width, setWidth] = useState(500)
+    const { results, resultsLoading, page: _page } = state
 
-    const [cellMeasurerCache, setCellMeasurerCache] = useState(
-        initCellMeasurerCache(),
-    )
+    const page = _page || 1
 
-    const calcAndSetDimensions = () => {
-        setWidth(
-            document.querySelector('#output')?.getBoundingClientRect().width ||
-                500,
-        )
-
-        setCellMeasurerCache(initCellMeasurerCache())
-    }
-
-    useEffect(() => {
-        calcAndSetDimensions()
-
-        window.addEventListener('resize', calcAndSetDimensions)
-
-        return () => window.removeEventListener('resize', calcAndSetDimensions)
-    }, [])
-
-    return (
-        <WindowScroller>
-            {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                <List
-                    tabIndex={-1}
-                    style={{ outline: 'none' }}
-                    onRowsRendered={({ startIndex, stopIndex }) => {
-                        // TODO
-                        // console.log({ startIndex, stopIndex })
-                    }}
-                    width={width}
-                    height={height}
-                    autoHeight
-                    isScrolling={isScrolling}
-                    onScroll={onChildScroll}
-                    scrollTop={scrollTop}
-                    rowHeight={cellMeasurerCache.rowHeight}
-                    rowCount={results.length}
-                    rowRenderer={rowRenderer(results, cellMeasurerCache)}
-                />
-            )}
-        </WindowScroller>
-    )
-}
-
-const ResultsDisplay: React.FC<{
-    results: CedictEntry[] | null
-    resultsLoading: boolean
-}> = ({ results, resultsLoading }) => {
     return (
         <output id='output' className='output'>
             {resultsLoading ? (
@@ -115,7 +55,9 @@ const ResultsDisplay: React.FC<{
                         <div style={{ margin: '1.5em 0', display: 'flex' }}>
                             <hr style={{ flexGrow: 1, height: 0 }} />
                             <div style={{ padding: '0 20px' }}>
-                                <strong>{results.length}</strong>{' '}
+                                <strong>
+                                    {results.length.toLocaleString('en-US')}
+                                </strong>{' '}
                                 <span>
                                     {results.length === 1
                                         ? 'result'
@@ -125,8 +67,20 @@ const ResultsDisplay: React.FC<{
                             <hr style={{ flexGrow: 1, height: 0 }} />
                         </div>
                         {results.length > 0 && (
-                            <ResultsList results={results} />
+                            <ResultsList page={page} results={results} />
                         )}
+
+                        <Pagination
+                            page={page}
+                            onChange={(_e: any, n: number) => {
+                                dispatch({ page: n })
+
+                                setQueryParam('page', n.toString(), true)
+
+                                window.scrollTo(0, 0)
+                            }}
+                            count={Math.floor(results.length / PER_PAGE)}
+                        />
                     </>
                 )
             )}

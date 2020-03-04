@@ -1,5 +1,4 @@
-import React from 'react'
-import Link from '../components/Link'
+import React, { useContext } from 'react'
 import { makeStyles, IconButton } from '@material-ui/core'
 
 import Tooltip from '@material-ui/core/Tooltip'
@@ -7,6 +6,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { navigate } from '@reach/router'
+import { AppContext } from '../state/Context'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,9 +20,6 @@ const useStyles = makeStyles(theme => ({
         listStyleType: 'none',
         padding: 0,
     },
-    buttonRoot: {
-        background: 'radial-gradient(rgba(0, 0, 0, 0.5), transparent)',
-    },
 }))
 
 const links = [
@@ -34,6 +31,15 @@ const links = [
 const MainNav: React.FC = () => {
     const classes = useStyles()
 
+    const { dispatch } = useContext(AppContext)
+
+    const clearQuery = () =>
+        dispatch({
+            searchQuery: '',
+            results: null,
+            resultsLoading: false,
+        })
+
     return (
         <nav className={classes.root}>
             <ul className={classes.listRoot}>
@@ -42,9 +48,12 @@ const MainNav: React.FC = () => {
                         <li key={idx}>
                             <Tooltip placement='left' title={text} arrow>
                                 <IconButton
-                                classes={{root: classes.buttonRoot}}
                                     role='link'
                                     onClick={() => {
+                                        if (to === '/') {
+                                            clearQuery()
+                                        }
+
                                         navigate(`${process.env.PUBLIC_URL}${to}`)
                                     }}
                                     aria-label={text}

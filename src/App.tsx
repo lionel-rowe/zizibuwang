@@ -13,23 +13,28 @@ import { Router } from '@reach/router'
 import DocsPage from './pages/DocsPage'
 import { Container } from '@material-ui/core'
 import Footer from './components/Footer'
+import { AppProvider } from './state/Context'
+import SettingsPage from './pages/SettingsPage'
 
 const App: React.FC = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <PageBackground />
-            <div className='everything-container'>
-                <MainLayout className='content-container'>
-                    <Router basepath={process.env.PUBLIC_URL}>
-                        <SearchPage path='/' />
-                        <DocsPage path='/instructions' />
-                    </Router>
-                </MainLayout>
-                <Container className='footer-container' maxWidth='sm'>
-                    <Footer />
-                </Container>
-            </div>
-        </ThemeProvider>
+        <AppProvider>
+            <ThemeProvider theme={theme}>
+                <PageBackground />
+                <div className='everything-container'>
+                    <MainLayout className='content-container'>
+                        <Router basepath={process.env.PUBLIC_URL}>
+                            <SearchPage path='/' />
+                            <DocsPage path='/instructions' />
+                            <SettingsPage path='/settings' />
+                        </Router>
+                    </MainLayout>
+                    <Container className='footer-container' maxWidth='sm'>
+                        <Footer />
+                    </Container>
+                </div>
+            </ThemeProvider>
+        </AppProvider>
     )
 }
 
