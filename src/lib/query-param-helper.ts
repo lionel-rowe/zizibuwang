@@ -20,14 +20,14 @@ const _setAllQueryParams = (
     )
 }
 
-const clearAllQueryParams = (pushNewHistoryItem = false) => {
+const clearAllQueryParams = (pushNewHistoryItem: boolean) => {
     _setAllQueryParams(new URLSearchParams([]), pushNewHistoryItem)
 }
 
 const setQueryParam = (
     paramName: string,
     newVal: string,
-    pushNewHistoryItem = false,
+    pushNewHistoryItem: boolean,
 ) => {
     const allQueryParams = new URLSearchParams(window.location.search)
 
@@ -36,7 +36,7 @@ const setQueryParam = (
     _setAllQueryParams(allQueryParams, pushNewHistoryItem)
 }
 
-const deleteQueryParam = (paramName: string, pushNewHistoryItem = false) => {
+const deleteQueryParam = (paramName: string, pushNewHistoryItem: boolean) => {
     const allQueryParams = new URLSearchParams(window.location.search)
 
     allQueryParams.delete(paramName)
@@ -53,7 +53,7 @@ const getB64QueryParam = (paramName: string) => {
 const setB64QueryParam = (
     paramName: string,
     newVal: string,
-    pushNewHistoryItem = false,
+    pushNewHistoryItem: boolean,
 ) => {
     const b64 = encodeB64UrlSafe(newVal)
 

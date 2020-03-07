@@ -32,9 +32,6 @@ const _urlUnsafe = (b64UrlSafe: string) => {
     return noPadding + '='.repeat(padLength)
 }
 
-;(window as any)._urlUnsafe = _urlUnsafe
-;(window as any)._urlSafe = _urlSafe
-
 const encodeB64UrlSafe = (str: string) => _urlSafe(encodeB64(str))
 
 const decodeB64UrlSafe = (b64UrlSafe: string) =>

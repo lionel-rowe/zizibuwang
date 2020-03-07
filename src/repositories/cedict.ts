@@ -1,10 +1,12 @@
 import { parseTsv, rowHeadingsToProps } from '../lib/parse-tsv'
 import config from '../config'
 import { openDB, deleteDB, IDBPDatabase } from 'idb'
-import Swal from 'sweetalert2'
 
 import cedictUrl from '../assets/cc-cedict.tsv'
 import { NoDataError } from '../lib/errors'
+import fireModal from '../lib/fireModal'
+
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 
 const { DB_NAME, CEDICT_TABLE_NAME, DB_VERSION } = config
 
@@ -29,16 +31,16 @@ const seedDb = async (db: IDBPDatabase) => {
             ? `Download ${(+contentLength / 1000 / 1000).toFixed(1)}\xa0MB?`
             : 'Download data?'
 
-        const userConfirmed = await Swal.fire({
+        const userConfirmed = await fireModal({
             showCancelButton: true,
             confirmButtonText: 'Download',
             title,
             text:
                 'This is required the first time you run this app. Consider switching to a Wi-Fi connection.',
-            icon: 'question',
+            icon: HelpOutlineIcon,
         })
 
-        if (!userConfirmed.value) {
+        if (!userConfirmed) {
             // TODO - show app load fail state
 
             throw new NoDataError('User declined to download data')

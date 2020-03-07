@@ -1,3 +1,5 @@
+import './lib/setup'
+
 import React from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 
@@ -13,18 +15,21 @@ import { Router } from '@reach/router'
 import DocsPage from './pages/DocsPage'
 import { Container } from '@material-ui/core'
 import Footer from './components/Footer'
-import { AppProvider } from './state/Context'
+import { AppStateProvider } from './state/Context'
 import SettingsPage from './pages/SettingsPage'
+import ModalContainer from 'react-modal-promise'
 
 const App: React.FC = () => {
     return (
-        <AppProvider>
+        <AppStateProvider>
             <ThemeProvider theme={theme}>
+                <ModalContainer />
                 <PageBackground />
                 <div className='everything-container'>
                     <MainLayout className='content-container'>
                         <Router basepath={process.env.PUBLIC_URL}>
-                            <SearchPage path='/' />
+                            <SearchPage searchType='basic' path='/' />
+                            <SearchPage searchType='advanced' path='/advanced' />
                             <DocsPage path='/instructions' />
                             <SettingsPage path='/settings' />
                         </Router>
@@ -34,7 +39,7 @@ const App: React.FC = () => {
                     </Container>
                 </div>
             </ThemeProvider>
-        </AppProvider>
+        </AppStateProvider>
     )
 }
 

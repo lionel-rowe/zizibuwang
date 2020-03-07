@@ -14,14 +14,6 @@ hr {
     opacity: 0.3;
 }
 
-.swal2-popup {
-    background: #022 !important;
-}
-
-.swal2-content {
-    color: white !important;
-}
-
 .unstyled {
     text-decoration: none !important;
     color: inherit !important;
@@ -52,16 +44,17 @@ code {
 }
 
 .everything-container {
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    min-height: calc(var(--vh, 1vh) * 100);
     display: flex;
     flex-direction: column;
     margin-right: 2em;
 }
 
 .content-container {
-  flex: 1 0 auto;
+    flex: 1 0 auto;
 }
 
 .footer-container {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }

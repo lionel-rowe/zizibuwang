@@ -5,6 +5,7 @@ const { MAX_TIMEOUT } = config
 const search = async (
     query: string,
     data: any /* TODO */,
+    logicalOr = false, // TODO
 ): Promise<{ results?: CedictEntry[]; error?: Error }> => {
     let error, results
 
@@ -17,7 +18,7 @@ const search = async (
             .filter(el => el && !el.startsWith('#'))
 
         if (lines.length === 1 && lines[0] === '*') {
-            conditions = [] as SearchCondition[]
+            conditions = []
         } else if (lines.length === 0) {
             throw new RangeError('Must have at last one condition')
         } else {
@@ -32,6 +33,7 @@ const search = async (
             type: 'SEARCH',
             conditions,
             entries: data,
+            logicalOr,
         })
 
         results = await new Promise<CedictEntry[]>((resolve, reject) => {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { CircularProgress } from '@material-ui/core'
 
 import Pagination from '@material-ui/lab/Pagination'
@@ -6,6 +6,7 @@ import Pagination from '@material-ui/lab/Pagination'
 import Result from '../components/Result'
 import { AppContext } from '../state/Context'
 import { setQueryParam } from '../lib/query-param-helper'
+import useHtmlId from '../hooks/useHtmlId'
 
 const PER_PAGE = 50
 
@@ -33,12 +34,14 @@ const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
 const ResultsDisplay: React.FC = () => {
     const { state, dispatch } = useContext(AppContext)
 
+    const outputId = useHtmlId('output')
+
     const { results, resultsLoading, page: _page } = state
 
     const page = _page || 1
 
     return (
-        <output id='output' className='output'>
+        <output id={outputId} className='output'>
             {resultsLoading ? (
                 <div
                     style={{

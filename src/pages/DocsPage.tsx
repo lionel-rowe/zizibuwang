@@ -17,7 +17,7 @@ const DocsPage: React.FC<RouteComponentProps> = () => {
 
                     return (
                         <li key={title}>
-                            <Link to={`/${queryString}`}>{title}</Link>
+                            <Link to={`/advanced/${queryString}`}>{title}</Link>
                         </li>
                     )
                 })}

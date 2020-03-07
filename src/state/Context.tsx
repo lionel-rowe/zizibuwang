@@ -1,8 +1,11 @@
 import React, { useReducer, useMemo } from 'react'
 import Cedict from '../repositories/cedict'
 import { search } from '../lib/search'
-import Swal from 'sweetalert2'
+import fireModal from '../lib/fireModal'
 import { setB64QueryParam } from '../lib/query-param-helper'
+
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import convertBasicToAdvanced from '../lib/convertBasicToAdvanced'
 
 export interface AppState {
     charSet: 'trad' | 'simp'
@@ -12,18 +15,20 @@ export interface AppState {
     resultsLoading: boolean
     cedictDataLoading: boolean
     page: number | null
+    searchType: 'basic' | 'advanced'
 }
 
 type SearchActionType = Partial<AppState>
 
 const initialState: AppState = {
-    charSet: (localStorage.getItem('charSet') as 'trad' | 'simp') || 'simp',
+    charSet: localStorage.getItem('charSet') === 'trad' ? 'trad' : 'simp',
     results: null,
     error: null,
     searchQuery: '',
     resultsLoading: false,
     cedictDataLoading: true,
     page: null,
+    searchType: 'basic',
 }
 
 const reducer = (
@@ -37,19 +42,29 @@ const reducer = (
     return { ...state }
 }
 
+interface LoadResultsFromQueryOptions {
+    pushNewHistoryItem?: boolean
+    searchType: 'advanced' | 'basic'
+}
+
 const loadResultsFromQuery = async (
     query: string,
     dispatch: React.Dispatch<SearchActionType>,
-    pushNewHistoryItem = false,
+    { pushNewHistoryItem = false, searchType }: LoadResultsFromQueryOptions,
 ) => {
+    const searchQuery =
+        searchType === 'advanced'
+            ? query
+            : convertBasicToAdvanced(query)
+
     dispatch({ results: null, resultsLoading: true })
 
     const data = await Cedict.all
 
-    const { results, error } = await search(query, data)
+    const { results, error } = await search(searchQuery, data, searchType === 'basic')
 
     if (error) {
-        Swal.fire({ text: error.message, icon: 'error' })
+        fireModal({ text: error.message, icon: ErrorOutlineIcon })
 
         return dispatch({ results: null, resultsLoading: false })
     } else {
@@ -66,7 +81,7 @@ const AppContext = React.createContext(
     },
 )
 
-const AppProvider: React.FC = ({ children }) => {
+const AppStateProvider: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const value = useMemo(() => ({ state, dispatch }), [state, dispatch])
@@ -74,4 +89,10 @@ const AppProvider: React.FC = ({ children }) => {
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
-export { reducer, initialState, loadResultsFromQuery, AppContext, AppProvider }
+export {
+    reducer,
+    initialState,
+    loadResultsFromQuery,
+    AppContext,
+    AppStateProvider,
+}

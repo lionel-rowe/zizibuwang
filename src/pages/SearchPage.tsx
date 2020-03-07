@@ -1,14 +1,20 @@
 import React, { useEffect, useContext } from 'react'
 import { RouteComponentProps } from '@reach/router'
 import { Typography } from '@material-ui/core'
-import { getB64QueryParam, deleteQueryParam, getQueryParam } from '../lib/query-param-helper'
+import {
+    getB64QueryParam,
+    deleteQueryParam,
+    getQueryParam,
+} from '../lib/query-param-helper'
 import Cedict from '../repositories/cedict'
 import { NoDataError } from '../lib/errors'
 import ResultsDisplay from '../components/ResultsDisplay'
 import SearchForm from '../components/SearchForm'
 import { AppContext, loadResultsFromQuery } from '../state/Context'
 
-const SearchPage: React.FC<RouteComponentProps> = () => {
+const SearchPage: React.FC<RouteComponentProps & {
+    searchType: 'basic' | 'advanced'
+}> = ({ searchType }) => {
     const { state, dispatch } = useContext(AppContext)
 
     const { error } = state
@@ -21,9 +27,9 @@ const SearchPage: React.FC<RouteComponentProps> = () => {
             if (text) {
                 dispatch({ searchQuery: text, page: +page })
 
-                loadResultsFromQuery(text, dispatch)
+                loadResultsFromQuery(text, dispatch, { searchType })
             } else {
-                deleteQueryParam('page')
+                deleteQueryParam('page', false)
 
                 dispatch({
                     page: null,
@@ -33,14 +39,16 @@ const SearchPage: React.FC<RouteComponentProps> = () => {
                 })
             }
         } catch (e) {
-            deleteQueryParam('q')
-            deleteQueryParam('page')
+            deleteQueryParam('q', false)
+            deleteQueryParam('page', false)
 
             console.error(e)
         }
     }
 
     useEffect(() => {
+        dispatch({ searchType })
+
         handleQueryParams()
 
         window.addEventListener('popstate', handleQueryParams)
@@ -57,7 +65,7 @@ const SearchPage: React.FC<RouteComponentProps> = () => {
         })()
 
         return () => window.removeEventListener('popstate', handleQueryParams)
-    }, [dispatch])
+    }, [dispatch, searchType])
 
     return error && error instanceof NoDataError ? (
         <>
