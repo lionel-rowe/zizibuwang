@@ -1,11 +1,10 @@
 import React, { useReducer, useMemo } from 'react'
 import Cedict from '../repositories/cedict'
-import { search } from '../lib/search'
+import { basicSearch, advancedSearch } from '../lib/search'
 import fireModal from '../lib/fireModal'
 import { setB64QueryParam } from '../lib/query-param-helper'
 
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import convertBasicToAdvanced from '../lib/convertBasicToAdvanced'
 
 export interface AppState {
     charSet: 'trad' | 'simp'
@@ -52,16 +51,13 @@ const loadResultsFromQuery = async (
     dispatch: React.Dispatch<SearchActionType>,
     { pushNewHistoryItem = false, searchType }: LoadResultsFromQueryOptions,
 ) => {
-    const searchQuery =
-        searchType === 'advanced'
-            ? query
-            : convertBasicToAdvanced(query)
-
     dispatch({ results: null, resultsLoading: true })
 
     const data = await Cedict.all
 
-    const { results, error } = await search(searchQuery, data, searchType === 'basic')
+    const searchFn = searchType === 'advanced' ? advancedSearch : basicSearch
+
+    const { results, error } = await searchFn(query, data)
 
     if (error) {
         fireModal({ text: error.message, icon: ErrorOutlineIcon })

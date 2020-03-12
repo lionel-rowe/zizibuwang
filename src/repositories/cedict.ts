@@ -43,7 +43,7 @@ const seedDb = async (db: IDBPDatabase) => {
         if (!userConfirmed) {
             // TODO - show app load fail state
 
-            throw new NoDataError('User declined to download data')
+            throw new NoDataError('User declined to download data.')
         }
     }
 

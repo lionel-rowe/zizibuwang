@@ -77,7 +77,7 @@ self.onmessage = ({ data }) => {
     try {
         switch (data.type) {
             case 'SEARCH':
-                const { conditions, entries, logicalOr = false } = data
+                const { conditions, entries } = data
 
                 const propNames = Object.keys(entries[0] || {})
                 const methodNames = Object.keys(methods)
@@ -105,7 +105,7 @@ self.onmessage = ({ data }) => {
                     return methods[method]({ prop, arg })
                 })
 
-                const testSuite = entry => tests[logicalOr ? 'some' : 'every'](test => test(entry))
+                const testSuite = entry => tests.every(test => test(entry))
 
                 const results = entries.filter(testSuite)
 

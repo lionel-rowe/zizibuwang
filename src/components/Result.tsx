@@ -36,7 +36,8 @@ const Result: React.FC<{
     let renderRuby = false
 
     if (chars.length !== pinyinSyls.length) {
-        process.env.NODE_ENV === 'development' && console.log(entry)
+        process.env.NODE_ENV === 'development' &&
+            console.info('chars.length !== pinyinSyls.length', entry)
     } else {
         chars.forEach((char, idx) => {
             const py = pinyinSyls[idx] as string
