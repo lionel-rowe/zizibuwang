@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "341530724c864b8167a4882b92bc46c7",
+    "revision": "77d5307d8a3b2df50f66760d139f6d2e",
     "url": "/zizibuwang/index.html"
   },
   {
-    "revision": "2c23e6e23f177ea6397c",
+    "revision": "42a6221bb97349f6b2b3",
     "url": "/zizibuwang/static/css/main.615858ab.chunk.css"
   },
   {
-    "revision": "db1581b88355fc2016f6",
-    "url": "/zizibuwang/static/js/2.ad520355.chunk.js"
+    "revision": "6417dff5ec5b6b732e90",
+    "url": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js"
   },
   {
     "revision": "6f5f1c4a5f7f6e382b8aeca1b4ac8d96",
-    "url": "/zizibuwang/static/js/2.ad520355.chunk.js.LICENSE.txt"
+    "url": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "2c23e6e23f177ea6397c",
-    "url": "/zizibuwang/static/js/main.1ce08de5.chunk.js"
+    "revision": "42a6221bb97349f6b2b3",
+    "url": "/zizibuwang/static/js/main.b5585426.chunk.js"
   },
   {
     "revision": "e3c699305932e917d128",
