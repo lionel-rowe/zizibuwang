@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "77d5307d8a3b2df50f66760d139f6d2e",
+    "revision": "c16fac3f908796a08b92b441f31f7466",
     "url": "/zizibuwang/index.html"
   },
   {
-    "revision": "42a6221bb97349f6b2b3",
+    "revision": "f186b48639d0beeb9bde",
     "url": "/zizibuwang/static/css/main.615858ab.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "42a6221bb97349f6b2b3",
-    "url": "/zizibuwang/static/js/main.b5585426.chunk.js"
+    "revision": "f186b48639d0beeb9bde",
+    "url": "/zizibuwang/static/js/main.29770f6f.chunk.js"
   },
   {
     "revision": "e3c699305932e917d128",

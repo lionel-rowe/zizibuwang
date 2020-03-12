@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/zizibuwang/static/css/main.615858ab.chunk.css",
-    "main.js": "/zizibuwang/static/js/main.b5585426.chunk.js",
-    "main.js.map": "/zizibuwang/static/js/main.b5585426.chunk.js.map",
+    "main.js": "/zizibuwang/static/js/main.29770f6f.chunk.js",
+    "main.js.map": "/zizibuwang/static/js/main.29770f6f.chunk.js.map",
     "runtime-main.js": "/zizibuwang/static/js/runtime-main.3fcb1d39.js",
     "runtime-main.js.map": "/zizibuwang/static/js/runtime-main.3fcb1d39.js.map",
     "static/js/2.4ebf6f5d.chunk.js": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js",
     "static/js/2.4ebf6f5d.chunk.js.map": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.map",
     "index.html": "/zizibuwang/index.html",
-    "precache-manifest.f3ee09c45d59d3236ef1987b3c8c9eb5.js": "/zizibuwang/precache-manifest.f3ee09c45d59d3236ef1987b3c8c9eb5.js",
+    "precache-manifest.4945ed6262fb3200b7628897b3099fc9.js": "/zizibuwang/precache-manifest.4945ed6262fb3200b7628897b3099fc9.js",
     "service-worker.js": "/zizibuwang/service-worker.js",
     "static/css/main.615858ab.chunk.css.map": "/zizibuwang/static/css/main.615858ab.chunk.css.map",
     "static/js/2.4ebf6f5d.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.LICENSE.txt",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.3fcb1d39.js",
     "static/js/2.4ebf6f5d.chunk.js",
     "static/css/main.615858ab.chunk.css",
-    "static/js/main.b5585426.chunk.js"
+    "static/js/main.29770f6f.chunk.js"
   ]
 }
