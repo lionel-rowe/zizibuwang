@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.up('sm')]: {
         navItem: {
-            borderRadius: `${theme.shape.borderRadius}px 0 0 ${theme.shape.borderRadius}px`,
+            borderRadius: `50% 0 0 50%`,
         },
         activeNavItem: {
             background: fade(theme.palette.primary.main, 0.25),
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const links = [
-    { to: '/', text: 'Home', Icon: HomeIcon, match: '/(advanced)?' },
+    { to: '/', text: 'Home', Icon: HomeIcon, match: '(/advanced)?' },
     {
         to: '/instructions',
         text: 'Instructions',

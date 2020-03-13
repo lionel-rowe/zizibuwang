@@ -1,4 +1,5 @@
 import config from '../config'
+import { withTimeLogging } from './logging'
 
 const { MAX_TIMEOUT } = config
 
@@ -37,11 +38,11 @@ const _basicSearch = async (
             setTimeout(() => {
                 searchWorker.terminate()
 
-                reject('Timeout exceeded')
+                reject('Timeout exceeded.')
             }, MAX_TIMEOUT)
         })
     } catch (e) {
-        error = e
+        error = new Error(e)
     }
 
     return { results, error }
@@ -93,11 +94,11 @@ const _advancedSearch = async (
             setTimeout(() => {
                 searchWorker.terminate()
 
-                reject('Timeout exceeded')
+                reject('Timeout exceeded.')
             }, MAX_TIMEOUT)
         })
     } catch (e) {
-        error = e
+        error = new Error(e)
     }
 
     return { results, error }
@@ -115,22 +116,6 @@ function toCondition(clause: string): SearchCondition {
     }
 
     return { ...((matches.groups as any) as SearchCondition) }
-}
-
-const withTimeLogging = (fn: (...args: any) => any) => {
-    if (process.env.NODE_ENV !== 'development') {
-        return fn
-    }
-
-    return async (...args: any) => {
-        console.time(fn.name)
-
-        const val = await fn(...args)
-
-        console.timeEnd(fn.name)
-
-        return val
-    }
 }
 
 const [basicSearch, advancedSearch] = [_basicSearch, _advancedSearch].map(withTimeLogging)

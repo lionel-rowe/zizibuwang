@@ -39,8 +39,9 @@ a[href]:hover {
 
 pre,
 code {
-    font-family: monospace, 'Noto Sans CJK SC', 'Noto Sans CJK TC',
-        'Microsoft YaHei';
+    background: rgba(251, 210, 0, 0.2);
+    padding: 1px 3px;
+    border-radius: 3px;
 }
 
 .everything-container {

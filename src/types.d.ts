@@ -23,6 +23,11 @@ declare module '*.tsv' {
     export default content
 }
 
+declare module '*.md' {
+    const content: urlString
+    export default content
+}
+
 declare module "snarkdown" {
   export default function (markdown: string): string;
 }

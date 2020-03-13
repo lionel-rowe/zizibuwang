@@ -31,6 +31,9 @@ const BasicSearch: React.FC = () => {
                         searchQuery: e.currentTarget.value,
                     })
                 }}
+                style={{
+                    paddingRight: '3em',
+                }}
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'

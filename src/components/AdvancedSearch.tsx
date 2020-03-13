@@ -36,6 +36,7 @@ const AdvancedSearch: React.FC = () => {
                 style={{
                     fontFamily:
                         'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
+                    paddingRight: '3em',
                 }}
                 value={searchQuery}
                 onChange={e => {
