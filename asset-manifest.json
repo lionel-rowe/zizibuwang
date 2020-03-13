@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/zizibuwang/static/css/main.615858ab.chunk.css",
-    "main.js": "/zizibuwang/static/js/main.29770f6f.chunk.js",
-    "main.js.map": "/zizibuwang/static/js/main.29770f6f.chunk.js.map",
+    "main.css": "/zizibuwang/static/css/main.3c55623d.chunk.css",
+    "main.js": "/zizibuwang/static/js/main.1c7dd4f0.chunk.js",
+    "main.js.map": "/zizibuwang/static/js/main.1c7dd4f0.chunk.js.map",
     "runtime-main.js": "/zizibuwang/static/js/runtime-main.3fcb1d39.js",
     "runtime-main.js.map": "/zizibuwang/static/js/runtime-main.3fcb1d39.js.map",
-    "static/js/2.4ebf6f5d.chunk.js": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js",
-    "static/js/2.4ebf6f5d.chunk.js.map": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.map",
+    "static/js/2.48670734.chunk.js": "/zizibuwang/static/js/2.48670734.chunk.js",
+    "static/js/2.48670734.chunk.js.map": "/zizibuwang/static/js/2.48670734.chunk.js.map",
     "index.html": "/zizibuwang/index.html",
-    "precache-manifest.4945ed6262fb3200b7628897b3099fc9.js": "/zizibuwang/precache-manifest.4945ed6262fb3200b7628897b3099fc9.js",
+    "precache-manifest.285c6436f4b76204fc8521f4918ea022.js": "/zizibuwang/precache-manifest.285c6436f4b76204fc8521f4918ea022.js",
     "service-worker.js": "/zizibuwang/service-worker.js",
-    "static/css/main.615858ab.chunk.css.map": "/zizibuwang/static/css/main.615858ab.chunk.css.map",
-    "static/js/2.4ebf6f5d.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.4ebf6f5d.chunk.js.LICENSE.txt",
+    "static/css/main.3c55623d.chunk.css.map": "/zizibuwang/static/css/main.3c55623d.chunk.css.map",
+    "static/js/2.48670734.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.48670734.chunk.js.LICENSE.txt",
     "static/media/ZhiMangXing-Regular-subset.ttf": "/zizibuwang/static/media/ZhiMangXing-Regular-subset.c382153c.ttf",
-    "static/media/cc-cedict.tsv": "/zizibuwang/static/media/cc-cedict.02fc0569.tsv"
+    "static/media/cc-cedict.tsv": "/zizibuwang/static/media/cc-cedict.02fc0569.tsv",
+    "static/media/instructions.md": "/zizibuwang/static/media/instructions.b304c4a9.md"
   },
   "entrypoints": [
     "static/js/runtime-main.3fcb1d39.js",
-    "static/js/2.4ebf6f5d.chunk.js",
-    "static/css/main.615858ab.chunk.css",
-    "static/js/main.29770f6f.chunk.js"
+    "static/js/2.48670734.chunk.js",
+    "static/css/main.3c55623d.chunk.css",
+    "static/js/main.1c7dd4f0.chunk.js"
   ]
 }
