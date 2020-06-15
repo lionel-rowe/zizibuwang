@@ -1,35 +1,56 @@
 import React, { useEffect, useContext } from 'react'
-import { RouteComponentProps } from '@reach/router'
+import { RouteComponentProps, useNavigate } from '@reach/router'
 import { Typography } from '@material-ui/core'
-import {
-    getB64QueryParam,
-    deleteQueryParam,
-    getQueryParam,
-} from '../lib/query-param-helper'
+import { deleteQueryParam, getQueryParam } from '../lib/queryParams'
 import Cedict from '../repositories/cedict'
 import { NoDataError } from '../lib/errors'
 import ResultsDisplay from '../components/ResultsDisplay'
 import SearchForm from '../components/SearchForm'
 import { AppContext, loadResultsFromQuery } from '../state/Context'
+import { setTitle } from '../lib/setTitle'
 
-const SearchPage: React.FC<RouteComponentProps & {
-    searchType: 'basic' | 'advanced'
-}> = ({ searchType }) => {
+const SearchPage: React.FC<
+    RouteComponentProps & {
+        searchType: 'basic' | 'advanced'
+        title: string
+    }
+> = ({ searchType, title }) => {
+    setTitle([title])
+
     const { state, dispatch } = useContext(AppContext)
+
+    const navigate = useNavigate()
 
     const { error } = state
 
     const handleQueryParams = () => {
         try {
-            const text = getB64QueryParam('q')
+            if (
+                // XOR - return early if mismatch
+                Number(searchType === 'advanced') +
+                    Number(
+                        window.location.pathname
+                            .split('/')
+                            .includes('advanced'),
+                    ) ===
+                1
+            ) {
+                return
+            }
+
+            const text = getQueryParam('q')
             const page = getQueryParam('page') || '1'
 
             if (text) {
                 dispatch({ searchQuery: text, page: +page })
 
-                loadResultsFromQuery(text, dispatch, { searchType })
+                loadResultsFromQuery(
+                    text,
+                    { state, dispatch },
+                    { searchType, navigate },
+                )
             } else {
-                deleteQueryParam('page', false)
+                deleteQueryParam('page', false, navigate)
 
                 dispatch({
                     page: null,
@@ -39,8 +60,8 @@ const SearchPage: React.FC<RouteComponentProps & {
                 })
             }
         } catch (e) {
-            deleteQueryParam('q', false)
-            deleteQueryParam('page', false)
+            deleteQueryParam('q', false, navigate)
+            deleteQueryParam('page', false, navigate)
 
             console.error(e)
         }
@@ -65,6 +86,8 @@ const SearchPage: React.FC<RouteComponentProps & {
         })()
 
         return () => window.removeEventListener('popstate', handleQueryParams)
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, searchType])
 
     return error && error instanceof NoDataError ? (
@@ -75,9 +98,7 @@ const SearchPage: React.FC<RouteComponentProps & {
             <div>
                 <Typography variant='body1' paragraph component='p'>
                     Dictionary data is required to run this app. Please{' '}
-                    <a href={JSON.parse('""') /* current page */}>
-                        reload the page
-                    </a>{' '}
+                    <a href={String('') /* current page */}>reload the page</a>{' '}
                     and try again.
                 </Typography>
             </div>

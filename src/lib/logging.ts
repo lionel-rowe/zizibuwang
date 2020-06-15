@@ -1,4 +1,18 @@
-let idx = 0
+let _idx = 0
+
+const getTimeNowMs = () => new Date().valueOf()
+
+const getTimeElapsedMs = (prevTimeMs: number) => getTimeNowMs() - prevTimeMs
+
+enum Result {
+    Error,
+    Success,
+}
+
+enum Synchronicity {
+    Sync,
+    Async,
+}
 
 const withTimeLogging = <T>(fn: T & Function): T => {
     if (process.env.NODE_ENV !== 'development') {
@@ -6,35 +20,47 @@ const withTimeLogging = <T>(fn: T & Function): T => {
     }
 
     return (((...args: any) => {
-        const timerName = `[${idx++}] ${fn.name}`
+        const idx = _idx++
+        const name = fn.name || '[anonymous]'
+        const startTime = getTimeNowMs()
 
-        console.time(timerName)
+        const logTimeElapsed = (
+            synchronicity: Synchronicity,
+            result: Result,
+        ) => {
+            const isSuccess = result === Result.Success
+            const isAsync = synchronicity === Synchronicity.Async
+            const method = isSuccess ? 'info' : 'error'
 
-        let val
+            console[method](
+                `[${idx}] ${isAsync ? 'Async function' : 'Function'} ${name} ${
+                    isSuccess ? 'completed' : 'errored'
+                } in ${getTimeElapsedMs(startTime)}\xa0ms`,
+            )
+        }
 
         try {
-            val = fn(...args)
+            const val = fn(...args)
 
             if (val instanceof Promise) {
                 return val
                     .catch(e => {
-                        console.timeEnd(timerName)
+                        logTimeElapsed(Synchronicity.Async, Result.Error)
 
                         throw e
                     })
                     .then(val2 => {
-                        console.timeEnd(timerName)
+                        logTimeElapsed(Synchronicity.Async, Result.Success)
 
                         return val2
                     })
             } else {
-                console.log(1)
-                console.timeEnd(timerName)
+                logTimeElapsed(Synchronicity.Sync, Result.Success)
 
                 return val
             }
         } catch (e) {
-            console.timeEnd(timerName)
+            logTimeElapsed(Synchronicity.Sync, Result.Error)
 
             throw e
         }

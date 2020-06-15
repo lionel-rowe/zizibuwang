@@ -1,23 +1,18 @@
 import './lib/setup'
+import './lib/injectDynamicStyles'
 
 import React from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 
-import './lib/load-fonts'
-
 import { theme } from './lib/theme'
 
 import PageBackground from './components/PageBackground'
-import SearchPage from './pages/SearchPage'
-import MainLayout from './layouts/MainLayout'
 
-import { Router } from '@reach/router'
-import DocsPage from './pages/DocsPage'
 import { Container } from '@material-ui/core'
 import Footer from './components/Footer'
 import { AppStateProvider } from './state/Context'
-import SettingsPage from './pages/SettingsPage'
 import ModalContainer from 'react-modal-promise'
+import AppRouter from './AppRouter'
 
 const App: React.FC = () => {
     return (
@@ -26,14 +21,7 @@ const App: React.FC = () => {
                 <ModalContainer />
                 <PageBackground />
                 <div className='everything-container'>
-                    <MainLayout className='content-container'>
-                        <Router basepath={process.env.PUBLIC_URL}>
-                            <SearchPage searchType='basic' path='/' />
-                            <SearchPage searchType='advanced' path='/advanced' />
-                            <DocsPage path='/instructions' />
-                            <SettingsPage path='/settings' />
-                        </Router>
-                    </MainLayout>
+                    <AppRouter />
                     <Container className='footer-container' maxWidth='sm'>
                         <Footer />
                     </Container>

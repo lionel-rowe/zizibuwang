@@ -1,6 +1,18 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
 const theme = createMuiTheme({
+    overrides: {
+        MuiTooltip: {
+            tooltip: {
+                // fontSize: '2em',
+                color: '#000',
+                backgroundColor: 'ivory',
+            },
+            arrow: {
+                color: 'ivory',
+            },
+        },
+    },
     palette: {
         common: { black: '#000', white: '#fff' },
         type: 'dark',

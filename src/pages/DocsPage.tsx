@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from '@reach/router'
+import { useNavigate } from '@reach/router'
 import Link from '../components/Link'
 
 import contentMdUrl from '../content/instructions.md'
-import { encodeB64UrlSafe } from '../lib/b64'
 import snarkdownPlus from '../lib/snarkdownPlus'
+import { setTitle } from '../lib/setTitle'
 
 interface Sample {
     title: string
@@ -39,9 +40,15 @@ const contentPromise = (async () => {
     return { _samples, _instructions }
 })()
 
-const DocsPage: React.FC<RouteComponentProps> = () => {
+const DocsPage: React.FC<RouteComponentProps & { title: string }> = ({
+    title,
+}) => {
+    setTitle([title])
+
     const [instructions, setInstructions] = useState('')
     const [samples, setSamples] = useState<Sample[]>([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         ;(async () => {
@@ -50,17 +57,44 @@ const DocsPage: React.FC<RouteComponentProps> = () => {
             setSamples(_samples)
 
             setInstructions(snarkdownPlus(_instructions))
+
+            setTimeout(() => {
+                if (window.location.hash) {
+                    document
+                        .querySelector(window.location.hash)
+                        ?.scrollIntoView(true)
+                }
+            }, 300)
         })()
     }, [])
 
     return (
         <>
-            <div dangerouslySetInnerHTML={{ __html: instructions }} />
+            <div
+                dangerouslySetInnerHTML={{ __html: instructions }}
+                onClick={e => {
+                    const target = e.target as HTMLAnchorElement
+                    const href = target.href
+
+                    if (href) {
+                        e.preventDefault()
+
+                        if (
+                            href.startsWith('http') &&
+                            !href.startsWith(window.location.origin)
+                        ) {
+                            window.open(href, '_blank', 'noopener noreferrer')
+                        } else {
+                            navigate(href)
+                        }
+                    }
+                }}
+            />
             <ul>
                 {samples.map(({ title, query }) => {
-                    const queryString = `?q=${encodeB64UrlSafe(
+                    const queryString = `?q=${encodeURIComponent(
                         `# ${title}\n\n${query}`,
-                    )}`
+                    )}`.replace(/%20/g, '+')
 
                     return (
                         <li key={title}>

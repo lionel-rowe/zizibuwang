@@ -5,7 +5,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
 import SettingsIcon from '@material-ui/icons/Settings'
-import { navigate } from '@reach/router'
+import { navigate, useLocation } from '@reach/router'
+
 import { AppContext } from '../state/Context'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
@@ -66,6 +67,8 @@ const MainNav: React.FC = () => {
 
     const { dispatch } = useContext(AppContext)
 
+    const location = useLocation()
+
     const clearQuery = () =>
         dispatch({
             searchQuery: '',
@@ -83,7 +86,7 @@ const MainNav: React.FC = () => {
                         `^${process.env.PUBLIC_URL}${match}/?([?#]|$)`,
                     )
 
-                    const isMatch = matcher.test(window.location.pathname)
+                    const isMatch = matcher.test(location.pathname)
 
                     return (
                         <li key={idx}>

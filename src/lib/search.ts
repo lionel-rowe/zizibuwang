@@ -1,13 +1,24 @@
 import config from '../config'
 import { withTimeLogging } from './logging'
 
+import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
+import { makeRegexWith, FuzzyReplacementId } from './makeRegex'
+
 const { MAX_TIMEOUT } = config
 
 const _basicSearch = async (
     query: string,
     data: any /* TODO */,
-): Promise<{ results?: CedictEntry[]; error?: Error }> => {
-    let error, results
+    enabledFuzzyReplacementIds: FuzzyReplacementId[],
+): Promise<{ results?: CedictEntry[] }> => {
+    let results
+
+    const pinyinToPartsMapping = await pinyinToPartsMappingPromise
+
+    const pinyinRegex = makeRegexWith(
+        pinyinToPartsMapping,
+        enabledFuzzyReplacementIds,
+    )(query)
 
     const searchWorker = new Worker(
         `${process.env.PUBLIC_URL}/basic-search-worker.js`,
@@ -16,92 +27,85 @@ const _basicSearch = async (
     searchWorker.postMessage({
         type: 'SEARCH',
         query,
+        pinyinRegex,
         entries: data,
     })
 
-    try {
-        if (/^\s*$/.test(query)) {
-            throw new RangeError('Please enter some search terms.')
-        }
-
-        results = await new Promise<CedictEntry[]>((resolve, reject) => {
-            searchWorker.onmessage = ({ data }) => {
-                if (data.type === 'ERROR') {
-                    reject(data.error)
-                }
-
-                searchWorker.terminate()
-
-                resolve(data.results)
-            }
-
-            setTimeout(() => {
-                searchWorker.terminate()
-
-                reject('Timeout exceeded.')
-            }, MAX_TIMEOUT)
-        })
-    } catch (e) {
-        error = new Error(e)
+    if (/^\s*$/.test(query)) {
+        throw new RangeError('Please enter some search terms.')
     }
 
-    return { results, error }
+    results = await new Promise<CedictEntry[]>((resolve, reject) => {
+        searchWorker.onmessage = ({ data }) => {
+            if (data.type === 'ERROR') {
+                reject(data.error)
+            }
+
+            searchWorker.terminate()
+
+            resolve(data.results)
+        }
+
+        setTimeout(() => {
+            searchWorker.terminate()
+
+            reject(new RangeError('Timeout exceeded.'))
+        }, MAX_TIMEOUT)
+    })
+
+    return { results }
 }
 
 const _advancedSearch = async (
     query: string,
     data: any /* TODO */,
-): Promise<{ results?: CedictEntry[]; error?: Error }> => {
-    let error, results
+): Promise<{ results?: CedictEntry[] }> => {
+    let results
 
-    try {
-        let conditions: SearchCondition[]
+    let conditions: SearchCondition[]
 
-        const lines = query
-            .split(/\r?\n/)
-            .map(el => el.trim())
-            .filter(el => el && !el.startsWith('#'))
+    const lines = query
+        .split(/\r?\n/)
+        .map(el => el.trim())
+        .filter(el => el && !el.startsWith('#'))
 
-        if (lines.length === 1 && lines[0] === '*') {
-            conditions = []
-        } else if (lines.length === 0) {
-            throw new RangeError('Must have at last one condition.')
-        } else {
-            conditions = lines.map(toCondition)
-        }
-
-        const searchWorker = new Worker(
-            `${process.env.PUBLIC_URL}/advanced-search-worker.js`,
-        )
-
-        searchWorker.postMessage({
-            type: 'SEARCH',
-            conditions,
-            entries: data,
-        })
-
-        results = await new Promise<CedictEntry[]>((resolve, reject) => {
-            searchWorker.onmessage = ({ data }) => {
-                if (data.type === 'ERROR') {
-                    reject(data.error)
-                }
-
-                searchWorker.terminate()
-
-                resolve(data.results)
-            }
-
-            setTimeout(() => {
-                searchWorker.terminate()
-
-                reject('Timeout exceeded.')
-            }, MAX_TIMEOUT)
-        })
-    } catch (e) {
-        error = new Error(e)
+    if (lines.length === 1 && lines[0] === '*') {
+        conditions = []
+    } else if (lines.length === 0) {
+        throw new RangeError('Must have at least one condition.')
+    } else {
+        conditions = lines.map(toCondition)
     }
 
-    return { results, error }
+    const searchWorker = new Worker(
+        `${process.env.PUBLIC_URL}/advanced-search-worker.js`,
+    )
+
+    searchWorker.postMessage({
+        type: 'SEARCH',
+        conditions,
+        entries: data,
+    })
+
+    results = await new Promise<CedictEntry[]>((resolve, reject) => {
+        searchWorker.onmessage = ({ data }) => {
+            if (data.type === 'ERROR') {
+                reject(data.error)
+            }
+
+            searchWorker.terminate()
+
+            resolve(data.results)
+        }
+
+        setTimeout(() => {
+            searchWorker.terminate()
+
+            reject(new RangeError('Timeout exceeded.'))
+        }, MAX_TIMEOUT)
+    })
+
+    return { results }
 }
 
 function toCondition(clause: string): SearchCondition {
@@ -118,6 +122,8 @@ function toCondition(clause: string): SearchCondition {
     return { ...((matches.groups as any) as SearchCondition) }
 }
 
-const [basicSearch, advancedSearch] = [_basicSearch, _advancedSearch].map(withTimeLogging)
+const [basicSearch, advancedSearch] = [_basicSearch, _advancedSearch].map(
+    withTimeLogging,
+)
 
 export { basicSearch, advancedSearch }

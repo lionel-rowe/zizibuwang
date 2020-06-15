@@ -8,6 +8,24 @@ body {
         'Microsoft YaHei', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-y: scroll !important; /* override when modal visible */
+}
+
+* {
+    scrollbar-color: #808080 black;
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: black;
+    border-style: solid;
+
+    border-radius: 5px;
 }
 
 hr {
@@ -33,15 +51,17 @@ a[href] {
     color: #26c6dd;
     text-decoration: none;
 }
+
 a[href]:hover {
     text-decoration: underline;
 }
 
 pre,
 code {
-    background: rgba(251, 210, 0, 0.2);
     padding: 1px 3px;
-    border-radius: 3px;
+    color: #e23d76;
+    background-color: rgba(151, 96, 128, 0.2);
+    border-radius: 4px;
 }
 
 .everything-container {
@@ -58,4 +78,18 @@ code {
 
 .footer-container {
     flex-shrink: 0;
+}
+
+kbd {
+    /* font-family: unset; */
+    color: #fff;
+    background-color: #333;
+    border-radius: 3px;
+    border: 1px solid #222;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2),
+        1px 1px 0 0 rgba(70, 70, 70, 0.7) inset;
+    display: inline-block;
+    line-height: 1;
+    padding: 4px 6px;
+    white-space: nowrap;
 }

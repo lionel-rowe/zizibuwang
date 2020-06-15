@@ -2,9 +2,12 @@ import React, { useReducer, useMemo } from 'react'
 import Cedict from '../repositories/cedict'
 import { basicSearch, advancedSearch } from '../lib/search'
 import fireModal from '../lib/fireModal'
-import { setB64QueryParam } from '../lib/query-param-helper'
+import { setQueryParam } from '../lib/queryParams'
 
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
+import { FuzzyReplacementId } from '../lib/makeRegex'
+import { NavigateFn } from '@reach/router'
+import globals from '../lib/globals'
 
 export interface AppState {
     charSet: 'trad' | 'simp'
@@ -15,12 +18,13 @@ export interface AppState {
     cedictDataLoading: boolean
     page: number | null
     searchType: 'basic' | 'advanced'
+    enabledFuzzyReplacementIds: Record<FuzzyReplacementId, boolean>
 }
 
 type SearchActionType = Partial<AppState>
 
 const initialState: AppState = {
-    charSet: localStorage.getItem('charSet') === 'trad' ? 'trad' : 'simp',
+    charSet: (localStorage.getItem('charSet') || 'simp') as 'trad' | 'simp',
     results: null,
     error: null,
     searchQuery: '',
@@ -28,6 +32,10 @@ const initialState: AppState = {
     cedictDataLoading: true,
     page: null,
     searchType: 'basic',
+    enabledFuzzyReplacementIds: JSON.parse(
+        localStorage.getItem('enabledFuzzyReplacementIds') ||
+            '{"zh-j":true,"z-j":false,"n-l":false,"z-zh":true,"f-hu":false,"n-ng":true}',
+    ) as Record<FuzzyReplacementId, boolean>,
 }
 
 const reducer = (
@@ -44,29 +52,61 @@ const reducer = (
 interface LoadResultsFromQueryOptions {
     pushNewHistoryItem?: boolean
     searchType: 'advanced' | 'basic'
+    navigate: NavigateFn
 }
 
 const loadResultsFromQuery = async (
     query: string,
-    dispatch: React.Dispatch<SearchActionType>,
-    { pushNewHistoryItem = false, searchType }: LoadResultsFromQueryOptions,
+    {
+        dispatch,
+        state,
+    }: {
+        dispatch: React.Dispatch<SearchActionType>
+        state: AppState
+    },
+    {
+        pushNewHistoryItem = false,
+        searchType,
+        navigate,
+    }: LoadResultsFromQueryOptions,
 ) => {
-    dispatch({ results: null, resultsLoading: true })
-
     const data = await Cedict.all
+
+    const currentQueryResult = ++globals.queryResultIncrementer
+
+    dispatch({
+        results: null,
+        resultsLoading: true,
+    })
 
     const searchFn = searchType === 'advanced' ? advancedSearch : basicSearch
 
-    const { results, error } = await searchFn(query, data)
+    try {
+        const { results } = await searchFn(
+            query,
+            data,
+            Object.entries(state.enabledFuzzyReplacementIds)
+                .filter(([_k, v]) => v)
+                .map(([k, _v]) => k) as FuzzyReplacementId[],
+        )
 
-    if (error) {
-        fireModal({ text: error.message, icon: ErrorOutlineIcon })
+        if (globals.queryResultIncrementer !== currentQueryResult) {
+            // ignore stale results
+            return
+        }
 
-        return dispatch({ results: null, resultsLoading: false })
-    } else {
-        setB64QueryParam('q', query, pushNewHistoryItem)
+        setQueryParam('q', query, pushNewHistoryItem, navigate)
 
         return dispatch({ results, resultsLoading: false })
+    } catch (e) {
+        if (globals.queryResultIncrementer !== currentQueryResult) {
+            // ignore stale results
+            return
+        }
+
+        fireModal({ text: e.message, icon: ErrorOutlineIcon })
+
+        return dispatch({ results: null, resultsLoading: false })
     }
 }
 

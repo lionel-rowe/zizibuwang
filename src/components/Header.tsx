@@ -11,13 +11,16 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '3.5em',
         paddingBottom: '2em',
     },
-    text: {
+    heading: {
         fontFamily: 'ZhiMangXing, Roboto',
+    },
+    subtitle: {
+        padding: '0 2em',
     },
 }))
 
-export default () => {
-    const classes = useStyles()
+const Header = () => {
+    const { root, heading, subtitle } = useStyles()
 
     const { dispatch } = useContext(AppContext)
 
@@ -29,12 +32,26 @@ export default () => {
         })
 
     return (
-        <header className={classes.root}>
-            <Typography variant='h1' component='h1' className={classes.text}>
-                <Link tabIndex={-1} to='/' onClick={clearQuery} className='unstyled'>
+        <header className={root}>
+            <Typography variant='h1' component='h1' className={heading}>
+                <Link
+                    tabIndex={-1}
+                    to='/'
+                    onClick={clearQuery}
+                    className='unstyled'
+                >
                     字字不忘
                 </Link>
+            </Typography>
+            <Typography
+                className={subtitle}
+                variant='subtitle2'
+                component='div'
+            >
+                Zi Zi Bu Wang · Chinese Dictionary Lookup
             </Typography>
         </header>
     )
 }
+
+export default Header

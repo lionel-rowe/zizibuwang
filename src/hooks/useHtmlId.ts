@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 let idx = 0
 
 const useHtmlId = (prefix = 'id') => {
-    idx++
+    const [htmlId /* , setHtmlId */] = useState(`${prefix}-${++idx}`)
 
-    return useState(`${prefix}-${idx}`)[0]
+    return htmlId
 }
 
-export default useHtmlId
+export { useHtmlId }

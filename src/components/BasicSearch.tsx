@@ -10,7 +10,7 @@ import {
     IconButton,
 } from '@material-ui/core'
 
-import useHtmlId from '../hooks/useHtmlId'
+import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
 
 const BasicSearch: React.FC = () => {

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Tabs, Tab } from '@material-ui/core'
 import { AppContext, loadResultsFromQuery } from '../state/Context'
-import { deleteQueryParam } from '../lib/query-param-helper'
-import useHtmlId from '../hooks/useHtmlId'
+import { deleteQueryParam } from '../lib/queryParams'
+import { useHtmlId } from '../hooks/useHtmlId'
 import BasicSearch from './BasicSearch'
 import AdvancedSearch from './AdvancedSearch'
-import { navigate } from '@reach/router'
+import { useNavigate } from '@reach/router'
 
 const TabPanel: React.FC<{
     id: string
@@ -22,6 +22,8 @@ const TabPanel: React.FC<{
 const SearchForm: React.FC = () => {
     const { dispatch, state } = useContext(AppContext)
 
+    const navigate = useNavigate()
+
     const { searchQuery, searchType } = state
 
     const searchFormId = useHtmlId('search-form')
@@ -29,12 +31,17 @@ const SearchForm: React.FC = () => {
     const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        loadResultsFromQuery(searchQuery, dispatch, {
-            pushNewHistoryItem: true,
-            searchType,
-        })
+        loadResultsFromQuery(
+            searchQuery,
+            { dispatch, state },
+            {
+                pushNewHistoryItem: true,
+                searchType,
+                navigate,
+            },
+        )
 
-        deleteQueryParam('page', false)
+        deleteQueryParam('page', false, navigate)
 
         dispatch({ page: null })
     }
@@ -53,13 +60,15 @@ const SearchForm: React.FC = () => {
             <Tabs
                 indicatorColor='primary'
                 value={searchType}
-                onChange={(e, newVal) => {
-                    dispatch({ searchType: newVal })
+                onChange={(_e, newVal) => {
+                    if (newVal !== state.searchType) {
+                        dispatch({ searchType: newVal })
 
-                    navigate(
-                        process.env.PUBLIC_URL +
-                            (newVal === 'advanced' ? '/advanced' : '/'),
-                    )
+                        navigate(
+                            process.env.PUBLIC_URL +
+                                (newVal === 'advanced' ? '/advanced' : '/'),
+                        )
+                    }
                 }}
                 aria-label='Search type'
             >

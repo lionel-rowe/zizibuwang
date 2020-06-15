@@ -28,6 +28,6 @@ declare module '*.md' {
     export default content
 }
 
-declare module "snarkdown" {
-  export default function (markdown: string): string;
+declare module 'snarkdown' {
+    export default function (markdown: string): string
 }

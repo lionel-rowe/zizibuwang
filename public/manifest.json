@@ -1,25 +1,25 @@
 {
-  "short_name": "字字不忘",
-  "name": "字字不忘",
-  "icons": [
-    {
-      "src": "favicon.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "favicon.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "favicon.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "start_url": "https://lionel-rowe.github.io/zizibuwang/",
-  "display": "standalone",
-  "theme_color": "#357",
-  "background_color": "#111"
+    "short_name": "Zi Zi Bu Wang",
+    "name": "Zi Zi Bu Wang · Chinese Dictionary Lookup",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "favicon.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "favicon.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "https://www.zizibuwang.com",
+    "display": "standalone",
+    "theme_color": "#357",
+    "background_color": "#111"
 }
