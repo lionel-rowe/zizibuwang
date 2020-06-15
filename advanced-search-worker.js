@@ -2,41 +2,48 @@
 
 const methods = {
     is: ({ prop, arg }) => {
-        return entry => entry[prop] === arg
+        return entry => entry[prop].toLowerCase() === arg.toLowerCase()
     },
     '!is': ({ prop, arg }) => {
+        return entry => entry[prop].toLowerCase() !== arg.toLowerCase()
+    },
+    sis: ({ prop, arg }) => {
+        return entry => entry[prop] === arg
+    },
+    '!sis': ({ prop, arg }) => {
         return entry => entry[prop] !== arg
     },
-    iis: ({ prop, arg }) => {
-        const argLower = arg.toLowerCase()
-
-        return entry => entry[prop].toLowerCase() === argLower
-    },
     contains: ({ prop, arg }) => {
-        return entry => entry[prop].includes(arg)
+        return entry => entry[prop].toLowerCase().includes(arg.toLowerCase())
     },
     '!contains': ({ prop, arg }) => {
+        return entry => !entry[prop.toLowerCase()].includes(arg.toLowerCase())
+    },
+    scontains: ({ prop, arg }) => {
+        return entry => entry[prop].includes(arg)
+    },
+    '!scontains': ({ prop, arg }) => {
         return entry => !entry[prop].includes(arg)
     },
-    icontains: ({ prop, arg }) => {
-        const argLower = arg.toLowerCase()
-
-        return entry => entry[prop].toLowerCase().includes(argLower)
-    },
-    match: ({ prop, arg }) => {
-        const regex = new RegExp(arg, 'u')
-
-        return entry => regex.test(entry[prop])
-    },
-    '!match': ({ prop, arg }) => {
-        const regex = new RegExp(arg, 'u')
-
-        return entry => !regex.test(entry[prop])
-    },
-    imatch: ({ prop, arg }) => {
+    like: ({ prop, arg }) => {
         const regex = new RegExp(arg, 'iu')
 
         return entry => regex.test(entry[prop])
+    },
+    '!like': ({ prop, arg }) => {
+        const regex = new RegExp(arg, 'iu')
+
+        return entry => !regex.test(entry[prop])
+    },
+    slike: ({ prop, arg }) => {
+        const regex = new RegExp(arg, 'u')
+
+        return entry => regex.test(entry[prop])
+    },
+    '!slike': ({ prop, arg }) => {
+        const regex = new RegExp(arg, 'u')
+
+        return entry => !regex.test(entry[prop])
     },
     length: ({ prop, arg }) => {
         const len = +arg
@@ -61,15 +68,15 @@ const methods = {
 // aliases
 methods['='] = methods['is']
 methods['=='] = methods['is']
-methods['i='] = methods['iis']
+methods['==='] = methods['sis']
 methods['!='] = methods['!is']
+methods['<>'] = methods['!is']
 
-methods['~'] = methods['match']
-methods['i~'] = methods['imatch']
-methods['!~'] = methods['!match']
+methods['~'] = methods['like']
+methods['=~'] = methods['like']
+methods['!~'] = methods['!like']
 
 methods['has'] = methods['contains']
-methods['ihas'] = methods['icontains']
 methods['!has'] = methods['!contains']
 
 // handle messages
@@ -88,7 +95,7 @@ self.onmessage = ({ data }) => {
 
                     if (!propNames.includes(prop)) {
                         throw new Error(
-                            `${prop} is not a subject. Allowed subjects: [${propNames.join(
+                            `${prop} is not a valid subject. Allowed subjects: [${propNames.join(
                                 ', ',
                             )}]`,
                         )
@@ -96,7 +103,7 @@ self.onmessage = ({ data }) => {
 
                     if (!methodNames.includes(method)) {
                         throw new Error(
-                            `${method} is not a verb. Allowed verbs: [${methodNames.join(
+                            `${method} is not a valid verb. Allowed verbs: [${methodNames.join(
                                 ', ',
                             )}]`,
                         )

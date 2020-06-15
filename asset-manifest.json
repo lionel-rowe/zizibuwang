@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/zizibuwang/static/css/main.3c55623d.chunk.css",
-    "main.js": "/zizibuwang/static/js/main.cdfbf7e2.chunk.js",
-    "main.js.map": "/zizibuwang/static/js/main.cdfbf7e2.chunk.js.map",
+    "main.css": "/zizibuwang/static/css/main.fb014dec.chunk.css",
+    "main.js": "/zizibuwang/static/js/main.1fb88352.chunk.js",
+    "main.js.map": "/zizibuwang/static/js/main.1fb88352.chunk.js.map",
     "runtime-main.js": "/zizibuwang/static/js/runtime-main.3fcb1d39.js",
     "runtime-main.js.map": "/zizibuwang/static/js/runtime-main.3fcb1d39.js.map",
-    "static/js/2.6470bb87.chunk.js": "/zizibuwang/static/js/2.6470bb87.chunk.js",
-    "static/js/2.6470bb87.chunk.js.map": "/zizibuwang/static/js/2.6470bb87.chunk.js.map",
+    "static/js/2.b3038c51.chunk.js": "/zizibuwang/static/js/2.b3038c51.chunk.js",
+    "static/js/2.b3038c51.chunk.js.map": "/zizibuwang/static/js/2.b3038c51.chunk.js.map",
     "index.html": "/zizibuwang/index.html",
-    "precache-manifest.5f12195ca455864c3c24ef0dc1ade1a7.js": "/zizibuwang/precache-manifest.5f12195ca455864c3c24ef0dc1ade1a7.js",
+    "precache-manifest.19fc4f17df626145ebe2b25d9b88e013.js": "/zizibuwang/precache-manifest.19fc4f17df626145ebe2b25d9b88e013.js",
     "service-worker.js": "/zizibuwang/service-worker.js",
-    "static/css/main.3c55623d.chunk.css.map": "/zizibuwang/static/css/main.3c55623d.chunk.css.map",
-    "static/js/2.6470bb87.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.6470bb87.chunk.js.LICENSE.txt",
+    "static/css/main.fb014dec.chunk.css.map": "/zizibuwang/static/css/main.fb014dec.chunk.css.map",
+    "static/js/2.b3038c51.chunk.js.LICENSE.txt": "/zizibuwang/static/js/2.b3038c51.chunk.js.LICENSE.txt",
     "static/media/ZhiMangXing-Regular-subset.ttf": "/zizibuwang/static/media/ZhiMangXing-Regular-subset.c382153c.ttf",
     "static/media/cc-cedict.tsv": "/zizibuwang/static/media/cc-cedict.02fc0569.tsv",
-    "static/media/instructions.md": "/zizibuwang/static/media/instructions.b304c4a9.md"
+    "static/media/instructions.md": "/zizibuwang/static/media/instructions.3cb44add.md",
+    "static/media/pinyin-syllables.tsv": "/zizibuwang/static/media/pinyin-syllables.42676c8b.tsv"
   },
   "entrypoints": [
     "static/js/runtime-main.3fcb1d39.js",
-    "static/js/2.6470bb87.chunk.js",
-    "static/css/main.3c55623d.chunk.css",
-    "static/js/main.cdfbf7e2.chunk.js"
+    "static/js/2.b3038c51.chunk.js",
+    "static/css/main.fb014dec.chunk.css",
+    "static/js/main.1fb88352.chunk.js"
   ]
 }

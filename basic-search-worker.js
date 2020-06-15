@@ -5,7 +5,7 @@ self.onmessage = ({ data }) => {
     try {
         switch (data.type) {
             case 'SEARCH':
-                const { query, entries } = data
+                const { query, entries, pinyinRegex } = data
 
                 let splitter
 
@@ -18,22 +18,54 @@ self.onmessage = ({ data }) => {
                 }
 
                 const queryWords = query
+                    .toLowerCase()
                     .split(splitter)
                     .filter(Boolean)
-                    .map(w => w.toLowerCase())
 
-                const propNames = Object.keys(entries[0] || {})
+                const propNames = ['def', 'simp', 'trad', 'pinyin']
 
-                const results = entries.filter(entry => {
-                    return queryWords.every(word => {
-                        return propNames.some(prop => {
-                            return entry[prop]
-                                .toLowerCase()
-                                .split(splitter)
-                                .includes(word)
-                        })
+                const _results = []
+
+                entries.forEach(entry => {
+                    let relevance = 0
+
+                    if (pinyinRegex && pinyinRegex.test(entry.pinyin)) {
+                        relevance += 1
+                    }
+
+                    propNames.forEach(prop => {
+                        const normalized = entry[prop]
+                            .toLowerCase()
+                            .split(splitter)
+                            .filter(Boolean)
+
+                        if (
+                            queryWords.every(word => normalized.includes(word))
+                        ) {
+                            relevance += 2
+
+                            if (
+                                queryWords.every(
+                                    (word, idx) => word === normalized[idx],
+                                )
+                            ) {
+                                relevance += 1
+
+                                if (queryWords.length === normalized.length) {
+                                    relevance += 1
+                                }
+                            }
+                        }
                     })
+
+                    if (relevance) {
+                        _results.push({ entry, relevance })
+                    }
                 })
+
+                const results = _results
+                    .sort((a, b) => b.relevance - a.relevance)
+                    .map(x => x.entry)
 
                 self.postMessage({ type: 'SEARCH_RESULTS', results })
 
