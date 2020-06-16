@@ -26,6 +26,7 @@ const Header = () => {
 
     const clearQuery = () =>
         dispatch({
+            pendingSearchQuery: '',
             searchQuery: '',
             results: null,
             resultsLoading: false,

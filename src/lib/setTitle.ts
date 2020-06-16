@@ -1,10 +1,11 @@
-const PAGE_TITLE = 'Zi Zi Bu Wang'
-const DELIMITER = ' - '
+import { PAGE_TITLE, TITLE_DELIMITER } from '../config'
 
-const setTitle = (newTitle: string[] | null) => {
-    const title = newTitle ? [...newTitle, PAGE_TITLE].join(DELIMITER) : null
+const setTitle = (newTitle: string | string[]) => {
+    const titleSegments = typeof newTitle === 'string' ? [newTitle] : newTitle
 
-    if (title) document.title = title
+    const title = [...titleSegments, PAGE_TITLE].join(TITLE_DELIMITER)
+
+    document.title = title
 }
 
 export { setTitle }

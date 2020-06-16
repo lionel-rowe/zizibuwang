@@ -1,10 +1,8 @@
-import config from '../config'
+import { MAX_TIMEOUT } from '../config'
 import { withTimeLogging } from './logging'
 
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
 import { makeRegexWith, FuzzyReplacementId } from './makeRegex'
-
-const { MAX_TIMEOUT } = config
 
 const _basicSearch = async (
     query: string,

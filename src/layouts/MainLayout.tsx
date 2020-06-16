@@ -2,9 +2,8 @@ import React from 'react'
 import Header from '../components/Header'
 import MainSubLayout from './MainSubLayout'
 import MainNav from '../components/MainNav'
-import { RouteComponentProps } from '@reach/router'
 
-const MainLayout: React.FC<RouteComponentProps & { className: string }> = ({
+const MainLayout: React.FC<{ className: string }> = ({
     children,
     className,
 }) => {

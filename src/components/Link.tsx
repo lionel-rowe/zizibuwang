@@ -1,14 +1,16 @@
 // @ts-nocheck
 
 import React from 'react'
-import { Link as ReachLink, LinkProps } from '@reach/router'
+import { Link as RouterLink, LinkProps } from 'react-router-dom'
 
 const BASE = process.env.PUBLIC_URL
 
-const Link: React.FC<LinkProps<any> & {
-    absolute?: boolean
-    external?: boolean
-}> = React.forwardRef(
+const Link: React.FC<
+    LinkProps<any> & {
+        absolute?: boolean
+        external?: boolean
+    }
+> = React.forwardRef(
     ({ to = '', children, absolute, external, ...props }, ref) => {
         if (external) {
             return (
@@ -27,9 +29,9 @@ const Link: React.FC<LinkProps<any> & {
             to = `${BASE}${to}`
         }
         return (
-            <ReachLink ref={ref} {...props} to={to}>
+            <RouterLink ref={ref} {...props} to={to}>
                 {children}
-            </ReachLink>
+            </RouterLink>
         )
     },
 )

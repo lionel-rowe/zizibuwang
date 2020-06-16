@@ -5,7 +5,7 @@ import { deleteQueryParam } from '../lib/queryParams'
 import { useHtmlId } from '../hooks/useHtmlId'
 import BasicSearch from './BasicSearch'
 import AdvancedSearch from './AdvancedSearch'
-import { useNavigate } from '@reach/router'
+import { useHistory } from 'react-router-dom'
 
 const TabPanel: React.FC<{
     id: string
@@ -22,9 +22,9 @@ const TabPanel: React.FC<{
 const SearchForm: React.FC = () => {
     const { dispatch, state } = useContext(AppContext)
 
-    const navigate = useNavigate()
+    const history = useHistory()
 
-    const { searchQuery, searchType } = state
+    const { pendingSearchQuery, searchType } = state
 
     const searchFormId = useHtmlId('search-form')
 
@@ -32,16 +32,16 @@ const SearchForm: React.FC = () => {
         e.preventDefault()
 
         loadResultsFromQuery(
-            searchQuery,
+            pendingSearchQuery,
             { dispatch, state },
             {
                 pushNewHistoryItem: true,
                 searchType,
-                navigate,
+                history,
             },
         )
 
-        deleteQueryParam('page', false, navigate)
+        deleteQueryParam('page', false, history)
 
         dispatch({ page: null })
     }
@@ -64,7 +64,7 @@ const SearchForm: React.FC = () => {
                     if (newVal !== state.searchType) {
                         dispatch({ searchType: newVal })
 
-                        navigate(
+                        history.push(
                             process.env.PUBLIC_URL +
                                 (newVal === 'advanced' ? '/advanced' : '/'),
                         )

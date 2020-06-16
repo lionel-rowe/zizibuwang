@@ -1,15 +1,18 @@
-const decodeB64 = (b64: string) => {
+const _encodeUtf8 = (x => x.encode.bind(x))(new TextEncoder())
+const _decodeUtf8 = (x => x.decode.bind(x))(new TextDecoder())
+
+export const decodeB64 = (b64: string) => {
     const binStr = atob(b64)
 
     const binArr = binStr.split('').map(char => char.charCodeAt(0))
 
     const bin = new Uint8Array(binArr)
 
-    return new TextDecoder().decode(bin)
+    return _decodeUtf8(bin)
 }
 
-const encodeB64 = (str: string) => {
-    const bin = new TextEncoder().encode(str)
+export const encodeB64 = (str: string) => {
+    const bin = _encodeUtf8(str)
 
     const binStr = Array.from(bin)
         .map(n => String.fromCharCode(n))
@@ -19,10 +22,7 @@ const encodeB64 = (str: string) => {
 }
 
 const _urlSafe = (b64: string) =>
-    b64
-        .replace(/=/g, '')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
+    b64.replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
 
 const _urlUnsafe = (b64UrlSafe: string) => {
     const noPadding = b64UrlSafe.replace(/-/g, '+').replace(/_/g, '/')
@@ -32,9 +32,7 @@ const _urlUnsafe = (b64UrlSafe: string) => {
     return noPadding + '='.repeat(padLength)
 }
 
-const encodeB64UrlSafe = (str: string) => _urlSafe(encodeB64(str))
+export const encodeB64UrlSafe = (str: string) => _urlSafe(encodeB64(str))
 
-const decodeB64UrlSafe = (b64UrlSafe: string) =>
+export const decodeB64UrlSafe = (b64UrlSafe: string) =>
     decodeB64(_urlUnsafe(b64UrlSafe))
-
-export { decodeB64, encodeB64, encodeB64UrlSafe, decodeB64UrlSafe }

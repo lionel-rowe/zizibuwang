@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { RouteComponentProps, useNavigate } from '@reach/router'
+import { useHistory } from 'react-router-dom'
 import { Typography } from '@material-ui/core'
 import { deleteQueryParam, getQueryParam } from '../lib/queryParams'
 import Cedict from '../repositories/cedict'
@@ -9,17 +9,15 @@ import SearchForm from '../components/SearchForm'
 import { AppContext, loadResultsFromQuery } from '../state/Context'
 import { setTitle } from '../lib/setTitle'
 
-const SearchPage: React.FC<
-    RouteComponentProps & {
-        searchType: 'basic' | 'advanced'
-        title: string
-    }
-> = ({ searchType, title }) => {
-    setTitle([title])
+const SearchPage: React.FC<{
+    searchType: 'basic' | 'advanced'
+    title: string
+}> = ({ searchType, title }) => {
+    setTitle(title)
 
     const { state, dispatch } = useContext(AppContext)
 
-    const navigate = useNavigate()
+    const history = useHistory()
 
     const { error } = state
 
@@ -42,26 +40,30 @@ const SearchPage: React.FC<
             const page = getQueryParam('page') || '1'
 
             if (text) {
-                dispatch({ searchQuery: text, page: +page })
+                dispatch({
+                    pendingSearchQuery: text,
+                    page: +page,
+                })
 
                 loadResultsFromQuery(
                     text,
                     { state, dispatch },
-                    { searchType, navigate },
+                    { searchType, history },
                 )
             } else {
-                deleteQueryParam('page', false, navigate)
+                deleteQueryParam('page', false, history)
 
                 dispatch({
                     page: null,
+                    pendingSearchQuery: '',
                     searchQuery: '',
                     results: null,
                     resultsLoading: false,
                 })
             }
         } catch (e) {
-            deleteQueryParam('q', false, navigate)
-            deleteQueryParam('page', false, navigate)
+            deleteQueryParam('q', false, history)
+            deleteQueryParam('page', false, history)
 
             console.error(e)
         }

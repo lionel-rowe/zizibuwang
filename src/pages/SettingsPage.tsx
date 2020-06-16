@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { RouteComponentProps } from '@reach/router'
 import {
     FormControl,
     FormLabel,
@@ -18,10 +17,8 @@ const useStyles = makeStyles(_theme => ({
     formGroup: { padding: '1em 0' },
 }))
 
-const SettingsPage: React.FC<RouteComponentProps & { title: string }> = ({
-    title,
-}) => {
-    setTitle([title])
+const SettingsPage: React.FC<{ title: string }> = ({ title }) => {
+    setTitle(title)
 
     const classes = useStyles()
 
@@ -30,81 +27,85 @@ const SettingsPage: React.FC<RouteComponentProps & { title: string }> = ({
     const { charSet, enabledFuzzyReplacementIds } = state
 
     return (
-        <form onSubmit={e => e.preventDefault()}>
-            <FormGroup className={classes.formGroup}>
-                <FormControl component='fieldset'>
-                    <FormLabel component='legend'>
-                        Default character set
-                    </FormLabel>
-                    <RadioGroup
-                        aria-label='Default character set'
-                        name='character-set'
-                        value={charSet}
-                        onChange={e => {
-                            const charSet = e.currentTarget.value as
-                                | 'trad'
-                                | 'simp'
+        <>
+            <h1>Settings</h1>
+            <form onSubmit={e => e.preventDefault()}>
+                <FormGroup className={classes.formGroup}>
+                    <FormControl component='fieldset'>
+                        <FormLabel component='legend'>
+                            Default character set
+                        </FormLabel>
+                        <RadioGroup
+                            aria-label='Default character set'
+                            name='character-set'
+                            value={charSet}
+                            onChange={e => {
+                                const charSet = e.currentTarget.value as
+                                    | 'trad'
+                                    | 'simp'
 
-                            localStorage.setItem('charSet', charSet)
+                                localStorage.setItem('charSet', charSet)
 
-                            dispatch({ charSet })
-                        }}
-                    >
-                        <FormControlLabel
-                            value='simp'
-                            control={<Radio />}
-                            label='简 Simplified'
-                        />
-                        <FormControlLabel
-                            value='trad'
-                            control={<Radio />}
-                            label='繁 Traditional'
-                        />
-                    </RadioGroup>
-                </FormControl>
-            </FormGroup>
+                                dispatch({ charSet })
+                            }}
+                        >
+                            <FormControlLabel
+                                value='simp'
+                                control={<Radio />}
+                                label='简 Simplified'
+                            />
+                            <FormControlLabel
+                                value='trad'
+                                control={<Radio />}
+                                label='繁 Traditional'
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                </FormGroup>
 
-            <FormGroup className={classes.formGroup}>
-                <FormControl component='fieldset'>
-                    <FormLabel component='legend'>Fuzzy pinyin</FormLabel>
-                    <FormGroup>
-                        {fuzzyReplacements.map(({ name, id }) => {
-                            return (
-                                <FormControlLabel
-                                    key={id}
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                enabledFuzzyReplacementIds[
-                                                    id
-                                                ] || false
-                                            }
-                                            onChange={e => {
-                                                enabledFuzzyReplacementIds[id] =
-                                                    e.currentTarget.checked
+                <FormGroup className={classes.formGroup}>
+                    <FormControl component='fieldset'>
+                        <FormLabel component='legend'>Fuzzy pinyin</FormLabel>
+                        <FormGroup>
+                            {fuzzyReplacements.map(({ name, id }) => {
+                                return (
+                                    <FormControlLabel
+                                        key={id}
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    enabledFuzzyReplacementIds[
+                                                        id
+                                                    ] || false
+                                                }
+                                                onChange={e => {
+                                                    enabledFuzzyReplacementIds[
+                                                        id
+                                                    ] = e.currentTarget.checked
 
-                                                dispatch({
-                                                    enabledFuzzyReplacementIds,
-                                                })
-
-                                                localStorage.setItem(
-                                                    'enabledFuzzyReplacementIds',
-                                                    JSON.stringify(
+                                                    dispatch({
                                                         enabledFuzzyReplacementIds,
-                                                    ),
-                                                )
-                                            }}
-                                            name={id}
-                                        />
-                                    }
-                                    label={name}
-                                />
-                            )
-                        })}
-                    </FormGroup>
-                </FormControl>
-            </FormGroup>
-        </form>
+                                                    })
+
+                                                    localStorage.setItem(
+                                                        'enabledFuzzyReplacementIds',
+                                                        JSON.stringify(
+                                                            enabledFuzzyReplacementIds,
+                                                        ),
+                                                    )
+                                                }}
+                                                name={id}
+                                            />
+                                        }
+                                        label={name}
+                                    />
+                                )
+                            })}
+                        </FormGroup>
+                    </FormControl>
+                </FormGroup>
+            </form>
+        </>
     )
 }
 

@@ -1,5 +1,5 @@
+import { History } from 'history'
 import { decodeB64UrlSafe, encodeB64UrlSafe } from './b64'
-import { NavigateFn } from '@reach/router'
 
 const getQueryParam = (paramName: string) =>
     new URLSearchParams(window.location.search).get(paramName)
@@ -7,7 +7,7 @@ const getQueryParam = (paramName: string) =>
 const _setAllQueryParams = (
     allQueryParams: URLSearchParams,
     pushNewHistoryItem: boolean,
-    navigate: NavigateFn,
+    history: History,
 ) => {
     const newQueryString = Array.from(allQueryParams).length
         ? '?' + allQueryParams.toString()
@@ -15,39 +15,36 @@ const _setAllQueryParams = (
 
     const newPath = window.location.pathname + newQueryString
 
-    navigate(newPath, { replace: !pushNewHistoryItem })
+    history[pushNewHistoryItem ? 'push' : 'replace'](newPath)
 }
 
-const clearAllQueryParams = (
-    pushNewHistoryItem: boolean,
-    navigate: NavigateFn,
-) => {
-    _setAllQueryParams(new URLSearchParams([]), pushNewHistoryItem, navigate)
+const clearAllQueryParams = (pushNewHistoryItem: boolean, history: History) => {
+    _setAllQueryParams(new URLSearchParams([]), pushNewHistoryItem, history)
 }
 
 const setQueryParam = (
     paramName: string,
     newVal: string,
     pushNewHistoryItem: boolean,
-    navigate: NavigateFn,
+    history: History,
 ) => {
     const allQueryParams = new URLSearchParams(window.location.search)
 
     allQueryParams.set(paramName, newVal)
 
-    _setAllQueryParams(allQueryParams, pushNewHistoryItem, navigate)
+    _setAllQueryParams(allQueryParams, pushNewHistoryItem, history)
 }
 
 const deleteQueryParam = (
     paramName: string,
     pushNewHistoryItem: boolean,
-    navigate: NavigateFn,
+    history: History,
 ) => {
     const allQueryParams = new URLSearchParams(window.location.search)
 
     allQueryParams.delete(paramName)
 
-    _setAllQueryParams(allQueryParams, pushNewHistoryItem, navigate)
+    _setAllQueryParams(allQueryParams, pushNewHistoryItem, history)
 }
 
 const getB64QueryParam = (paramName: string) => {
@@ -60,11 +57,11 @@ const setB64QueryParam = (
     paramName: string,
     newVal: string,
     pushNewHistoryItem: boolean,
-    navigate: NavigateFn,
+    history: History,
 ) => {
     const b64 = encodeB64UrlSafe(newVal)
 
-    setQueryParam(paramName, b64, pushNewHistoryItem, navigate)
+    setQueryParam(paramName, b64, pushNewHistoryItem, history)
 }
 
 export {

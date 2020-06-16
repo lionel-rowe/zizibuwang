@@ -1,5 +1,5 @@
 import { parseTsv, rowHeadingsToProps } from '../lib/parse-tsv'
-import config from '../config'
+import { DB_NAME, CEDICT_TABLE_NAME, DB_VERSION } from '../config'
 import { openDB, deleteDB, IDBPDatabase } from 'idb'
 
 import cedictUrl from '../assets/cc-cedict.tsv'
@@ -7,8 +7,6 @@ import { NoDataError } from '../lib/errors'
 import fireModal from '../lib/fireModal'
 
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
-
-const { DB_NAME, CEDICT_TABLE_NAME, DB_VERSION } = config
 
 const DB_REQUIRES_SEEDING = 'dbRequiresSeeding'
 const CEDICT_TSV_ETAG = 'cedictTsvEtag'
@@ -64,7 +62,7 @@ const seedDb = async (db: IDBPDatabase) => {
     return
 }
 
-let db = new Promise<IDBPDatabase>(async (resolve, reject) => {
+const db = new Promise<IDBPDatabase>(async (resolve, reject) => {
     const _db = await openDB(DB_NAME, DB_VERSION, {
         upgrade(db, oldVersion, _newVersion, transaction) {
             if (!oldVersion) {

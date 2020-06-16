@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, makeStyles } from '@material-ui/core'
 
 import Pagination from '@material-ui/lab/Pagination'
 
@@ -7,11 +7,10 @@ import Result from '../components/Result'
 import { AppContext } from '../state/Context'
 import { setQueryParam } from '../lib/queryParams'
 import { useHtmlId } from '../hooks/useHtmlId'
-import { useNavigate } from '@reach/router'
+import { useHistory } from 'react-router-dom'
 import { setTitle } from '../lib/setTitle'
 import { truncate } from '../lib/formatters'
-
-const PER_PAGE = 50
+import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config'
 
 const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     results,
@@ -20,7 +19,7 @@ const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     return (
         <>
             {results
-                .slice((page - 1) * PER_PAGE, page * PER_PAGE)
+                .slice((page - 1) * RESULTS_PER_PAGE, page * RESULTS_PER_PAGE)
                 .map((result, idx) => {
                     return (
                         <Result
@@ -34,10 +33,40 @@ const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     )
 }
 
+const useStyles = makeStyles(_theme => ({
+    loaderOuter: {
+        marginTop: '2em',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    loaderInner: {
+        zoom: 1.2,
+    },
+    resultsOuter: {
+        margin: '1.5em 0',
+        display: 'flex',
+    },
+    resultsTotalDisplay: {
+        padding: '0 20px',
+    },
+    halfWidthHr: {
+        flexGrow: 1,
+        height: 0,
+    },
+}))
+
 const ResultsDisplay: React.FC = () => {
     const { state, dispatch } = useContext(AppContext)
 
-    const navigate = useNavigate()
+    const {
+        loaderOuter,
+        loaderInner,
+        resultsOuter,
+        resultsTotalDisplay,
+        halfWidthHr,
+    } = useStyles()
+
+    const history = useHistory()
 
     const outputId = useHtmlId('output')
 
@@ -54,7 +83,7 @@ const ResultsDisplay: React.FC = () => {
     if (results && !resultsLoading) {
         setTitle(
             [
-                truncate(50)(searchQuery),
+                truncate(TITLE_SEGMENT_TRUNCATE_LENGTH)(searchQuery),
                 page > 1 ? `page ${page}` : '',
                 searchType === 'advanced' ? 'Advanced Search' : 'Search',
             ].filter(Boolean),
@@ -64,21 +93,15 @@ const ResultsDisplay: React.FC = () => {
     return (
         <output id={outputId} className='output'>
             {resultsLoading ? (
-                <div
-                    style={{
-                        marginTop: '2em',
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <CircularProgress style={{ zoom: 1.2 }} color='primary' />
+                <div className={loaderOuter}>
+                    <CircularProgress className={loaderInner} color='primary' />
                 </div>
             ) : (
                 results && (
                     <>
-                        <div style={{ margin: '1.5em 0', display: 'flex' }}>
-                            <hr style={{ flexGrow: 1, height: 0 }} />
-                            <div style={{ padding: '0 20px' }}>
+                        <div className={resultsOuter}>
+                            <hr className={halfWidthHr} />
+                            <div className={resultsTotalDisplay}>
                                 <strong>
                                     {results.length.toLocaleString('en-US')}
                                 </strong>{' '}
@@ -88,7 +111,7 @@ const ResultsDisplay: React.FC = () => {
                                         : 'results'}
                                 </span>
                             </div>
-                            <hr style={{ flexGrow: 1, height: 0 }} />
+                            <hr className={halfWidthHr} />
                         </div>
                         {results.length > 0 && (
                             <ResultsList page={page} results={results} />
@@ -103,12 +126,14 @@ const ResultsDisplay: React.FC = () => {
                                     'page',
                                     n.toString(),
                                     true,
-                                    navigate,
+                                    history,
                                 )
 
                                 window.scrollTo(0, 0)
                             }}
-                            count={Math.floor(results.length / PER_PAGE)}
+                            count={Math.floor(
+                                results.length / RESULTS_PER_PAGE,
+                            )}
                         />
                     </>
                 )

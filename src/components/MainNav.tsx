@@ -5,7 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import HomeIcon from '@material-ui/icons/Home'
 import InfoIcon from '@material-ui/icons/Info'
 import SettingsIcon from '@material-ui/icons/Settings'
-import { navigate, useLocation } from '@reach/router'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { AppContext } from '../state/Context'
 import { fade } from '@material-ui/core/styles/colorManipulator'
@@ -36,13 +36,8 @@ const useStyles = makeStyles(theme => ({
             // borderRadius: 0,
         },
     },
-    [theme.breakpoints.down('xs')]: {
-        activeNavItem: {
-            color: theme.palette.primary.dark,
-            '&:hover': {
-                background: fade(theme.palette.primary.dark, 0.15),
-            },
-        },
+    activeNavItem: {
+        color: theme.palette.primary.main,
     },
 }))
 
@@ -69,8 +64,11 @@ const MainNav: React.FC = () => {
 
     const location = useLocation()
 
+    const history = useHistory()
+
     const clearQuery = () =>
         dispatch({
+            pendingSearchQuery: '',
             searchQuery: '',
             results: null,
             resultsLoading: false,
@@ -109,7 +107,7 @@ const MainNav: React.FC = () => {
                                     onClick={() => {
                                         clearQuery()
 
-                                        navigate(path)
+                                        history.push(path)
                                     }}
                                     aria-label={text}
                                 >

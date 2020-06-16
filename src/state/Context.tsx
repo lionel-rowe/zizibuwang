@@ -4,15 +4,17 @@ import { basicSearch, advancedSearch } from '../lib/search'
 import fireModal from '../lib/fireModal'
 import { setQueryParam } from '../lib/queryParams'
 
+import { History } from 'history'
+
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import { FuzzyReplacementId } from '../lib/makeRegex'
-import { NavigateFn } from '@reach/router'
 import globals from '../lib/globals'
 
 export interface AppState {
     charSet: 'trad' | 'simp'
     results: CedictEntry[] | null
     error: Error | null
+    pendingSearchQuery: string
     searchQuery: string
     resultsLoading: boolean
     cedictDataLoading: boolean
@@ -27,6 +29,7 @@ const initialState: AppState = {
     charSet: (localStorage.getItem('charSet') || 'simp') as 'trad' | 'simp',
     results: null,
     error: null,
+    pendingSearchQuery: '',
     searchQuery: '',
     resultsLoading: false,
     cedictDataLoading: true,
@@ -52,7 +55,7 @@ const reducer = (
 interface LoadResultsFromQueryOptions {
     pushNewHistoryItem?: boolean
     searchType: 'advanced' | 'basic'
-    navigate: NavigateFn
+    history: History
 }
 
 const loadResultsFromQuery = async (
@@ -67,7 +70,7 @@ const loadResultsFromQuery = async (
     {
         pushNewHistoryItem = false,
         searchType,
-        navigate,
+        history,
     }: LoadResultsFromQueryOptions,
 ) => {
     const data = await Cedict.all
@@ -95,9 +98,13 @@ const loadResultsFromQuery = async (
             return
         }
 
-        setQueryParam('q', query, pushNewHistoryItem, navigate)
+        setQueryParam('q', query, pushNewHistoryItem, history)
 
-        return dispatch({ results, resultsLoading: false })
+        return dispatch({
+            searchQuery: query,
+            results,
+            resultsLoading: false,
+        })
     } catch (e) {
         if (globals.queryResultIncrementer !== currentQueryResult) {
             // ignore stale results

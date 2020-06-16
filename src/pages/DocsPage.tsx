@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps } from '@reach/router'
-import { useNavigate } from '@reach/router'
+import { useHistory } from 'react-router-dom'
 import Link from '../components/Link'
 
 import contentMdUrl from '../content/instructions.md'
-import snarkdownPlus from '../lib/snarkdownPlus'
+import { snarkdownEnhanced } from '../lib/snarkdownEnhanced'
 import { setTitle } from '../lib/setTitle'
 
 interface Sample {
@@ -40,15 +39,13 @@ const contentPromise = (async () => {
     return { _samples, _instructions }
 })()
 
-const DocsPage: React.FC<RouteComponentProps & { title: string }> = ({
-    title,
-}) => {
-    setTitle([title])
+const DocsPage: React.FC<{ title: string }> = ({ title }) => {
+    setTitle(title)
 
     const [instructions, setInstructions] = useState('')
     const [samples, setSamples] = useState<Sample[]>([])
 
-    const navigate = useNavigate()
+    const history = useHistory()
 
     useEffect(() => {
         ;(async () => {
@@ -56,7 +53,7 @@ const DocsPage: React.FC<RouteComponentProps & { title: string }> = ({
 
             setSamples(_samples)
 
-            setInstructions(snarkdownPlus(_instructions))
+            setInstructions(snarkdownEnhanced(_instructions))
 
             setTimeout(() => {
                 if (window.location.hash) {
@@ -74,7 +71,7 @@ const DocsPage: React.FC<RouteComponentProps & { title: string }> = ({
                 dangerouslySetInnerHTML={{ __html: instructions }}
                 onClick={e => {
                     const target = e.target as HTMLAnchorElement
-                    const href = target.href
+                    const href = target.getAttribute('href')
 
                     if (href) {
                         e.preventDefault()
@@ -85,7 +82,7 @@ const DocsPage: React.FC<RouteComponentProps & { title: string }> = ({
                         ) {
                             window.open(href, '_blank', 'noopener noreferrer')
                         } else {
-                            navigate(href)
+                            history.push(href)
                         }
                     }
                 }}

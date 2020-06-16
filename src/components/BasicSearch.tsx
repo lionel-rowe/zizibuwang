@@ -8,32 +8,47 @@ import {
     InputAdornment,
     Tooltip,
     IconButton,
+    makeStyles,
 } from '@material-ui/core'
 
 import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
 
+const useStyles = makeStyles(_theme => ({
+    root: { margin: '1em 0' },
+    inputField: {
+        paddingRight: '3em',
+    },
+    searchButton: {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        right: 0,
+        marginRight: 6,
+    },
+}))
+
 const BasicSearch: React.FC = () => {
     const { dispatch, state } = useContext(AppContext)
 
-    const { searchQuery } = state
+    const { root, inputField, searchButton } = useStyles()
+
+    const { pendingSearchQuery } = state
 
     const searchConditionsId = useHtmlId('search-conditions')
 
     return (
-        <FormControl style={{ margin: '1em 0' }} fullWidth variant='filled'>
+        <FormControl className={root} fullWidth variant='filled'>
             <InputLabel htmlFor={searchConditionsId}>Search terms</InputLabel>
             <FilledInput
                 id={searchConditionsId}
-                value={searchQuery}
+                value={pendingSearchQuery}
                 onChange={e => {
                     dispatch({
-                        searchQuery: e.currentTarget.value,
+                        pendingSearchQuery: e.currentTarget.value,
                     })
                 }}
-                style={{
-                    paddingRight: '3em',
-                }}
+                className={inputField}
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
@@ -46,13 +61,7 @@ const BasicSearch: React.FC = () => {
                             <IconButton
                                 type='submit'
                                 aria-label='Search'
-                                style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    transform: 'translateY(-50%)',
-                                    right: 0,
-                                    marginRight: 6,
-                                }}
+                                className={searchButton}
                             >
                                 <SearchIcon />
                             </IconButton>

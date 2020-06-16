@@ -9,43 +9,63 @@ import {
     InputAdornment,
     Tooltip,
     IconButton,
+    makeStyles,
 } from '@material-ui/core'
 
 import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
-import { useNavigate } from '@reach/router'
+import { useHistory } from 'react-router-dom'
+
+const useStyles = makeStyles(_theme => ({
+    root: { margin: '1em 0' },
+    label: {
+        fontFamily:
+            'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
+    },
+    inputField: {
+        fontFamily:
+            'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
+        paddingRight: '5.5em',
+    },
+    searchButton: {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        right: '2em',
+        marginRight: 6,
+    },
+    helpButton: {
+        position: 'absolute',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        right: 0,
+        marginRight: 6,
+    },
+}))
 
 const AdvancedSearch: React.FC = () => {
     const { dispatch, state } = useContext(AppContext)
 
-    const { searchQuery } = state
+    const { root, label, inputField, searchButton, helpButton } = useStyles()
 
-    const navigate = useNavigate()
+    const { pendingSearchQuery } = state
+
+    const history = useHistory()
 
     const searchConditionsId = useHtmlId('search-conditions')
 
     return (
-        <FormControl style={{ margin: '1em 0' }} fullWidth variant='filled'>
-            <InputLabel
-                style={{
-                    fontFamily:
-                        'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
-                }}
-                htmlFor={searchConditionsId}
-            >
+        <FormControl className={root} fullWidth variant='filled'>
+            <InputLabel className={label} htmlFor={searchConditionsId}>
                 Search query
             </InputLabel>
             <FilledInput
                 id={searchConditionsId}
-                style={{
-                    fontFamily:
-                        'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
-                    paddingRight: '5.5em',
-                }}
-                value={searchQuery}
+                className={inputField}
+                value={pendingSearchQuery}
                 onChange={e => {
                     dispatch({
-                        searchQuery: e.currentTarget.value,
+                        pendingSearchQuery: e.currentTarget.value,
                     })
                 }}
                 multiline
@@ -62,13 +82,7 @@ const AdvancedSearch: React.FC = () => {
                                 <IconButton
                                     type='submit'
                                     aria-label='Search'
-                                    style={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        right: '2em',
-                                        marginRight: 6,
-                                    }}
+                                    className={searchButton}
                                 >
                                     <SearchIcon />
                                 </IconButton>
@@ -79,20 +93,14 @@ const AdvancedSearch: React.FC = () => {
                                 <IconButton
                                     role='link'
                                     color='secondary'
-                                    onClick={e =>
-                                        navigate(
+                                    onClick={_e =>
+                                        history.push(
                                             process.env.PUBLIC_URL +
                                                 '/instructions#advanced-search',
                                         )
                                     }
                                     aria-label='Help'
-                                    style={{
-                                        position: 'absolute',
-                                        top: '50%',
-                                        transform: 'translateY(-50%)',
-                                        right: 0,
-                                        marginRight: 6,
-                                    }}
+                                    className={helpButton}
                                 >
                                     <HelpIcon />
                                 </IconButton>

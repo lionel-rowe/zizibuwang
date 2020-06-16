@@ -1,3 +1,5 @@
+# Instructions
+
 ## Basic Search
 
 Just type in your search terms, press <kbd>Enter</kbd>, and you’re good to go!
@@ -9,7 +11,7 @@ When searching for pinyin:
 -   Tones are ignored in basic search mode.
 -   Fuzzy pinyin settings (such as zh ⇄ j) can be changed on the [Settings](./settings) page.
 
-<h2 id="advanced-search">Advanced Search</h2>
+## Advanced Search
 
 Create custom queries in the form `subject verb object`, with one condition per line. Conditions are `AND`ed together (results must meet all the conditions).
 
