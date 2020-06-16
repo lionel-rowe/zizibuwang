@@ -93,3 +93,17 @@ kbd {
     padding: 4px 6px;
     white-space: nowrap;
 }
+
+.anchored {
+    position: relative;
+    padding-top: 0.8em;
+    margin-top: -0.4em;
+}
+
+.anchored:hover::before {
+    content: '§';
+    position: absolute;
+    left: -1em;
+    opacity: 0.7;
+    font-weight: normal;
+}

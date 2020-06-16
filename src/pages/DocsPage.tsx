@@ -55,15 +55,13 @@ const DocsPage: React.FC<{ title: string }> = ({ title }) => {
 
             setInstructions(snarkdownEnhanced(_instructions))
 
-            setTimeout(() => {
-                if (window.location.hash) {
-                    document
-                        .querySelector(window.location.hash)
-                        ?.scrollIntoView(true)
-                }
-            }, 300)
+            if (instructions && window.location.hash) {
+                document
+                    .querySelector(window.location.hash)
+                    ?.scrollIntoView(true)
+            }
         })()
-    }, [])
+    }, [instructions])
 
     return (
         <>
@@ -73,7 +71,7 @@ const DocsPage: React.FC<{ title: string }> = ({ title }) => {
                     const target = e.target as HTMLAnchorElement
                     const href = target.getAttribute('href')
 
-                    if (href) {
+                    if (target.nodeName === 'A' && href) {
                         e.preventDefault()
 
                         if (
@@ -84,6 +82,9 @@ const DocsPage: React.FC<{ title: string }> = ({ title }) => {
                         } else {
                             history.push(href)
                         }
+                    } else if (/^H[2-6]$/.test(target.nodeName)) {
+                        window.location.hash = target.id
+                        target.scrollIntoView(true)
                     }
                 }}
             />

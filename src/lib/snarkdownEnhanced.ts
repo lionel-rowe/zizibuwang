@@ -20,11 +20,12 @@ export const snarkdownEnhanced = (md: string) => {
 
     template.innerHTML = htmls.join('\n\n')
 
-    const headings = template.content.querySelectorAll('h1, h2, h3, h4, h5, h6')
+    const headings = template.content.querySelectorAll('h2, h3, h4, h5, h6')
 
     headings.forEach(heading => {
         if (heading.textContent) {
             heading.id = slugify(heading.textContent)
+            heading.classList.add('anchored')
         }
     })
 
