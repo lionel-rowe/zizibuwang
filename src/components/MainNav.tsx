@@ -32,9 +32,6 @@ const useStyles = makeStyles(theme => ({
                 background: fade(theme.palette.primary.main, 0.35),
             },
         },
-        touchRippleChild: {
-            // borderRadius: 0,
-        },
     },
     activeNavItem: {
         color: theme.palette.primary.main,

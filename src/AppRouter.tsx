@@ -1,7 +1,5 @@
 import React, { useRef } from 'react'
 
-import './lib/injectDynamicStyles'
-
 import SearchPage from './pages/SearchPage'
 import MainLayout from './layouts/MainLayout'
 

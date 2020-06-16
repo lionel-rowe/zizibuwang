@@ -1,5 +1,4 @@
-import './lib/setup'
-import './lib/injectDynamicStyles'
+import './lib/viewportHeightAdjuster'
 
 import React from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -13,19 +12,22 @@ import Footer from './components/Footer'
 import { AppStateProvider } from './state/Context'
 import ModalContainer from 'react-modal-promise'
 import AppRouter from './AppRouter'
+import GlobalStyles from './layouts/GlobalStyles'
 
 const App: React.FC = () => {
     return (
         <AppStateProvider>
             <ThemeProvider theme={theme}>
-                <ModalContainer />
-                <PageBackground />
-                <div className='everything-container'>
-                    <AppRouter />
-                    <Container className='footer-container' maxWidth='sm'>
-                        <Footer />
-                    </Container>
-                </div>
+                <GlobalStyles>
+                    <ModalContainer />
+                    <PageBackground />
+                    <div className='everything-container'>
+                        <AppRouter />
+                        <Container className='footer-container' maxWidth='sm'>
+                            <Footer />
+                        </Container>
+                    </div>
+                </GlobalStyles>
             </ThemeProvider>
         </AppStateProvider>
     )

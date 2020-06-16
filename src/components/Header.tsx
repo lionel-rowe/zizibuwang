@@ -6,7 +6,7 @@ import { AppContext } from '../state/Context'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        color: 'antiquewhite',
+        color: 'ivory',
         textAlign: 'center',
         paddingTop: '3.5em',
         paddingBottom: '2em',

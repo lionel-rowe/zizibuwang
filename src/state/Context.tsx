@@ -8,7 +8,6 @@ import { History } from 'history'
 
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import { FuzzyReplacementId } from '../lib/makeRegex'
-import globals from '../lib/globals'
 
 export interface AppState {
     charSet: 'trad' | 'simp'
@@ -58,6 +57,8 @@ interface LoadResultsFromQueryOptions {
     history: History
 }
 
+let queryResultIncrementer = 0
+
 const loadResultsFromQuery = async (
     query: string,
     {
@@ -75,7 +76,7 @@ const loadResultsFromQuery = async (
 ) => {
     const data = await Cedict.all
 
-    const currentQueryResult = ++globals.queryResultIncrementer
+    const currentQueryResult = ++queryResultIncrementer
 
     dispatch({
         results: null,
@@ -93,7 +94,7 @@ const loadResultsFromQuery = async (
                 .map(([k, _v]) => k) as FuzzyReplacementId[],
         )
 
-        if (globals.queryResultIncrementer !== currentQueryResult) {
+        if (queryResultIncrementer !== currentQueryResult) {
             // ignore stale results
             return
         }
@@ -106,7 +107,7 @@ const loadResultsFromQuery = async (
             resultsLoading: false,
         })
     } catch (e) {
-        if (globals.queryResultIncrementer !== currentQueryResult) {
+        if (queryResultIncrementer !== currentQueryResult) {
             // ignore stale results
             return
         }
