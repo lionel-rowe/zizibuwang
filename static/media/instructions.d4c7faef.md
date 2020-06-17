@@ -26,7 +26,7 @@ The available verbs are as follows:
 
 -   `is` - full text match
 -   `contains` - partial text match
--   `like` - [regular expression](https://www.regular-expressions.info/) match
+-   `like` - [regular expression](https://www.regular-expressions.info/quickstart.html) match
 -   `length` - length in characters
 -   `minlength` - minimum length in characters
 -   `maxlength` - maximum length in characters
