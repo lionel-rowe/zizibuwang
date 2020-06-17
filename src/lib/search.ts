@@ -3,6 +3,7 @@ import { withTimeLogging } from './logging'
 
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
 import { makeRegexWith, FuzzyReplacementId } from './makeRegex'
+import { isPinyinish, segmentPinyin } from './segmentPinyin'
 
 const _basicSearch = async (
     query: string,
@@ -22,11 +23,14 @@ const _basicSearch = async (
         `${process.env.PUBLIC_URL}/basic-search-worker.js`,
     )
 
+    const pinyinSyls = isPinyinish(query) ? segmentPinyin(true)(query) : []
+
     searchWorker.postMessage({
         type: 'SEARCH',
         query,
         pinyinRegex,
         entries: data,
+        pinyinSyls,
     })
 
     if (/^\s*$/.test(query)) {

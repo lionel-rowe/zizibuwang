@@ -5,7 +5,7 @@ self.onmessage = ({ data }) => {
     try {
         switch (data.type) {
             case 'SEARCH':
-                const { query, entries, pinyinRegex } = data
+                const { query, entries, pinyinSyls, pinyinRegex } = data
 
                 let splitter
 
@@ -22,7 +22,7 @@ self.onmessage = ({ data }) => {
                     .split(splitter)
                     .filter(Boolean)
 
-                const propNames = ['def', 'simp', 'trad', 'pinyin']
+                const otherPropNames = ['def', 'simp', 'trad']
 
                 const _results = []
 
@@ -31,9 +31,19 @@ self.onmessage = ({ data }) => {
 
                     if (pinyinRegex && pinyinRegex.test(entry.pinyin)) {
                         relevance += 1
+
+                        const entryPinyinSyls = entry.pinyin
+                            .split(/[^a-z]/gi)
+                            .filter(Boolean)
+
+                        if (
+                            pinyinSyls.every((s, i) => s === entryPinyinSyls[i])
+                        ) {
+                            relevance += 2
+                        }
                     }
 
-                    propNames.forEach(prop => {
+                    otherPropNames.forEach(prop => {
                         const normalized = entry[prop]
                             .toLowerCase()
                             .split(splitter)

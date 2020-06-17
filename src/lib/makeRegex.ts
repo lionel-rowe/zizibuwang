@@ -1,4 +1,5 @@
 import { orderedPermute } from './permute'
+import { segmentPinyin } from './segmentPinyin'
 
 const __ = Symbol('__')
 const $0 = Symbol('$0')
@@ -283,9 +284,7 @@ export const makeRegexWith = (
         enabledFuzzyReplacementIds,
     )
 
-    const segments = py
-        .toLowerCase()
-        .split(/[^a-z]+/)
+    const segments = (segmentPinyin(true)(py.toLowerCase()) || [])
         .filter(Boolean)
         .map(x => {
             const alts = spellValidAlts(x)

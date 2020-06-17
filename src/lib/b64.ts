@@ -1,5 +1,5 @@
-const _encodeUtf8 = (x => x.encode.bind(x))(new TextEncoder())
-const _decodeUtf8 = (x => x.decode.bind(x))(new TextDecoder())
+const _encodeUtf8 = (e => e.encode.bind(e))(new TextEncoder())
+const _decodeUtf8 = (d => d.decode.bind(d))(new TextDecoder())
 
 export const decodeB64 = (b64: string) => {
     const binStr = atob(b64)

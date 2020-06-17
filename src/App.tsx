@@ -14,6 +14,10 @@ import ModalContainer from 'react-modal-promise'
 import AppRouter from './AppRouter'
 import GlobalStyles from './layouts/GlobalStyles'
 
+// TODO
+import './lib/segmentPinyin'
+// TODO
+
 const App: React.FC = () => {
     return (
         <AppStateProvider>

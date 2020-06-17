@@ -7,9 +7,9 @@ export const pinyinToPartsMappingPromise = new Promise<Record<string, Parts>>(
     async resolve => {
         const res = await fetch(pinyinSyllablesUrl)
         const txt = await res.text()
-        const sylls = txt.split('\n').map(x => x.split('\t'))
+        const syls = txt.split('\n').map(x => x.split('\t'))
 
-        const [initials, ...rows] = sylls
+        const [initials, ...rows] = syls
 
         const pinyinToPartsMapping: Record<string, Parts> = Object.create(null)
 

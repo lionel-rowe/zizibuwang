@@ -111,6 +111,13 @@ const _globalStyles = makeStyles(theme => ({
                 fontWeight: 'normal',
             },
         },
+
+        '@media (hover: none)': {
+            // overrides base MUI style
+            '.MuiPaginationItem-page.Mui-selected:hover, .MuiPaginationItem-page.Mui-selected.Mui-focusVisible': {
+                backgroundColor: theme.palette.action.selected,
+            },
+        },
     },
 }))
 
