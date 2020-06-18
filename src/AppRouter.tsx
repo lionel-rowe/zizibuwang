@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom'
 import DocsPage from './pages/DocsPage'
 import SettingsPage from './pages/SettingsPage'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import RouteAnalytics from './components/RouteAnalytics'
 
 const useStyles = makeStyles(_theme => ({
     focusOnRouteChange: { outline: 'none' },
@@ -46,6 +47,7 @@ const AppRouter: React.FC = () => {
         <Router basename={process.env.PUBLIC_URL}>
             <Route path='/'>
                 <MainLayout className='content-container'>
+                    <RouteAnalytics />
                     <FocusOnRouteChange>
                         <Route exact path='/'>
                             <SearchPage title='Search' searchType='basic' />
