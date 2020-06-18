@@ -6,10 +6,10 @@ Just type in your search terms, press <kbd>Enter</kbd>, and you’re good to go!
 
 When searching for pinyin:
 
--   Use “v” to represent ü.
--   Leave a space between each syllable.
--   Tones are ignored in basic search mode.
+-   Use “v” to represent ü: lv → lü.
+-   Use an apostrophe (') to separate syllables beggining with a vowel: gao'ang.
 -   Fuzzy pinyin settings (such as zh ⇄ j) can be changed on the [Settings](./settings) page.
+-   Tones are ignored in basic search mode.
 
 ## Advanced Search
 

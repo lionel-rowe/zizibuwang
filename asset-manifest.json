@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.js": "/static/js/main.0471660c.chunk.js",
-    "main.js.map": "/static/js/main.0471660c.chunk.js.map",
+    "main.js": "/static/js/main.1d3671eb.chunk.js",
+    "main.js.map": "/static/js/main.1d3671eb.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.fdb1e4d5.js",
     "runtime-main.js.map": "/static/js/runtime-main.fdb1e4d5.js.map",
     "static/js/2.57d30d15.chunk.js": "/static/js/2.57d30d15.chunk.js",
     "static/js/2.57d30d15.chunk.js.map": "/static/js/2.57d30d15.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.ef22804c2e47ef68f0cd903c8d1c86e3.js": "/precache-manifest.ef22804c2e47ef68f0cd903c8d1c86e3.js",
+    "precache-manifest.4338f63420dc4a06289dda9fb374a47b.js": "/precache-manifest.4338f63420dc4a06289dda9fb374a47b.js",
     "service-worker.js": "/service-worker.js",
     "static/js/2.57d30d15.chunk.js.LICENSE.txt": "/static/js/2.57d30d15.chunk.js.LICENSE.txt",
     "static/media/ZhiMangXing-Regular-subset.ttf": "/static/media/ZhiMangXing-Regular-subset.c382153c.ttf",
     "static/media/cc-cedict.tsv": "/static/media/cc-cedict.02fc0569.tsv",
-    "static/media/instructions.md": "/static/media/instructions.ef594cf0.md",
+    "static/media/instructions.md": "/static/media/instructions.a11b8b69.md",
     "static/media/pinyin-syllables.tsv": "/static/media/pinyin-syllables.42676c8b.tsv"
   },
   "entrypoints": [
     "static/js/runtime-main.fdb1e4d5.js",
     "static/js/2.57d30d15.chunk.js",
-    "static/js/main.0471660c.chunk.js"
+    "static/js/main.1d3671eb.chunk.js"
   ]
 }
