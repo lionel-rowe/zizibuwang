@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import SearchIcon from '@material-ui/icons/Search'
-import HelpIcon from '@material-ui/icons/Help'
 
 import {
     FormControl,
@@ -25,16 +24,9 @@ const useStyles = makeStyles(_theme => ({
     inputField: {
         fontFamily:
             'monospace, "Noto Sans CJK SC", "Noto Sans CJK TC", "Microsoft YaHei"',
-        paddingRight: '5.5em',
+        paddingRight: '3em',
     },
     searchButton: {
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        right: '2em',
-        marginRight: 6,
-    },
-    helpButton: {
         position: 'absolute',
         top: '50%',
         transform: 'translateY(-50%)',
@@ -46,7 +38,7 @@ const useStyles = makeStyles(_theme => ({
 const AdvancedSearch: React.FC = () => {
     const { dispatch, state } = useContext(AppContext)
 
-    const { root, label, inputField, searchButton, helpButton } = useStyles()
+    const { root, label, inputField, searchButton } = useStyles()
 
     const { pendingSearchQuery } = state
 
@@ -85,24 +77,6 @@ const AdvancedSearch: React.FC = () => {
                                     className={searchButton}
                                 >
                                     <SearchIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </InputAdornment>
-                        <InputAdornment position='end'>
-                            <Tooltip placement='left' title='Help' arrow>
-                                <IconButton
-                                    role='link'
-                                    color='secondary'
-                                    onClick={_e =>
-                                        history.push(
-                                            process.env.PUBLIC_URL +
-                                                '/instructions#advanced-search',
-                                        )
-                                    }
-                                    aria-label='Help'
-                                    className={helpButton}
-                                >
-                                    <HelpIcon />
                                 </IconButton>
                             </Tooltip>
                         </InputAdornment>

@@ -1,5 +1,11 @@
 import React, { useContext } from 'react'
-import { CircularProgress, makeStyles } from '@material-ui/core'
+import {
+    CircularProgress,
+    makeStyles,
+    Tooltip,
+    IconButton,
+} from '@material-ui/core'
+import HelpIcon from '@material-ui/icons/Help'
 
 import Pagination from '@material-ui/lab/Pagination'
 
@@ -11,6 +17,7 @@ import { useHistory } from 'react-router-dom'
 import { setTitle } from '../lib/setTitle'
 import { truncate } from '../lib/formatters'
 import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config'
+import Link from './Link'
 
 const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     results,
@@ -33,7 +40,7 @@ const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     )
 }
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles(theme => ({
     loaderOuter: {
         marginTop: '2em',
         display: 'flex',
@@ -53,6 +60,17 @@ const useStyles = makeStyles(_theme => ({
         flexGrow: 1,
         height: 0,
     },
+    helpLinkContainer: {
+        padding: '.6em',
+    },
+    helpLink: {
+        display: 'flex',
+        alignItems: 'center',
+        color: `${theme.palette.secondary.main} !important`,
+    },
+    helpIcon: {
+        paddingLeft: '.15em',
+    },
 }))
 
 const ResultsDisplay: React.FC = () => {
@@ -64,6 +82,9 @@ const ResultsDisplay: React.FC = () => {
         resultsOuter,
         resultsTotalDisplay,
         halfWidthHr,
+        helpLinkContainer,
+        helpLink,
+        helpIcon,
     } = useStyles()
 
     const history = useHistory()
@@ -91,54 +112,70 @@ const ResultsDisplay: React.FC = () => {
     }
 
     return (
-        <output id={outputId} className='output'>
-            {resultsLoading ? (
-                <div className={loaderOuter}>
-                    <CircularProgress className={loaderInner} color='primary' />
+        <>
+            {!resultsLoading && !results && searchType === 'advanced' && (
+                <div className={helpLinkContainer}>
+                    <Link
+                        to='/instructions#advanced-search'
+                        className={helpLink}
+                    >
+                        Help
+                        <HelpIcon className={helpIcon} />
+                    </Link>
                 </div>
-            ) : (
-                results && (
-                    <>
-                        <div className={resultsOuter}>
-                            <hr className={halfWidthHr} />
-                            <div className={resultsTotalDisplay}>
-                                <strong>
-                                    {results.length.toLocaleString('en-US')}
-                                </strong>{' '}
-                                <span>
-                                    {results.length === 1
-                                        ? 'result'
-                                        : 'results'}
-                                </span>
-                            </div>
-                            <hr className={halfWidthHr} />
-                        </div>
-                        {results.length > 0 && (
-                            <ResultsList page={page} results={results} />
-                        )}
-
-                        <Pagination
-                            page={page}
-                            onChange={(_e: any, n: number) => {
-                                dispatch({ page: n })
-
-                                setQueryParam(
-                                    'page',
-                                    n.toString(),
-                                    true,
-                                    history,
-                                )
-
-                                window.scrollTo(0, 0)
-                            }}
-                            count={Math.floor(
-                                results.length / RESULTS_PER_PAGE,
-                            )}
-                        />
-                    </>
-                )
             )}
-        </output>
+            <output id={outputId} className='output'>
+                {resultsLoading ? (
+                    <div className={loaderOuter}>
+                        <CircularProgress
+                            className={loaderInner}
+                            color='primary'
+                        />
+                    </div>
+                ) : (
+                    results && (
+                        <>
+                            <div className={resultsOuter}>
+                                <hr className={halfWidthHr} />
+                                <div className={resultsTotalDisplay}>
+                                    <strong>
+                                        {results.length.toLocaleString('en-US')}
+                                    </strong>{' '}
+                                    <span>
+                                        {results.length === 1
+                                            ? 'result'
+                                            : 'results'}
+                                    </span>
+                                </div>
+                                <hr className={halfWidthHr} />
+                            </div>
+                            {results.length > 0 && (
+                                <ResultsList page={page} results={results} />
+                            )}
+
+                            <Pagination
+                                page={page}
+                                onChange={(_e: any, n: number) => {
+                                    dispatch({ page: n })
+
+                                    setQueryParam(
+                                        'page',
+                                        n.toString(),
+                                        true,
+                                        history,
+                                    )
+
+                                    window.scrollTo(0, 0)
+                                }}
+                                count={Math.floor(
+                                    results.length / RESULTS_PER_PAGE,
+                                )}
+                            />
+                        </>
+                    )
+                )}
+            </output>
+        </>
     )
 }
 

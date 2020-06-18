@@ -3,8 +3,6 @@
 import React from 'react'
 import { Link as RouterLink, LinkProps } from 'react-router-dom'
 
-const BASE = process.env.PUBLIC_URL
-
 const Link: React.FC<
     LinkProps<any> & {
         absolute?: boolean
@@ -26,7 +24,7 @@ const Link: React.FC<
         }
 
         if (!absolute && to[0] === '/') {
-            to = `${BASE}${to}`
+            to = `${process.env.PUBLIC_URL}${to}`
         }
         return (
             <RouterLink ref={ref} {...props} to={to}>

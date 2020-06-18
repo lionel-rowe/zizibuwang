@@ -9,7 +9,11 @@ const _globalStyles = makeStyles(theme => ({
             src: `url(${ZhiMangXing})`,
         },
 
-        '*': { scrollbarColor: '#808080 black', scrollbarWidth: 'thin' },
+        /**
+         * Scrollbars
+         */
+
+        // chrome, safari, chromium-edge
         '::-webkit-scrollbar': { background: '#000' },
         '::-webkit-scrollbar-thumb': {
             background: 'rgba(255, 255, 255, 0.5)',
@@ -17,6 +21,13 @@ const _globalStyles = makeStyles(theme => ({
             borderStyle: 'solid',
             borderRadius: 5,
         },
+
+        // firefox
+        '*': { scrollbarColor: '#808080 black', scrollbarWidth: 'thin' },
+
+        /**
+         * General
+         */
 
         body: {
             background: '#111',
@@ -40,11 +51,6 @@ const _globalStyles = makeStyles(theme => ({
 
         hr: { opacity: '0.3' },
 
-        '.unstyled': {
-            textDecoration: 'none !important',
-            color: 'inherit !important',
-        },
-
         [theme.breakpoints.down('xs')]: {
             header: {
                 paddingBottom: '1em !important',
@@ -54,17 +60,16 @@ const _globalStyles = makeStyles(theme => ({
             },
         },
 
-        'a[href]': {
-            color: theme.palette.primary.main,
-            textDecoration: 'none',
-        },
-        'a[href]:hover': { textDecoration: 'underline' },
+        /**
+         * Code
+         */
 
         pre: {
             padding: 5,
             whiteSpace: 'pre-wrap',
             backgroundColor: 'rgba(151, 96, 128, 0.1)',
         },
+
         ':not(pre) > code': {
             padding: '1px 3px',
             color: theme.palette.secondary.main,
@@ -83,6 +88,22 @@ const _globalStyles = makeStyles(theme => ({
             lineHeight: '1',
             padding: '4px 6px',
             whiteSpace: 'nowrap',
+        },
+
+        /**
+         * Links
+         */
+
+        'a[href]': {
+            color: theme.palette.primary.main,
+            textDecoration: 'none',
+        },
+
+        'a[href]:hover': { textDecoration: 'underline' },
+
+        '.unstyled': {
+            textDecoration: 'none !important',
+            color: 'inherit !important',
         },
 
         [`a[href^="http"]:not([href^="${window.location.origin}"])::after`]: {
@@ -112,8 +133,12 @@ const _globalStyles = makeStyles(theme => ({
             },
         },
 
+        /**
+         * MUI overrides
+         */
+
         '@media (hover: none)': {
-            // overrides base MUI style
+            // MUI default degrades usability on touch devices
             '.MuiPaginationItem-page.Mui-selected:hover, .MuiPaginationItem-page.Mui-selected.Mui-focusVisible': {
                 backgroundColor: theme.palette.action.selected,
             },
