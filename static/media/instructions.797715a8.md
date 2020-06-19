@@ -6,38 +6,49 @@ Just type in your search terms, press <kbd>Enter</kbd>, and you’re good to go!
 
 When searching for pinyin:
 
--   Use “v” to represent ü: lv → lü.
 -   Use an apostrophe (') to separate syllables beggining with a vowel: gao'ang.
+-   You can use “v” to represent ü: lv → lü.
 -   Fuzzy pinyin settings (such as zh ⇄ j) can be changed on the [Settings](./settings) page.
 -   Tones are ignored in basic search mode.
 
 ## Advanced Search
 
-Create custom queries in the form `subject verb object`, with one condition per line. Conditions are `AND`ed together (results must meet all the conditions).
+With advanced search, you can create highly specific queries for a wide range of situations. Advanced search is very powerful, but requires some understanding of [regular expressions](https://www.regular-expressions.info/quickstart.html) (sometimes called “regex”) to fully take advantage of.
 
-Available values for `subject` are:
+In this mode, you can quickly find answers to questions like “Which tone is most common?” (turns out [it’s the 4th tone](./advanced?q=pinyin+contains+4)) or “What words [follow the pattern X-Y-X-Z](./advanced?q=simp+like+%5E%28.%29.%5C1.%24)?” (such as 难舍难离).
 
--   `simp` - simplified
--   `trad` - traditional
--   `pinyin` - pinyin
--   `def` - definition
+Advanced search conditions use the format `subject verb object`, with one condition per line. Results must meet all the conditions in order to match. So a query to search for words containing 3 characters where one of them is 得 might look like this:
 
-The available verbs are as follows:
+```
+   simp      length      3
+   simp      contains    得
+    ↑          ↑         ↑
+  subjects   verbs     objects
+```
 
--   `is` - full text match
--   `contains` - partial text match
+Available `subject`s are:
+
+-   `simp` - simplified Chinese word
+-   `trad` - traditional Chinese word
+-   `pinyin` - pinyin, with tone numbers and spaces between each syllable (“ni3 hao3”, not “nǐhǎo” or “nihao”). “v” can be used for ü.
+-   `def` - English definition
+
+The available `verb`s are as follows:
+
+-   `is` - exact match
+-   `contains` - partial match
 -   `like` - [regular expression](https://www.regular-expressions.info/quickstart.html) match
 -   `length` - length in characters
 -   `minlength` - minimum length in characters
 -   `maxlength` - maximum length in characters
 -   `sameas` - two properties are identical (such as `simp sameas trad`)
 
-By default, matching is case-insensitive. Case-sensitive versions of verbs are formed by prepending `s`. Negated versions are formed by prepending `!`. For example:
+By default, matching is case-insensitive. Case-sensitive versions of verbs can be formed by prepending `s`, and negated versions can be formed by prepending `!`. For example:
 
--   `simp !contains 儿` - simplified does not contain “儿”
+-   `simp !contains 儿` - simplified _does not_ contain “儿”
 -   `pinyin scontains Zhao` - pinyin contains “Zhao” (not “zhao”)
 
-Here are some example queries to get you started:
+Here are some more example queries to get you started:
 
 ## Samples
 
@@ -90,7 +101,7 @@ simp like (..)，\1
 ---
 # everything
 
-*
+simp minlength 0
 ---
 # no Chinese characters
 
