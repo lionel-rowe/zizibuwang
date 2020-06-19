@@ -1,10 +1,5 @@
 import React, { useContext } from 'react'
-import {
-    CircularProgress,
-    makeStyles,
-    Tooltip,
-    IconButton,
-} from '@material-ui/core'
+import { CircularProgress, makeStyles } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
 
 import Pagination from '@material-ui/lab/Pagination'
@@ -15,7 +10,7 @@ import { setQueryParam } from '../lib/queryParams'
 import { useHtmlId } from '../hooks/useHtmlId'
 import { useHistory } from 'react-router-dom'
 import { setTitle } from '../lib/setTitle'
-import { truncate } from '../lib/formatters'
+import { truncate, toLocaleString } from '../lib/formatters'
 import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config'
 import Link from './Link'
 
@@ -65,11 +60,12 @@ const useStyles = makeStyles(theme => ({
     },
     helpLink: {
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'ce	nter',
         color: `${theme.palette.secondary.main} !important`,
     },
     helpIcon: {
-        paddingLeft: '.15em',
+        paddingRight: '.1em',
+        fontSize: '1.1em',
     },
 }))
 
@@ -119,8 +115,8 @@ const ResultsDisplay: React.FC = () => {
                         to='/instructions#advanced-search'
                         className={helpLink}
                     >
-                        Help
                         <HelpIcon className={helpIcon} />
+                        Help
                     </Link>
                 </div>
             )}
@@ -139,7 +135,9 @@ const ResultsDisplay: React.FC = () => {
                                 <hr className={halfWidthHr} />
                                 <div className={resultsTotalDisplay}>
                                     <strong>
-                                        {results.length.toLocaleString('en-US')}
+                                        {toLocaleString('en-US')(
+                                            results.length,
+                                        )}
                                     </strong>{' '}
                                     <span>
                                         {results.length === 1

@@ -13,7 +13,6 @@ import {
 
 import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
-import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(_theme => ({
     root: { margin: '1em 0' },
@@ -41,8 +40,6 @@ const AdvancedSearch: React.FC = () => {
     const { root, label, inputField, searchButton } = useStyles()
 
     const { pendingSearchQuery } = state
-
-    const history = useHistory()
 
     const searchConditionsId = useHtmlId('search-conditions')
 

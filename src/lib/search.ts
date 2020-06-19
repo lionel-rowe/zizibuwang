@@ -4,12 +4,15 @@ import { withTimeLogging } from './logging'
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
 import { makeRegexWith, FuzzyReplacementId } from './makeRegex'
 import { isPinyinish, segmentPinyin } from './segmentPinyin'
+import { normalizeQuery } from './formatters'
 
 const _basicSearch = async (
     query: string,
     data: any /* TODO */,
     enabledFuzzyReplacementIds: FuzzyReplacementId[],
 ): Promise<{ results?: CedictEntry[] }> => {
+    query = normalizeQuery(query)
+
     let results
 
     const pinyinToPartsMapping = await pinyinToPartsMappingPromise
@@ -62,6 +65,8 @@ const _advancedSearch = async (
     query: string,
     data: any /* TODO */,
 ): Promise<{ results?: CedictEntry[] }> => {
+    query = normalizeQuery(query)
+
     let results
 
     let conditions: SearchCondition[]
@@ -71,9 +76,7 @@ const _advancedSearch = async (
         .map(el => el.trim())
         .filter(el => el && !el.startsWith('#'))
 
-    if (lines.length === 1 && lines[0] === '*') {
-        conditions = []
-    } else if (lines.length === 0) {
+    if (lines.length === 0) {
         throw new RangeError('Must have at least one condition.')
     } else {
         conditions = lines.map(toCondition)
