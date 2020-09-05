@@ -8,6 +8,7 @@ import ResultsDisplay from '../components/ResultsDisplay'
 import SearchForm from '../components/SearchForm'
 import { AppContext, loadResultsFromQuery } from '../state/Context'
 import { setTitle } from '../lib/setTitle'
+import { xor } from '../lib/utils'
 
 const SearchPage: React.FC<{
     searchType: 'basic' | 'advanced'
@@ -24,15 +25,14 @@ const SearchPage: React.FC<{
     const handleQueryParams = () => {
         try {
             if (
-                // XOR - return early if mismatch
-                Number(searchType === 'advanced') +
-                    Number(
-                        window.location.pathname
-                            .split('/')
-                            .includes('advanced'),
-                    ) ===
-                1
+                xor(
+                    searchType === 'advanced',
+                    window.location.pathname.split('/').includes('advanced'),
+                )
             ) {
+                // return early if mismatch between search type
+                // and current tab
+
                 return
             }
 

@@ -39,7 +39,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const links = [
-    { to: '/', text: 'Home', Icon: HomeIcon, match: '(/advanced)?' },
+    {
+        to: '/',
+        text: 'Home',
+        Icon: HomeIcon,
+        match: '(?:/search/(?:basic|advanced))?',
+    },
     {
         to: '/instructions',
         text: 'Instructions',

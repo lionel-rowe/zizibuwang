@@ -15,7 +15,7 @@ When searching for pinyin:
 
 With advanced search, you can create highly specific queries for a wide range of situations. Advanced search is very powerful, but requires some understanding of [regular expressions](https://www.regular-expressions.info/quickstart.html) (sometimes called “regex”) to fully take advantage of.
 
-In this mode, you can quickly find answers to questions like “Which tone is most common?” (turns out [it’s the 4th tone](./advanced?q=pinyin+contains+4)) or “What words [follow the pattern X-Y-X-Z](./advanced?q=simp+like+%5E%28.%29.%5C1.%24)?” (such as 难舍难离).
+In this mode, you can quickly find answers to questions like “Which tone is most common?” (turns out [it’s the 4th tone](./search/advanced?q=pinyin+contains+4)) or “What words [follow the pattern X-Y-X-Z](./search/advanced?q=simp+like+%5E%28.%29.%5C1.%24)?” (such as 难舍难离).
 
 Advanced search conditions use the format `subject verb object`, with one condition per line. Results must meet all the conditions in order to match. So a query to search for words containing 3 characters where one of them is 得 might look like this:
 

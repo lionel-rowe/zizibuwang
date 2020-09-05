@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
     overrides: {
         MuiTooltip: {
             tooltip: {
@@ -90,5 +90,3 @@ const theme = createMuiTheme({
         },
     },
 })
-
-export { theme }

@@ -149,10 +149,10 @@ const _globalStyles = makeStyles(theme => ({
     },
 }))
 
-const GlobalStyles: React.FC = ({ children }) => {
+const GlobalStyles: React.FC = () => {
     _globalStyles()
 
-    return <>{children}</>
+    return null
 }
 
 export default GlobalStyles

@@ -2,7 +2,7 @@ import { MAX_TIMEOUT } from '../config'
 import { withTimeLogging } from './logging'
 
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
-import { makeRegexWith, FuzzyReplacementId } from './makeRegex'
+import { makeRegexWith, FuzzyReplacementId } from './makeFuzzyPinyinRegex'
 import { isPinyinish, segmentPinyin } from './segmentPinyin'
 import { normalizeQuery } from './formatters'
 

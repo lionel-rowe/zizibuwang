@@ -10,7 +10,7 @@ import {
     makeStyles,
 } from '@material-ui/core'
 import { AppContext } from '../state/Context'
-import { fuzzyReplacements } from '../lib/makeRegex'
+import { fuzzyReplacements } from '../lib/makeFuzzyPinyinRegex'
 import { setTitle } from '../lib/setTitle'
 
 const useStyles = makeStyles(_theme => ({

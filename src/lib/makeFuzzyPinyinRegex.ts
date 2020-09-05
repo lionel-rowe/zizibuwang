@@ -111,7 +111,7 @@ const transformParts = (parts: Parts, [matchers, replacers]: MatchReplace) =>
             : replacers[idx]
     }) as Parts
 
-const spellPinyin = (parts: Parts) => {
+export const spellPinyin = (parts: Parts) => {
     const m = contextMappings.find(([k, _v]) => isMatch(k)(parts))
 
     if (!m) {
@@ -303,11 +303,3 @@ export const makeRegexWith = (
 
     return regex
 }
-
-// tests - TODO
-
-// const discrepencies = Object.entries(pinyinToPartsMapping)
-//     .map(([k, v]) => [k, spellPinyin(v)])
-//     .filter(a => a[0] !== a[1])
-
-// console.assert(!discrepencies.length)

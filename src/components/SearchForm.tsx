@@ -66,7 +66,9 @@ const SearchForm: React.FC = () => {
 
                         history.push(
                             process.env.PUBLIC_URL +
-                                (newVal === 'advanced' ? '/advanced' : '/'),
+                                (newVal === 'advanced'
+                                    ? '/search/advanced'
+                                    : '/search/basic'),
                         )
                     }
                 }}

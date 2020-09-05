@@ -3,7 +3,12 @@ import React, { useRef } from 'react'
 import SearchPage from './pages/SearchPage'
 import MainLayout from './layouts/MainLayout'
 
-import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom'
+import {
+    BrowserRouter as Router,
+    Route,
+    useHistory,
+    Redirect,
+} from 'react-router-dom'
 
 import DocsPage from './pages/DocsPage'
 import SettingsPage from './pages/SettingsPage'
@@ -41,6 +46,23 @@ const FocusOnRouteChange: React.FC = ({ children }) => {
         </div>
     )
 }
+/**
+ * Redirects preserving query string, hash, etc.
+ */
+const RedirectPathname: React.FC<{ from: string; to: string }> = ({
+    from,
+    to,
+}) => {
+    return (
+        <Route
+            exact
+            path={from}
+            render={() => (
+                <Redirect to={{ ...window.location, pathname: to }} />
+            )}
+        />
+    )
+}
 
 const AppRouter: React.FC = () => {
     return (
@@ -48,11 +70,13 @@ const AppRouter: React.FC = () => {
             <Route path='/'>
                 <MainLayout className='content-container'>
                     <RouteAnalytics />
+                    <RedirectPathname from='/' to='/search/basic' />
+                    <RedirectPathname from='/advanced' to='/search/advanced' />
                     <FocusOnRouteChange>
-                        <Route exact path='/'>
+                        <Route exact path='/search/basic'>
                             <SearchPage title='Search' searchType='basic' />
                         </Route>
-                        <Route exact path='/advanced'>
+                        <Route exact path='/search/advanced'>
                             <SearchPage
                                 title='Advanced Search'
                                 searchType='advanced'

@@ -7,7 +7,7 @@ import { setQueryParam } from '../lib/queryParams'
 import { History } from 'history'
 
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import { FuzzyReplacementId } from '../lib/makeRegex'
+import { FuzzyReplacementId } from '../lib/makeFuzzyPinyinRegex'
 
 export interface AppState {
     charSet: 'trad' | 'simp'

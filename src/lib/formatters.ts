@@ -1,3 +1,34 @@
+// import { toChineseInt, toChineseFractional, DIAN } from './chineseNumerals'
+
+const makeDecimalFormatter = (
+    intPartFormatter: NumberPartFormatter,
+    fractionalPartFormatter: NumberPartFormatter,
+    delimiter: string,
+) => (numStr: number | string) => {
+    const [int, fractional] = numStr.toString().split('.')
+
+    if ([int, fractional].some(n => n && !/^\d+$/.test(n))) {
+        return 'NaN'
+    }
+
+    try {
+        return (
+            intPartFormatter(int) +
+            (fractional ? delimiter + fractionalPartFormatter(fractional) : '')
+        )
+    } catch (_e) {
+        return 'NaN'
+    }
+}
+
+// export const toChineseNum = makeDecimalFormatter(
+//     toChineseInt,
+//     toChineseFractional,
+//     DIAN,
+// )
+
+type NumberPartFormatter = (digitString: string) => string
+
 export const normalizeQuery = (query: string) =>
     query.normalize('NFC').replace(/ü/g, 'v')
 
@@ -7,19 +38,11 @@ export const truncate = (len: number, overflowFiller = '…') => (str: string) =
         : str
 
 // WeChat compat
-export const toLocaleString = (locale: Locale) => (n: number) =>
+export const toLocaleString = (locale: Locale) => (n: number | string) =>
     localizeFns[locale](n)
 
-type FormattableInt = number & {
-    readonly int: unique symbol
-}
-
-const isFormattableInt = (n: number): n is FormattableInt => {
-    return !/\D/.test(n.toString())
-}
-
 const chunkWithDelimiter = (chunkLength: number, delimiter: string) => (
-    n: FormattableInt,
+    n: number | string,
 ) =>
     n
         .toString()
@@ -32,10 +55,16 @@ const chunkWithDelimiter = (chunkLength: number, delimiter: string) => (
             '',
         )
 
-const localizeFns: Record<string, (n: number) => string> = {
-    'en-US': (n: number) =>
-        isFormattableInt(n) ? chunkWithDelimiter(3, ',')(n) : n.toString(),
-    'zh-CN': (n: number) => n.toString(),
-}
+export type Locale = 'en-US' | 'zh-Hans' | 'zh-Hant'
+// | 'zh-Hans-u-nu-hanidec' // TODO
+// | 'zh-Hant-u-nu-hanidec' // TODO
 
-type Locale = keyof typeof localizeFns
+const stringify = (x: string | number) => x.toString()
+
+const localizeFns: Record<Locale, (n: number | string) => string> = {
+    'en-US': makeDecimalFormatter(chunkWithDelimiter(3, ','), stringify, '.'),
+    'zh-Hans': stringify,
+    'zh-Hant': stringify,
+    // 'zh-Hans-u-nu-hanidec': toChineseNum, // TODO
+    // 'zh-Hant-u-nu-hanidec': toChineseNum, // TODO
+}

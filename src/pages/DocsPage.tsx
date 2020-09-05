@@ -96,7 +96,9 @@ const DocsPage: React.FC<{ title: string }> = ({ title }) => {
 
                     return (
                         <li key={title}>
-                            <Link to={`/advanced/${queryString}`}>{title}</Link>
+                            <Link to={`/search/advanced/${queryString}`}>
+                                {title}
+                            </Link>
                         </li>
                     )
                 })}
