@@ -2,66 +2,66 @@
 
 const methods = {
     is: ({ prop, arg }) => {
-        return entry => entry[prop].toLowerCase() === arg.toLowerCase()
+        return (entry) => entry[prop].toLowerCase() === arg.toLowerCase()
     },
     '!is': ({ prop, arg }) => {
-        return entry => entry[prop].toLowerCase() !== arg.toLowerCase()
+        return (entry) => entry[prop].toLowerCase() !== arg.toLowerCase()
     },
     sis: ({ prop, arg }) => {
-        return entry => entry[prop] === arg
+        return (entry) => entry[prop] === arg
     },
     '!sis': ({ prop, arg }) => {
-        return entry => entry[prop] !== arg
+        return (entry) => entry[prop] !== arg
     },
     contains: ({ prop, arg }) => {
-        return entry => entry[prop].toLowerCase().includes(arg.toLowerCase())
+        return (entry) => entry[prop].toLowerCase().includes(arg.toLowerCase())
     },
     '!contains': ({ prop, arg }) => {
-        return entry => !entry[prop.toLowerCase()].includes(arg.toLowerCase())
+        return (entry) => !entry[prop.toLowerCase()].includes(arg.toLowerCase())
     },
     scontains: ({ prop, arg }) => {
-        return entry => entry[prop].includes(arg)
+        return (entry) => entry[prop].includes(arg)
     },
     '!scontains': ({ prop, arg }) => {
-        return entry => !entry[prop].includes(arg)
+        return (entry) => !entry[prop].includes(arg)
     },
     like: ({ prop, arg }) => {
         const regex = new RegExp(arg, 'iu')
 
-        return entry => regex.test(entry[prop])
+        return (entry) => regex.test(entry[prop])
     },
     '!like': ({ prop, arg }) => {
         const regex = new RegExp(arg, 'iu')
 
-        return entry => !regex.test(entry[prop])
+        return (entry) => !regex.test(entry[prop])
     },
     slike: ({ prop, arg }) => {
         const regex = new RegExp(arg, 'u')
 
-        return entry => regex.test(entry[prop])
+        return (entry) => regex.test(entry[prop])
     },
     '!slike': ({ prop, arg }) => {
         const regex = new RegExp(arg, 'u')
 
-        return entry => !regex.test(entry[prop])
+        return (entry) => !regex.test(entry[prop])
     },
     length: ({ prop, arg }) => {
         const len = +arg
 
-        return entry => [...entry[prop]].length === len
+        return (entry) => [...entry[prop]].length === len
     },
     minlength: ({ prop, arg }) => {
         const len = +arg
 
-        return entry => [...entry[prop]].length >= len
+        return (entry) => [...entry[prop]].length >= len
     },
     maxlength: ({ prop, arg }) => {
         const len = +arg
 
-        return entry => [...entry[prop]].length <= len
+        return (entry) => [...entry[prop]].length <= len
     },
     sameas: ({ prop: prop1, arg: prop2 }) => {
-        return entry => entry[prop1] === entry[prop2]
+        return (entry) => entry[prop1] === entry[prop2]
     },
 }
 
@@ -112,7 +112,7 @@ self.onmessage = ({ data }) => {
                     return methods[method]({ prop, arg })
                 })
 
-                const testSuite = entry => tests.every(test => test(entry))
+                const testSuite = (entry) => tests.every((test) => test(entry))
 
                 const results = entries.filter(testSuite)
 

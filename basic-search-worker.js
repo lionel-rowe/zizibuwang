@@ -26,7 +26,7 @@ self.onmessage = ({ data }) => {
 
                 const _results = []
 
-                entries.forEach(entry => {
+                entries.forEach((entry) => {
                     let relevance = 0
 
                     if (pinyinRegex && pinyinRegex.test(entry.pinyin)) {
@@ -43,14 +43,16 @@ self.onmessage = ({ data }) => {
                         }
                     }
 
-                    otherPropNames.forEach(prop => {
+                    otherPropNames.forEach((prop) => {
                         const normalized = entry[prop]
                             .toLowerCase()
                             .split(splitter)
                             .filter(Boolean)
 
                         if (
-                            queryWords.every(word => normalized.includes(word))
+                            queryWords.every((word) =>
+                                normalized.includes(word),
+                            )
                         ) {
                             relevance += 2
 
@@ -75,7 +77,7 @@ self.onmessage = ({ data }) => {
 
                 const results = _results
                     .sort((a, b) => b.relevance - a.relevance)
-                    .map(x => x.entry)
+                    .map((x) => x.entry)
 
                 self.postMessage({ type: 'SEARCH_RESULTS', results })
 
