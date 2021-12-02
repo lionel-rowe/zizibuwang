@@ -1,10 +1,10 @@
-const _encodeUtf8 = (e => e.encode.bind(e))(new TextEncoder())
-const _decodeUtf8 = (d => d.decode.bind(d))(new TextDecoder())
+const _encodeUtf8 = ((e) => e.encode.bind(e))(new TextEncoder())
+const _decodeUtf8 = ((d) => d.decode.bind(d))(new TextDecoder())
 
 export const decodeB64 = (b64: string) => {
     const binStr = atob(b64)
 
-    const binArr = binStr.split('').map(char => char.charCodeAt(0))
+    const binArr = binStr.split('').map((char) => char.charCodeAt(0))
 
     const bin = new Uint8Array(binArr)
 
@@ -15,7 +15,7 @@ export const encodeB64 = (str: string) => {
     const bin = _encodeUtf8(str)
 
     const binStr = Array.from(bin)
-        .map(n => String.fromCharCode(n))
+        .map((n) => String.fromCharCode(n))
         .join('')
 
     return btoa(binStr)

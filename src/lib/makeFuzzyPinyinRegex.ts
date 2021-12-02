@@ -169,7 +169,7 @@ export const fuzzyReplacements: {
             ],
             [
                 [/^[zcs]h$/, __, __],
-                [m => m[0], $0, $0],
+                [(m) => m[0], $0, $0],
             ],
         ],
     },
@@ -219,7 +219,7 @@ export const fuzzyReplacements: {
             ],
             [
                 [__, __, /^.+ng$/],
-                [$0, $0, m => m.slice(0, -1)],
+                [$0, $0, (m) => m.slice(0, -1)],
             ],
         ],
     },
@@ -246,12 +246,12 @@ const makeAlts = (
 
     alts.push(parts)
 
-    const enabledReplacements = fuzzyReplacements.filter(r =>
+    const enabledReplacements = fuzzyReplacements.filter((r) =>
         enabledFuzzyReplacementIds.includes(r.id),
     )
 
-    enabledReplacements.forEach(r => {
-        r.alts.forEach(a => {
+    enabledReplacements.forEach((r) => {
+        r.alts.forEach((a) => {
             if (isMatch(a[0])(parts)) {
                 alts.push(transformParts(parts, a))
             }
@@ -261,45 +261,53 @@ const makeAlts = (
     return alts
 }
 
-const spellValidAltsWith = (
-    pinyinToPartsMapping: Record<string, Parts>,
-    enabledFuzzyReplacementIds: FuzzyReplacementId[],
-) => (py: string) => {
-    const alts = makeAlts(py, pinyinToPartsMapping, enabledFuzzyReplacementIds)
+const spellValidAltsWith =
+    (
+        pinyinToPartsMapping: Record<string, Parts>,
+        enabledFuzzyReplacementIds: FuzzyReplacementId[],
+    ) =>
+    (py: string) => {
+        const alts = makeAlts(
+            py,
+            pinyinToPartsMapping,
+            enabledFuzzyReplacementIds,
+        )
 
-    if (!alts) return []
+        if (!alts) return []
 
-    return (orderedPermute(alts) as Parts[])
-        .map(spellPinyin)
-        .filter(py => pinyinToPartsMapping[py])
-        .filter((py, idx, arr) => arr.indexOf(py) === idx)
-}
+        return (orderedPermute(alts) as Parts[])
+            .map(spellPinyin)
+            .filter((py) => pinyinToPartsMapping[py])
+            .filter((py, idx, arr) => arr.indexOf(py) === idx)
+    }
 
-export const makeRegexWith = (
-    pinyinToPartsMapping: Record<string, Parts>,
-    enabledFuzzyReplacementIds: FuzzyReplacementId[],
-) => (py: string) => {
-    const spellValidAlts = spellValidAltsWith(
-        pinyinToPartsMapping,
-        enabledFuzzyReplacementIds,
-    )
+export const makeRegexWith =
+    (
+        pinyinToPartsMapping: Record<string, Parts>,
+        enabledFuzzyReplacementIds: FuzzyReplacementId[],
+    ) =>
+    (py: string) => {
+        const spellValidAlts = spellValidAltsWith(
+            pinyinToPartsMapping,
+            enabledFuzzyReplacementIds,
+        )
 
-    const segments = (segmentPinyin(true)(py.toLowerCase()) || [])
-        .filter(Boolean)
-        .map(x => {
-            const alts = spellValidAlts(x)
-            return alts.length ? `(?:${alts.join('|')})` : null
-        })
-        .filter(Boolean)
+        const segments = (segmentPinyin(true)(py.toLowerCase()) || [])
+            .filter(Boolean)
+            .map((x) => {
+                const alts = spellValidAlts(x)
+                return alts.length ? `(?:${alts.join('|')})` : null
+            })
+            .filter(Boolean)
 
-    const regex = segments.length
-        ? new RegExp(
-              `^(?:[^a-z]|\\b)${segments.join('[^a-z]+')}(?:\\b|[^a-z])$`,
-              'i',
-          )
-        : null
+        const regex = segments.length
+            ? new RegExp(
+                  `^(?:[^a-z]|\\b)${segments.join('[^a-z]+')}(?:\\b|[^a-z])$`,
+                  'i',
+              )
+            : null
 
-    process.env.NODE_ENV === 'development' && console.info(regex)
+        process.env.NODE_ENV === 'development' && console.info(regex)
 
-    return regex
-}
+        return regex
+    }

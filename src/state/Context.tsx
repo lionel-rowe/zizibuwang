@@ -112,14 +112,14 @@ const loadResultsFromQuery = async (
             return
         }
 
-        fireModal({ text: e.message, icon: ErrorOutlineIcon })
+        fireModal({ text: (e as Error).message, icon: ErrorOutlineIcon })
 
         return dispatch({ results: null, resultsLoading: false })
     }
 }
 
 const AppContext = React.createContext(
-    (initialState as any) as {
+    initialState as any as {
         state: AppState
         dispatch: React.Dispatch<Partial<AppState>>
     },

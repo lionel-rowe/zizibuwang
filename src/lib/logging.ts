@@ -19,7 +19,7 @@ const withTimeLogging = <T>(fn: T & Function): T => {
         return fn
     }
 
-    return (((...args: any) => {
+    return ((...args: any) => {
         const idx = _idx++
         const name = fn.name || '[anonymous]'
         const startTime = getTimeNowMs()
@@ -44,12 +44,12 @@ const withTimeLogging = <T>(fn: T & Function): T => {
 
             if (val instanceof Promise) {
                 return val
-                    .catch(e => {
+                    .catch((e) => {
                         logTimeElapsed(Synchronicity.Async, Result.Error)
 
                         throw e
                     })
-                    .then(val2 => {
+                    .then((val2) => {
                         logTimeElapsed(Synchronicity.Async, Result.Success)
 
                         return val2
@@ -64,7 +64,7 @@ const withTimeLogging = <T>(fn: T & Function): T => {
 
             throw e
         }
-    }) as any) as T
+    }) as any as T
 }
 
 if (process.env.NODE_ENV === 'development') {

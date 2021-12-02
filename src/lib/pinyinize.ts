@@ -50,7 +50,7 @@ const withToneMark = (syl: string) => {
 
     return syl
         .slice(0, -1)
-        .replace(/(?:a|e|o(?=u)|[iouüv](?![aeiouüv]))/i, m =>
+        .replace(/(?:a|e|o(?=u)|[iouüv](?![aeiouüv]))/i, (m) =>
             addToneMark(m as vowel | 'ü', tone),
         )
 }
@@ -60,7 +60,7 @@ const prettifySyl = (syl: string) => {
 }
 
 const prettify = (word: string) =>
-    word.replace(/[a-zü:]+\d?/gi, s => prettifySyl(s))
+    word.replace(/[a-zü:]+\d?/gi, (s) => prettifySyl(s))
 
 export { prettify }
 

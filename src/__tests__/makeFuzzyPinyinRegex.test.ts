@@ -23,7 +23,7 @@ describe('pinyinToPartsMapping', () => {
     it('has no discrepencies', () => {
         const discrepencies = Object.entries(pinyinToPartsMapping)
             .map(([k, v]) => [k, spellPinyin(v)])
-            .filter(a => a[0] !== a[1])
+            .filter((a) => a[0] !== a[1])
 
         expect(discrepencies.length).toBe(0)
     })

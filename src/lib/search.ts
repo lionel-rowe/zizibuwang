@@ -73,8 +73,8 @@ const _advancedSearch = async (
 
     const lines = query
         .split(/\r?\n/)
-        .map(el => el.trim())
-        .filter(el => el && !el.startsWith('#'))
+        .map((el) => el.trim())
+        .filter((el) => el && !el.startsWith('#'))
 
     if (lines.length === 0) {
         throw new RangeError('Must have at least one condition.')
@@ -124,7 +124,7 @@ function toCondition(clause: string): SearchCondition {
         )
     }
 
-    return { ...((matches.groups as any) as SearchCondition) }
+    return { ...(matches.groups as any as SearchCondition) }
 }
 
 const [basicSearch, advancedSearch] = [_basicSearch, _advancedSearch].map(

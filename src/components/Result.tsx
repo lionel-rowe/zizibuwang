@@ -3,7 +3,7 @@ import { prettify } from '../lib/pinyinize'
 import { makeStyles } from '@material-ui/core/styles'
 import { AppContext } from '../state/Context'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: { marginBottom: '2em' },
     charGloss: { display: 'flex', flexWrap: 'wrap' },
     rubyRoot: { fontSize: '2.5em', paddingRight: '0.2em' },
@@ -31,7 +31,7 @@ const Result: React.FC<{
 
     const pinyinSyls: (string | null)[] = pinyin
         .split(' ')
-        .map(py => prettify(py))
+        .map((py) => prettify(py))
 
     let renderRuby = false
 

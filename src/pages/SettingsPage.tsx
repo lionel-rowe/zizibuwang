@@ -13,7 +13,7 @@ import { AppContext } from '../state/Context'
 import { fuzzyReplacements } from '../lib/makeFuzzyPinyinRegex'
 import { setTitle } from '../lib/setTitle'
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles((_theme) => ({
     formGroup: { padding: '1em 0' },
 }))
 
@@ -29,7 +29,7 @@ const SettingsPage: React.FC<{ title: string }> = ({ title }) => {
     return (
         <>
             <h1>Settings</h1>
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={(e) => e.preventDefault()}>
                 <FormGroup className={classes.formGroup}>
                     <FormControl component='fieldset'>
                         <FormLabel component='legend'>
@@ -39,7 +39,7 @@ const SettingsPage: React.FC<{ title: string }> = ({ title }) => {
                             aria-label='Default character set'
                             name='character-set'
                             value={charSet}
-                            onChange={e => {
+                            onChange={(e) => {
                                 const charSet = e.currentTarget.value as
                                     | 'trad'
                                     | 'simp'
@@ -78,7 +78,7 @@ const SettingsPage: React.FC<{ title: string }> = ({ title }) => {
                                                         id
                                                     ] || false
                                                 }
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     enabledFuzzyReplacementIds[
                                                         id
                                                     ] = e.currentTarget.checked

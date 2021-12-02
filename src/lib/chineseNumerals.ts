@@ -80,10 +80,11 @@ export const toChineseInt = (intStr: string) =>
                       )
                   }
 
-                  const useLiang = (p => {
+                  const useLiang = ((p) => {
                       if (!p) return false
 
-                      if ([SHI, BAI].some(ch => p.startsWith(ch))) return false
+                      if ([SHI, BAI].some((ch) => p.startsWith(ch)))
+                          return false
 
                       const ult = outStr.slice(-1)[0]
 
@@ -108,7 +109,7 @@ export const toChineseInt = (intStr: string) =>
                   }
 
                   if (
-                      !places.map(p => p[1]).includes(outStr.slice(-1)[0]) &&
+                      !places.map((p) => p[1]).includes(outStr.slice(-1)[0]) &&
                       place[1] !== (places[placeIdx - 1] || [null, null])[1]
                   ) {
                       outStr += place[1]
@@ -122,5 +123,5 @@ export const toChineseInt = (intStr: string) =>
 export const toChineseFractional = (fractional: string) =>
     fractional
         .split('')
-        .map(d => units[+d])
+        .map((d) => units[+d])
         .join('')

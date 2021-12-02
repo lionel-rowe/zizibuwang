@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Link from '../components/Link'
 import { AppContext } from '../state/Context'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         color: 'ivory',
         textAlign: 'center',

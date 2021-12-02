@@ -14,7 +14,7 @@ import {
 import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles((_theme) => ({
     root: { margin: '1em 0' },
     inputField: {
         paddingRight: '3em',
@@ -43,7 +43,7 @@ const BasicSearch: React.FC = () => {
             <FilledInput
                 id={searchConditionsId}
                 value={pendingSearchQuery}
-                onChange={e => {
+                onChange={(e) => {
                     dispatch({
                         pendingSearchQuery: e.currentTarget.value,
                     })

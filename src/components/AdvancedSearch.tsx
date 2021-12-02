@@ -14,7 +14,7 @@ import {
 import { useHtmlId } from '../hooks/useHtmlId'
 import { AppContext } from '../state/Context'
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles((_theme) => ({
     root: { margin: '1em 0' },
     label: {
         fontFamily:
@@ -52,7 +52,7 @@ const AdvancedSearch: React.FC = () => {
                 id={searchConditionsId}
                 className={inputField}
                 value={pendingSearchQuery}
-                onChange={e => {
+                onChange={(e) => {
                     dispatch({
                         pendingSearchQuery: e.currentTarget.value,
                     })

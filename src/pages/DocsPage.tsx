@@ -21,16 +21,16 @@ const contentPromise = (async () => {
         .replace(/^```.*/gm, '')
         .trim()
         .split(/\r?\n---\r?\n/)
-        .map(el => el.trim())
-        .map(el => {
+        .map((el) => el.trim())
+        .map((el) => {
             const lines = el.split('\n')
             const title = lines
-                .filter(l => l.startsWith('#'))
-                .map(l => l.replace(/^#\s*/, ''))
+                .filter((l) => l.startsWith('#'))
+                .map((l) => l.replace(/^#\s*/, ''))
                 .join('\n')
 
             const query = lines
-                .filter(l => !l.startsWith('#') && !/^\s*$/.test(l))
+                .filter((l) => !l.startsWith('#') && !/^\s*$/.test(l))
                 .join('\n')
 
             return { title, query }
@@ -67,7 +67,7 @@ const DocsPage: React.FC<{ title: string }> = ({ title }) => {
         <>
             <div
                 dangerouslySetInnerHTML={{ __html: instructions }}
-                onClick={e => {
+                onClick={(e) => {
                     const target = e.target as HTMLAnchorElement
                     const href = target.getAttribute('href')
 

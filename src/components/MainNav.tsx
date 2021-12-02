@@ -10,7 +10,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { AppContext } from '../state/Context'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         zIndex: 1,
         position: 'fixed',

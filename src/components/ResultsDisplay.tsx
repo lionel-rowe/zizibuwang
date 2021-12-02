@@ -35,7 +35,7 @@ const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
     )
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     loaderOuter: {
         marginTop: '2em',
         display: 'flex',

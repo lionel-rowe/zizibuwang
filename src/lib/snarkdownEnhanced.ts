@@ -18,8 +18,8 @@ export const snarkdownEnhanced = (md: string) => {
                       .join('\n')}</pre></code>`
                 : m
                       .split(/(?:\r?\n){2,}/)
-                      .map(l =>
-                          [' ', '\t', '#', '-', '*', '`', '~'].some(ch =>
+                      .map((l) =>
+                          [' ', '\t', '#', '-', '*', '`', '~'].some((ch) =>
                               l.startsWith(ch),
                           )
                               ? snarkdown(l)
@@ -35,7 +35,7 @@ export const snarkdownEnhanced = (md: string) => {
 
     const headings = template.content.querySelectorAll('h2, h3, h4, h5, h6')
 
-    headings.forEach(heading => {
+    headings.forEach((heading) => {
         if (heading.textContent) {
             heading.id = slugify(heading.textContent)
             heading.classList.add('anchored')

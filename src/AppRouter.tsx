@@ -15,7 +15,7 @@ import SettingsPage from './pages/SettingsPage'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import RouteAnalytics from './components/RouteAnalytics'
 
-const useStyles = makeStyles(_theme => ({
+const useStyles = makeStyles((_theme) => ({
     focusOnRouteChange: { outline: 'none' },
 }))
 

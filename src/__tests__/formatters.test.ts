@@ -36,7 +36,7 @@ const testData = [
 describe('toLocaleString', () => {
     it('works for en-US', () => {
         testData.every(
-            d => d.toLocaleString('en-US') === toLocaleString('en-US')(d),
+            (d) => d.toLocaleString('en-US') === toLocaleString('en-US')(d),
         )
     })
 })

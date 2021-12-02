@@ -1,6 +1,6 @@
 import { parseTsv, rowHeadingsToProps } from '../lib/parse-tsv'
 import { DB_NAME, CEDICT_TABLE_NAME, DB_VERSION } from '../config'
-import { openDB, deleteDB, IDBPDatabase } from 'idb'
+import { openDB, IDBPDatabase } from 'idb'
 
 import cedictUrl from '../assets/cc-cedict.tsv'
 import { NoDataError } from '../lib/errors'
@@ -11,7 +11,7 @@ import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 const DB_REQUIRES_SEEDING = 'dbRequiresSeeding'
 const CEDICT_TSV_ETAG = 'cedictTsvEtag'
 
-const seedDb = async (db: IDBPDatabase) => {
+export const seedDb = async (db: IDBPDatabase) => {
     const connection = (navigator as any).connection || {}
 
     if (
@@ -33,8 +33,7 @@ const seedDb = async (db: IDBPDatabase) => {
             showCancelButton: true,
             confirmButtonText: 'Download',
             title,
-            text:
-                'This is required the first time you run this app. Consider switching to a Wi-Fi connection.',
+            text: 'This is required the first time you run this app. Consider switching to a Wi-Fi connection.',
             icon: HelpOutlineIcon,
         })
 
@@ -62,7 +61,7 @@ const seedDb = async (db: IDBPDatabase) => {
     return
 }
 
-const db = new Promise<IDBPDatabase>(async (resolve, reject) => {
+export const db = new Promise<IDBPDatabase>(async (resolve, reject) => {
     const _db = await openDB(DB_NAME, DB_VERSION, {
         upgrade(db, oldVersion, _newVersion, transaction) {
             if (!oldVersion) {
@@ -99,7 +98,7 @@ const db = new Promise<IDBPDatabase>(async (resolve, reject) => {
     resolve(_db)
 })
 
-const Cedict = {
+export const Cedict = {
     all: new Promise<CedictEntry[]>(async (resolve, reject) => {
         try {
             const _db = await db
@@ -116,18 +115,6 @@ const Cedict = {
             reject(e)
         }
     }),
-}
-
-if (process.env.NODE_ENV === 'development') {
-    // debug
-
-    const _window = window as any
-
-    _window.deleteDB = deleteDB
-    _window.openDB = openDB
-    _window.seedDb = seedDb
-    _window.Cedict = Cedict
-    _window.db = db
 }
 
 export default Cedict

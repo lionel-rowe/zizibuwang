@@ -2,7 +2,7 @@ import React from 'react'
 import ZhiMangXing from '../assets/ZhiMangXing-Regular-subset.ttf'
 import { makeStyles } from '@material-ui/core'
 
-const _globalStyles = makeStyles(theme => ({
+const useGlobalStyles = makeStyles((theme) => ({
     '@global': {
         '@font-face': {
             fontFamily: 'ZhiMangXing',
@@ -108,7 +108,7 @@ const _globalStyles = makeStyles(theme => ({
 
         [`a[href^="http"]:not([href^="${window.location.origin}"])::after`]: {
             content: '""',
-            backgroundImage: (color =>
+            backgroundImage: ((color) =>
                 `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="100px" width="100px" fill="${color}" viewBox="0 0 82 81" version="1.1" x="0px" y="0px"><title>Group</title><desc>Created with Sketch.</desc><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(0.000000, -17.000000)"><path d="M65.0787075,33.0882353 L33.4558824,64.3382354" stroke="${color}" stroke-width="15" stroke-linecap="square"></path><polygon fill="${color}" transform="translate(72.134903, 29.456845) rotate(53.000000) translate(-72.134903, -29.456845) " points="68.5556866 14.7245467 97.9172862 36.850099 46.3525203 44.1891435"></polygon><polygon fill="${color}" points="48.5294118 28.6764706 0 28.6764706 0 97.7941176 69.1176471 97.7941176 69.1176471 50 58.0882353 61.0294118 58.0882353 86.7647059 11.0294118 86.7647059 11.0294118 39.7058824 37.5 39.7058824"></polygon></g></g></svg>')`)(
                 encodeURIComponent(theme.palette.primary.main),
             ),
@@ -142,15 +142,16 @@ const _globalStyles = makeStyles(theme => ({
 
         '@media (hover: none)': {
             // MUI default degrades usability on touch devices
-            '.MuiPaginationItem-page.Mui-selected:hover, .MuiPaginationItem-page.Mui-selected.Mui-focusVisible': {
-                backgroundColor: theme.palette.action.selected,
-            },
+            '.MuiPaginationItem-page.Mui-selected:hover, .MuiPaginationItem-page.Mui-selected.Mui-focusVisible':
+                {
+                    backgroundColor: theme.palette.action.selected,
+                },
         },
     },
 }))
 
 const GlobalStyles: React.FC = () => {
-    _globalStyles()
+    useGlobalStyles()
 
     return null
 }

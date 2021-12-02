@@ -1,4 +1,4 @@
-export { /* parsePinyin */ }
+export /* parsePinyin */ {}
 
 const _initials = `
 j|z|zh     # ji-, zero-final
@@ -23,7 +23,6 @@ in|ing     # y-
 ian|iang   # y-*
 uan|uang   # w-*
 `
-
 
 // const parsePinyin = (py: string) => {
 //     const match = py.match(

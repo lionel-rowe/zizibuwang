@@ -4,7 +4,7 @@ import pinyinSyllablesUrl from '../assets/pinyin-syllables.tsv'
 import { Parts } from './makeFuzzyPinyinRegex'
 
 export const parsePinyinTsv = (txt: string) => {
-    const syls = txt.split('\n').map(x => x.split('\t'))
+    const syls = txt.split('\n').map((x) => x.split('\t'))
 
     const [initials, ...rows] = syls
 
@@ -28,7 +28,7 @@ export const parsePinyinTsv = (txt: string) => {
 }
 
 export const pinyinToPartsMappingPromise = new Promise<Record<string, Parts>>(
-    async resolve => {
+    async (resolve) => {
         const res = await fetch(pinyinSyllablesUrl)
         const txt = await res.text()
 
