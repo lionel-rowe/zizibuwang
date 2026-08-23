@@ -5,8 +5,8 @@
 export {}
 
 it('TODO - needs mocking of browser globals', () => {
-    // TODO - needs mocking of browser globals
-    expect(true).toBe(true)
+	// TODO - needs mocking of browser globals
+	expect(true).toBe(true)
 })
 
 // it('app renders without crashing', () => {

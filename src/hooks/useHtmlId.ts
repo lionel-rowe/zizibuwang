@@ -3,9 +3,9 @@ import { useState } from 'react'
 let idx = 0
 
 const useHtmlId = (prefix = 'id') => {
-    const [htmlId /* , setHtmlId */] = useState(`${prefix}-${++idx}`)
+	const [htmlId /* , setHtmlId */] = useState(`${prefix}-${++idx}`)
 
-    return htmlId
+	return htmlId
 }
 
 export { useHtmlId }

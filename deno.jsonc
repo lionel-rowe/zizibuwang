@@ -1,0 +1,36 @@
+{
+	"lock": false,
+	"exports": {},
+	"tasks": {
+	},
+	"imports": {
+	},
+	"fmt": {
+		"semiColons": false,
+		"useTabs": true,
+		"lineWidth": 120,
+		"indentWidth": 4,
+		"singleQuote": true,
+		"proseWrap": "preserve",
+		"exclude": []
+	},
+	"compilerOptions": {
+		"strict": true,
+		"useUnknownInCatchVariables": true,
+		"lib": [
+			"deno.window",
+			"deno.unstable",
+			"dom",
+			"dom.iterable"
+		]
+	},
+	"lint": {
+		"exclude": [],
+		"rules": {
+			"tags": ["recommended"],
+			"exclude": ["no-window", "no-window-prefix"],
+			"include": ["no-console"]
+		}
+	},
+	"exclude": []
+}

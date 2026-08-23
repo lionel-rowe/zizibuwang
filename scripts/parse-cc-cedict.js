@@ -4,49 +4,46 @@ const path = require('path')
 const matcher = /^(?<trad>.+) (?<simp>.+) \[(?<pinyin>.+)\] \/(?<def>.*)\/$/
 
 const txt = fs.readFileSync(
-    path.join(__dirname, '../data/cedict_ts.u8'),
-    'utf-8',
+	path.join(__dirname, '../data/cedict_ts.u8'),
+	'utf-8',
 )
 
 const parseCcCedict = () => {
-    const lines = txt
-        .split(/\r?\n/)
-        .filter((line) => line && line.trim() && !line.trim().startsWith('#'))
-        .map((line) => line.trim())
+	const lines = txt
+		.split(/\r?\n/)
+		.filter((line) => line && line.trim() && !line.trim().startsWith('#'))
+		.map((line) => line.trim())
 
-    const words = []
+	const words = []
 
-    lines.forEach((line) => {
-        const matches = line.match(matcher)
+	lines.forEach((line) => {
+		const matches = line.match(matcher)
 
-        if (!matches) {
-            console.error(line)
-        } else {
-            const entry = { ...matches.groups }
+		if (!matches) {
+			console.error(line)
+		} else {
+			const entry = { ...matches.groups }
 
-            if (entry.pinyin.includes('u:')) {
-                entry.pinyin = entry.pinyin.replace(/u:/g, 'v')
-            }
+			if (entry.pinyin.includes('u:')) {
+				entry.pinyin = entry.pinyin.replace(/u:/g, 'v')
+			}
 
-            if (entry.def.includes('[')) {
-                entry.def = entry.def.replace(/\[[^\]]*u:[^\]]*\]/g, (m) =>
-                    m.replace(/u:/g, 'v'),
-                )
-            }
+			if (entry.def.includes('[')) {
+				entry.def = entry.def.replace(/\[[^\]]*u:[^\]]*\]/g, (m) => m.replace(/u:/g, 'v'))
+			}
 
-            words.push(entry)
-        }
-    })
+			words.push(entry)
+		}
+	})
 
-    return words
-        .sort((a, b) => {
-            return a.pinyin.localeCompare(b.pinyin)
-        })
-        .map(
-            (entry) =>
-                `${entry.trad}\t${entry.simp}\t${entry.pinyin}\t${entry.def}`,
-        )
-        .join('\n')
+	return words
+		.sort((a, b) => {
+			return a.pinyin.localeCompare(b.pinyin)
+		})
+		.map(
+			(entry) => `${entry.trad}\t${entry.simp}\t${entry.pinyin}\t${entry.def}`,
+		)
+		.join('\n')
 }
 
 const header = ['trad', 'simp', 'pinyin', 'def'].join('\t')

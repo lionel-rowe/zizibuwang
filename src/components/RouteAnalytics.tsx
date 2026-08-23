@@ -3,14 +3,14 @@ import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
 interface StaticAnalyticsProps {
-    _version: '1'
-    correlationId: string
+	_version: '1'
+	correlationId: string
 }
 
 type EventType = 'route' | 'load' | 'unload'
 
 type Analytics = StaticAnalyticsProps & {
-    event: EventType
+	event: EventType
 }
 
 const analyticsUrl = `${process.env.REACT_APP__API_URL}/analytics`
@@ -21,60 +21,60 @@ sessionStorage.setItem('correlationId', correlationId)
 const _version = '1'
 
 const staticProps: StaticAnalyticsProps = {
-    _version,
-    correlationId,
+	_version,
+	correlationId,
 }
 
 const createLog = (event: EventType) => {
-    const msg: Analytics = { ...staticProps, event }
+	const msg: Analytics = { ...staticProps, event }
 
-    return JSON.stringify(msg)
+	return JSON.stringify(msg)
 }
 
 const onUnload = (_e: Event) => {
-    if (process.env.NODE_ENV !== 'production') return
+	if (process.env.NODE_ENV !== 'production') return
 
-    navigator.sendBeacon(analyticsUrl, createLog('unload'))
+	navigator.sendBeacon(analyticsUrl, createLog('unload'))
 }
 
 let prevPathAndQuery: string | null = null
 
 const RouteAnalytics: React.FC = () => {
-    const history = useHistory()
+	const history = useHistory()
 
-    useEffect(() => {
-        if (process.env.NODE_ENV !== 'production') return
+	useEffect(() => {
+		if (process.env.NODE_ENV !== 'production') return
 
-        fetch(analyticsUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: createLog('load'),
-        })
+		fetch(analyticsUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: createLog('load'),
+		})
 
-        window.onbeforeunload = onUnload
+		window.onbeforeunload = onUnload
 
-        return () => {
-            window.removeEventListener('beforeunload', onUnload)
-        }
-    }, [])
+		return () => {
+			window.removeEventListener('beforeunload', onUnload)
+		}
+	}, [])
 
-    history.listen(({ pathname, search }) => {
-        if (process.env.NODE_ENV !== 'production') return
+	history.listen(({ pathname, search }) => {
+		if (process.env.NODE_ENV !== 'production') return
 
-        const thisPathAndQuery = pathname + search
+		const thisPathAndQuery = pathname + search
 
-        if (thisPathAndQuery === prevPathAndQuery) return
+		if (thisPathAndQuery === prevPathAndQuery) return
 
-        prevPathAndQuery = thisPathAndQuery
+		prevPathAndQuery = thisPathAndQuery
 
-        fetch(analyticsUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: createLog('route'),
-        })
-    })
+		fetch(analyticsUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: createLog('route'),
+		})
+	})
 
-    return null
+	return null
 }
 
 export default RouteAnalytics

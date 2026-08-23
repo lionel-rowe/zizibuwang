@@ -18,13 +18,13 @@ const pySylRegex = new RegExp(`${pySylRegexFragment}`, 'gi')
 export const stripTones = (py: string) => py.replace(/[1-5]$/, '')
 
 export const segmentPinyin = (removeTones: boolean) => (py: string) => {
-    const m = py.match(pySylRegex)
+	const m = py.match(pySylRegex)
 
-    return m ? [...m].map((py) => (removeTones ? stripTones(py) : py)) : null
+	return m ? [...m].map((py) => (removeTones ? stripTones(py) : py)) : null
 }
 
 export const isPinyinish = (str: string) =>
-    str
-        .split(/[^a-z0-9]+/i)
-        .filter(Boolean)
-        .every(segmentPinyin(false))
+	str
+		.split(/[^a-z0-9]+/i)
+		.filter(Boolean)
+		.every(segmentPinyin(false))

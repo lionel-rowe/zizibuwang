@@ -15,24 +15,24 @@ import AppRouter from './AppRouter'
 import GlobalStyles from './layouts/GlobalStyles'
 
 const App: React.FC = () => {
-    return (
-        // TODO - re-enable StrictMode (dependant on MUI https://github.com/mui-org/material-ui/issues/13394)
-        // <React.StrictMode>
-        <AppStateProvider>
-            <ThemeProvider theme={theme}>
-                <GlobalStyles />
-                <ModalContainer />
-                <PageBackground />
-                <div className='everything-container'>
-                    <AppRouter />
-                    <Container className='footer-container' maxWidth='sm'>
-                        <Footer />
-                    </Container>
-                </div>
-            </ThemeProvider>
-        </AppStateProvider>
-        // </React.StrictMode>
-    )
+	return (
+		// TODO - re-enable StrictMode (dependant on MUI https://github.com/mui-org/material-ui/issues/13394)
+		// <React.StrictMode>
+		<AppStateProvider>
+			<ThemeProvider theme={theme}>
+				<GlobalStyles />
+				<ModalContainer />
+				<PageBackground />
+				<div className='everything-container'>
+					<AppRouter />
+					<Container className='footer-container' maxWidth='sm'>
+						<Footer />
+					</Container>
+				</div>
+			</ThemeProvider>
+		</AppStateProvider>
+		// </React.StrictMode>
+	)
 }
 
 export default App

@@ -4,11 +4,11 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect'
 
-import { TextEncoder, TextDecoder } from 'util'
+import { TextDecoder, TextEncoder } from 'util'
 
 interface Window {
-    TextEncoder: typeof TextEncoder
-    TextDecoder: typeof TextDecoder
+	TextEncoder: typeof TextEncoder
+	TextDecoder: typeof TextDecoder
 }
 
 const global_ = global as NodeJS.Global & Window

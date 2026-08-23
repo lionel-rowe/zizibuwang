@@ -1,4 +1,4 @@
-export /* parsePinyin */ {}
+export {} /* parsePinyin */
 
 const _initials = `
 j|z|zh     # ji-, zero-final

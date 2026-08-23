@@ -2,133 +2,133 @@ import { MAX_TIMEOUT } from '../config'
 import { withTimeLogging } from './logging'
 
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
-import { makeRegexWith, FuzzyReplacementId } from './makeFuzzyPinyinRegex'
+import { FuzzyReplacementId, makeRegexWith } from './makeFuzzyPinyinRegex'
 import { isPinyinish, segmentPinyin } from './segmentPinyin'
 import { normalizeQuery } from './formatters'
 
 const _basicSearch = async (
-    query: string,
-    data: any /* TODO */,
-    enabledFuzzyReplacementIds: FuzzyReplacementId[],
+	query: string,
+	data: any, /* TODO */
+	enabledFuzzyReplacementIds: FuzzyReplacementId[],
 ): Promise<{ results?: CedictEntry[] }> => {
-    query = normalizeQuery(query)
+	query = normalizeQuery(query)
 
-    let results
+	let results
 
-    const pinyinToPartsMapping = await pinyinToPartsMappingPromise
+	const pinyinToPartsMapping = await pinyinToPartsMappingPromise
 
-    const pinyinRegex = makeRegexWith(
-        pinyinToPartsMapping,
-        enabledFuzzyReplacementIds,
-    )(query)
+	const pinyinRegex = makeRegexWith(
+		pinyinToPartsMapping,
+		enabledFuzzyReplacementIds,
+	)(query)
 
-    const searchWorker = new Worker(
-        `${process.env.PUBLIC_URL}/basic-search-worker.js`,
-    )
+	const searchWorker = new Worker(
+		`${process.env.PUBLIC_URL}/basic-search-worker.js`,
+	)
 
-    const pinyinSyls = isPinyinish(query) ? segmentPinyin(true)(query) : []
+	const pinyinSyls = isPinyinish(query) ? segmentPinyin(true)(query) : []
 
-    searchWorker.postMessage({
-        type: 'SEARCH',
-        query,
-        pinyinRegex,
-        entries: data,
-        pinyinSyls,
-    })
+	searchWorker.postMessage({
+		type: 'SEARCH',
+		query,
+		pinyinRegex,
+		entries: data,
+		pinyinSyls,
+	})
 
-    if (/^\s*$/.test(query)) {
-        throw new RangeError('Please enter some search terms.')
-    }
+	if (/^\s*$/.test(query)) {
+		throw new RangeError('Please enter some search terms.')
+	}
 
-    results = await new Promise<CedictEntry[]>((resolve, reject) => {
-        searchWorker.onmessage = ({ data }) => {
-            if (data.type === 'ERROR') {
-                reject(data.error)
-            }
+	results = await new Promise<CedictEntry[]>((resolve, reject) => {
+		searchWorker.onmessage = ({ data }) => {
+			if (data.type === 'ERROR') {
+				reject(data.error)
+			}
 
-            searchWorker.terminate()
+			searchWorker.terminate()
 
-            resolve(data.results)
-        }
+			resolve(data.results)
+		}
 
-        setTimeout(() => {
-            searchWorker.terminate()
+		setTimeout(() => {
+			searchWorker.terminate()
 
-            reject(new RangeError('Timeout exceeded.'))
-        }, MAX_TIMEOUT)
-    })
+			reject(new RangeError('Timeout exceeded.'))
+		}, MAX_TIMEOUT)
+	})
 
-    return { results }
+	return { results }
 }
 
 const _advancedSearch = async (
-    query: string,
-    data: any /* TODO */,
+	query: string,
+	data: any, /* TODO */
 ): Promise<{ results?: CedictEntry[] }> => {
-    query = normalizeQuery(query)
+	query = normalizeQuery(query)
 
-    let results
+	let results
 
-    let conditions: SearchCondition[]
+	let conditions: SearchCondition[]
 
-    const lines = query
-        .split(/\r?\n/)
-        .map((el) => el.trim())
-        .filter((el) => el && !el.startsWith('#'))
+	const lines = query
+		.split(/\r?\n/)
+		.map((el) => el.trim())
+		.filter((el) => el && !el.startsWith('#'))
 
-    if (lines.length === 0) {
-        throw new RangeError('Must have at least one condition.')
-    } else {
-        conditions = lines.map(toCondition)
-    }
+	if (lines.length === 0) {
+		throw new RangeError('Must have at least one condition.')
+	} else {
+		conditions = lines.map(toCondition)
+	}
 
-    const searchWorker = new Worker(
-        `${process.env.PUBLIC_URL}/advanced-search-worker.js`,
-    )
+	const searchWorker = new Worker(
+		`${process.env.PUBLIC_URL}/advanced-search-worker.js`,
+	)
 
-    searchWorker.postMessage({
-        type: 'SEARCH',
-        conditions,
-        entries: data,
-    })
+	searchWorker.postMessage({
+		type: 'SEARCH',
+		conditions,
+		entries: data,
+	})
 
-    results = await new Promise<CedictEntry[]>((resolve, reject) => {
-        searchWorker.onmessage = ({ data }) => {
-            if (data.type === 'ERROR') {
-                reject(data.error)
-            }
+	results = await new Promise<CedictEntry[]>((resolve, reject) => {
+		searchWorker.onmessage = ({ data }) => {
+			if (data.type === 'ERROR') {
+				reject(data.error)
+			}
 
-            searchWorker.terminate()
+			searchWorker.terminate()
 
-            resolve(data.results)
-        }
+			resolve(data.results)
+		}
 
-        setTimeout(() => {
-            searchWorker.terminate()
+		setTimeout(() => {
+			searchWorker.terminate()
 
-            reject(new RangeError('Timeout exceeded.'))
-        }, MAX_TIMEOUT)
-    })
+			reject(new RangeError('Timeout exceeded.'))
+		}, MAX_TIMEOUT)
+	})
 
-    return { results }
+	return { results }
 }
 
 function toCondition(clause: string): SearchCondition {
-    const matcher = /^(?<prop>\S+)\s+(?<method>\S+)\s+(?<arg>.+)$/
+	const matcher = /^(?<prop>\S+)\s+(?<method>\S+)\s+(?<arg>.+)$/
 
-    const matches = clause.match(matcher)
+	const matches = clause.match(matcher)
 
-    if (!matches) {
-        throw new SyntaxError(
-            'Each condition must be formatted as "subject verb object".',
-        )
-    }
+	if (!matches) {
+		throw new SyntaxError(
+			'Each condition must be formatted as "subject verb object".',
+		)
+	}
 
-    return { ...(matches.groups as any as SearchCondition) }
+	return { ...(matches.groups as any as SearchCondition) }
 }
 
 const [basicSearch, advancedSearch] = [_basicSearch, _advancedSearch].map(
-    withTimeLogging,
+	withTimeLogging,
 )
 
-export { basicSearch, advancedSearch }
+export { advancedSearch, basicSearch }
