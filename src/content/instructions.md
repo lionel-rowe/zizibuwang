@@ -32,6 +32,7 @@ Available `subject`s are:
 - `trad` - traditional Chinese word
 - `pinyin` - pinyin, with tone numbers and spaces between each syllable (“ni3 hao3”, not “nǐhǎo” or “nihao”). “v” can be used for ü.
 - `def` - English definition
+- `tones` - tone numbers, with no spaces between them (e.g. “12” for a two-character word with first and second tones)
 
 The available `verb`s are as follows:
 
@@ -59,7 +60,7 @@ simp like ^(.)\1不.$
 ---
 # all four tones in order
 
-pinyin like ^\w+1 \w+2 \w+3 \w+4$
+tones = 1234
 ---
 # words consisting only of top 100 most common characters
 

@@ -82,6 +82,16 @@ async function _advancedSearch(
 		conditions = lines.map(toCondition)
 	}
 
+	// TODO: this is a hack to add tones if they are missing. Should probably be added in the db itself?
+	if (conditions.some((c) => c.prop === 'tones')) {
+		const hasTones = Boolean(data[0]?.tones)
+		if (!hasTones) {
+			for (const x of data) {
+				x.tones = x.pinyin.match(/\d/g)?.join('') || ''
+			}
+		}
+	}
+
 	const searchWorker = new Worker(
 		`${process.env.PUBLIC_URL}/advanced-search-worker.js`,
 	)

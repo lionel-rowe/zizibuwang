@@ -69,6 +69,7 @@ const methods = {
 methods['='] = methods['is']
 methods['=='] = methods['is']
 methods['are'] = methods['is']
+
 methods['!='] = methods['!is']
 methods['<>'] = methods['!is']
 
@@ -76,9 +77,11 @@ methods['==='] = methods['sis']
 
 methods['~'] = methods['like']
 methods['=~'] = methods['like']
+
 methods['!~'] = methods['!like']
 
 methods['has'] = methods['contains']
+
 methods['!has'] = methods['!contains']
 
 // handle messages

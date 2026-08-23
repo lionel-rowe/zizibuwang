@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	helpLink: {
 		display: 'flex',
-		alignItems: 'ce	nter',
+		alignItems: 'center',
 		color: `${theme.palette.secondary.main} !important`,
 	},
 	helpIcon: {

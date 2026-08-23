@@ -5,8 +5,9 @@ import { AppContext } from '../state/Context.tsx'
 
 const useStyles = makeStyles((theme) => ({
 	root: { marginBottom: '2em' },
-	charGloss: { display: 'flex', flexWrap: 'wrap' },
+	charGloss: {},
 	rubyRoot: { fontSize: '2.5em', paddingRight: '0.2em' },
+	rubyText: { userSelect: 'none' },
 	defList: { paddingLeft: '1.2em', margin: '0.5em 0' },
 	headwordNoRuby: { fontSize: '2.5em' },
 }))
@@ -54,7 +55,7 @@ function Result({ entry, isLast }: {
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.charGloss}>
+			<span className={classes.charGloss}>
 				{chars.map((char, idx) => {
 					if (!renderRuby) {
 						return (
@@ -68,12 +69,12 @@ function Result({ entry, isLast }: {
 						<ruby key={idx} className={classes.rubyRoot}>
 							{char}
 							<rp>(</rp>
-							<rt>{pinyinSyls[idx] || '\xa0'}</rt>
+							<rt className={classes.rubyText}>{pinyinSyls[idx] || '\xa0'}</rt>
 							<rp>)</rp>
 						</ruby>
 					)
 				})}
-			</div>
+			</span>
 			{oppCharVersion !== currentCharVersion && (
 				<div>
 					{oppCharTypeName[0].toUpperCase() +
