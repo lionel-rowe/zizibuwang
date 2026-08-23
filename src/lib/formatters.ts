@@ -1,28 +1,31 @@
 // import { toChineseInt, toChineseFractional, DIAN } from './chineseNumerals'
 
-const makeDecimalFormatter = (
-	intPartFormatter: NumberPartFormatter,
-	fractionalPartFormatter: NumberPartFormatter,
-	delimiter: string,
-) =>
-(numStr: number | string) => {
-	const [int, fractional] = numStr.toString().split('.')
+class DecimalFormatter {
+	constructor(
+		private intPartFormatter: NumberPartFormatter,
+		private fractionalPartFormatter: NumberPartFormatter,
+		private delimiter: string,
+	) {}
 
-	if ([int, fractional].some((n) => n && !/^\d+$/.test(n))) {
-		return 'NaN'
-	}
+	format(numStr: number | string) {
+		const [int, fractional] = numStr.toString().split('.')
 
-	try {
-		return (
-			intPartFormatter(int) +
-			(fractional ? delimiter + fractionalPartFormatter(fractional) : '')
-		)
-	} catch (_e) {
-		return 'NaN'
+		if ([int, fractional].some((n) => n && !/^\d+$/.test(n))) {
+			return 'NaN'
+		}
+
+		try {
+			return (
+				this.intPartFormatter(int) +
+				(fractional ? this.delimiter + this.fractionalPartFormatter(fractional) : '')
+			)
+		} catch (_e) {
+			return 'NaN'
+		}
 	}
 }
 
-// export const toChineseNum = makeDecimalFormatter(
+// export const toChineseNum = new DecimalFormatter(
 //     toChineseInt,
 //     toChineseFractional,
 //     DIAN,
@@ -30,34 +33,56 @@ const makeDecimalFormatter = (
 
 type NumberPartFormatter = (digitString: string) => string
 
-export const normalizeQuery = (query: string) => query.normalize('NFC').replace(/ü/g, 'v')
+export function normalizeQuery(query: string) {
+	return query.normalize('NFC').replace(/ü/g, 'v')
+}
 
-export const truncate = (len: number, overflowFiller = '…') => (str: string) =>
-	str.length > len ? str.slice(0, len - overflowFiller.length) + overflowFiller : str
+export class Truncator {
+	constructor(private len: number, private overflowFiller = '…') {}
+
+	truncate(str: string) {
+		return str.length > this.len ? str.slice(0, this.len - this.overflowFiller.length) + this.overflowFiller : str
+	}
+}
 
 // WeChat compat
-export const toLocaleString = (locale: Locale) => (n: number | string) => localizeFns[locale](n)
+export class LocaleStringifier {
+	constructor(private locale: Locale) {}
 
-const chunkWithDelimiter = (chunkLength: number, delimiter: string) => (n: number | string) =>
-	n
-		.toString()
-		.split('')
-		.reduceRight(
-			(str, digit, idx, arr) =>
-				(idx && !((arr.length - idx) % chunkLength) ? delimiter : '') +
-				digit +
-				str,
-			'',
-		)
+	stringify(n: number | string) {
+		return localizeFns[this.locale](n)
+	}
+}
+
+class DelimiterChunker {
+	constructor(private chunkLength: number, private delimiter: string) {}
+
+	chunk(n: number | string) {
+		return n
+			.toString()
+			.split('')
+			.reduceRight(
+				(str, digit, idx, arr) =>
+					(idx && !((arr.length - idx) % this.chunkLength) ? this.delimiter : '') +
+					digit +
+					str,
+				'',
+			)
+	}
+}
 
 export type Locale = 'en-US' | 'zh-Hans' | 'zh-Hant'
 // | 'zh-Hans-u-nu-hanidec' // TODO
 // | 'zh-Hant-u-nu-hanidec' // TODO
 
-const stringify = (x: string | number) => x.toString()
+function stringify(x: string | number) {
+	return x.toString()
+}
+
+const delimiterChunker = new DelimiterChunker(3, ',')
 
 const localizeFns: Record<Locale, (n: number | string) => string> = {
-	'en-US': makeDecimalFormatter(chunkWithDelimiter(3, ','), stringify, '.'),
+	'en-US': (n) => new DecimalFormatter(delimiterChunker.chunk.bind(delimiterChunker), stringify, '.').format(n),
 	'zh-Hans': stringify,
 	'zh-Hant': stringify,
 	// 'zh-Hans-u-nu-hanidec': toChineseNum, // TODO

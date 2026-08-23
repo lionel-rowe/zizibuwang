@@ -4,14 +4,14 @@ import { IDBPDatabase, openDB } from 'idb'
 
 import cedictUrl from '../assets/cc-cedict.tsv'
 import { NoDataError } from '../lib/errors.ts'
-import fireModal from '../lib/fireModal.ts'
+import { fireModal } from '../lib/fireModal.ts'
 
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 
 const DB_REQUIRES_SEEDING = 'dbRequiresSeeding'
 const CEDICT_TSV_ETAG = 'cedictTsvEtag'
 
-export const seedDb = async (db: IDBPDatabase) => {
+export async function seedDb(db: IDBPDatabase) {
 	const connection = (navigator as any).connection || {}
 
 	if (
@@ -27,13 +27,14 @@ export const seedDb = async (db: IDBPDatabase) => {
 
 		const title = contentLength ? `Download ${(+contentLength / 1000 / 1000).toFixed(1)}\xa0MB?` : 'Download data?'
 
+		// TODO: types
 		const userConfirmed = await fireModal({
 			showCancelButton: true,
 			confirmButtonText: 'Download',
 			title,
 			text: 'This is required the first time you run this app. Consider switching to a Wi-Fi connection.',
 			icon: HelpOutlineIcon,
-		})
+		} as any)
 
 		if (!userConfirmed) {
 			// TODO - show app load fail state

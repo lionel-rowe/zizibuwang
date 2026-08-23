@@ -2,7 +2,7 @@ import React from 'react'
 import ErrorBoundary from '../components/ErrorBoundary.tsx'
 import { Container } from '@material-ui/core'
 
-const MainSubLayout: React.FC = ({ children }) => {
+function MainSubLayout({ children }: React.PropsWithChildren<{}>) {
 	return (
 		<>
 			<Container maxWidth='sm'>

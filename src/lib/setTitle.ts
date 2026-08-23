@@ -1,6 +1,6 @@
 import { PAGE_TITLE, TITLE_DELIMITER } from '../config.ts'
 
-const setTitle = (newTitle: string | string[]) => {
+function setTitle(newTitle: string | string[]) {
 	const titleSegments = typeof newTitle === 'string' ? [newTitle] : newTitle
 
 	const title = [...titleSegments, PAGE_TITLE].join(TITLE_DELIMITER)

@@ -2,31 +2,31 @@ import { MAX_TIMEOUT } from '../config.ts'
 import { withTimeLogging } from './logging.ts'
 
 import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping.ts'
-import { FuzzyReplacementId, makeRegexWith } from './makeFuzzyPinyinRegex.ts'
-import { isPinyinish, segmentPinyin } from './segmentPinyin.ts'
+import { FuzzyReplacementId, RegexMaker } from './makeFuzzyPinyinRegex.ts'
+import { isPinyinish, PinyinSegmenter } from './segmentPinyin.ts'
 import { normalizeQuery } from './formatters.ts'
 
-const _basicSearch = async (
+async function _basicSearch(
 	query: string,
 	data: any, /* TODO */
 	enabledFuzzyReplacementIds: FuzzyReplacementId[],
-): Promise<{ results?: CedictEntry[] }> => {
+): Promise<{ results?: CedictEntry[] }> {
 	query = normalizeQuery(query)
 
 	let results
 
 	const pinyinToPartsMapping = await pinyinToPartsMappingPromise
 
-	const pinyinRegex = makeRegexWith(
+	const pinyinRegex = new RegexMaker(
 		pinyinToPartsMapping,
 		enabledFuzzyReplacementIds,
-	)(query)
+	).make(query)
 
 	const searchWorker = new Worker(
 		`${process.env.PUBLIC_URL}/basic-search-worker.js`,
 	)
 
-	const pinyinSyls = isPinyinish(query) ? segmentPinyin(true)(query) : []
+	const pinyinSyls = isPinyinish(query) ? new PinyinSegmenter(true).segment(query) : []
 
 	searchWorker.postMessage({
 		type: 'SEARCH',
@@ -61,10 +61,10 @@ const _basicSearch = async (
 	return { results }
 }
 
-const _advancedSearch = async (
+async function _advancedSearch(
 	query: string,
 	data: any, /* TODO */
-): Promise<{ results?: CedictEntry[] }> => {
+): Promise<{ results?: CedictEntry[] }> {
 	query = normalizeQuery(query)
 
 	let results

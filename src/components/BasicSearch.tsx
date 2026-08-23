@@ -28,7 +28,7 @@ const useStyles = makeStyles((_theme) => ({
 	},
 }))
 
-const BasicSearch: React.FC = () => {
+function BasicSearch() {
 	const { dispatch, state } = useContext(AppContext)
 
 	const { root, inputField, searchButton } = useStyles()

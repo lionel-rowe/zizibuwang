@@ -149,7 +149,7 @@ const useGlobalStyles = makeStyles((theme) => ({
 	},
 }))
 
-const GlobalStyles: React.FC = () => {
+function GlobalStyles() {
 	useGlobalStyles()
 
 	return null

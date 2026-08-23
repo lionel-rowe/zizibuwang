@@ -10,10 +10,10 @@ import { AppContext, loadResultsFromQuery } from '../state/Context.tsx'
 import { setTitle } from '../lib/setTitle.ts'
 import { xor } from '../lib/utils.ts'
 
-const SearchPage: React.FC<{
+function SearchPage({ searchType, title }: {
 	searchType: 'basic' | 'advanced'
 	title: string
-}> = ({ searchType, title }) => {
+}) {
 	setTitle(title)
 
 	const { state, dispatch } = useContext(AppContext)
@@ -22,7 +22,7 @@ const SearchPage: React.FC<{
 
 	const { error } = state
 
-	const handleQueryParams = () => {
+	function handleQueryParams() {
 		try {
 			if (
 				xor(

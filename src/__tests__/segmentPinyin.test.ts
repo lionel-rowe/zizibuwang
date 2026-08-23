@@ -1,4 +1,4 @@
-import { isPinyinish, segmentPinyin } from '../lib/segmentPinyin.ts'
+import { isPinyinish, PinyinSegmenter } from '../lib/segmentPinyin.ts'
 import { assert, assertEquals } from '@std/assert'
 
 const tests = [
@@ -27,7 +27,7 @@ const tests = [
 	{ word: 'wanrming', segments: ['wanr', 'ming'] },
 ]
 
-const segmentPinyinRmTones = segmentPinyin(true)
+const segmentPinyinRmTones = (py: string) => new PinyinSegmenter(true).segment(py)
 
 for (const { word, segments } of tests) {
 	Deno.test(`segmentPinyin: ${word} segments correctly`, () => {

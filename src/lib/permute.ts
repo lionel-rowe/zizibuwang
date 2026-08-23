@@ -4,7 +4,7 @@
 
 // replicateM n act performs the action n times, gathering the results.
 // replicateM :: (Applicative m) => Int -> m a -> m [a]
-const replicateM = (n, f) => {
+function replicateM(n, f) {
 	const loop = (x) => (x <= 0 ? [[]] : liftA2(cons, f, loop(x - 1)))
 
 	return loop(n)
@@ -12,12 +12,14 @@ const replicateM = (n, f) => {
 
 // Lift a binary function to actions.
 // liftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-const liftA2 = (f, a, b) => listApply(a.map(curry(f)), b)
+function liftA2(f, a, b) {
+	return listApply(a.map((x) => new Curry(f).apply(x)), b)
+}
 
 // <*>
 // listApply :: [(a -> b)] -> [a] -> [b]
-const listApply = (fs, xs) =>
-	[].concat.apply(
+function listApply(fs, xs) {
+	return [].concat.apply(
 		[],
 		fs.map((f) =>
 			[].concat.apply(
@@ -26,14 +28,23 @@ const listApply = (fs, xs) =>
 			)
 		),
 	)
+}
 
-// curry :: ((a, b) -> c) -> a -> b -> c
-const curry = (f) => (a) => (b) => f(a, b)
+// Curry :: ((a, b) -> c) -> a -> b -> c
+class Curry {
+	constructor(private f) {}
+
+	apply(a) {
+		return (b) => this.f(a, b)
+	}
+}
 
 // cons :: a -> [a] -> [a]
-const cons = (x, xs) => [x].concat(xs)
+function cons(x, xs) {
+	return [x].concat(xs)
+}
 
-export const orderedPermute = <T>(arrArr: T[][]): T[][] => {
+export function orderedPermute<T>(arrArr: T[][]): T[][] {
 	const len = Math.min(...arrArr.map((x) => x.length))
 
 	const arrIdxs = new Array(arrArr.length).fill(null).map((_, idx) => idx)

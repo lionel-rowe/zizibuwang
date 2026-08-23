@@ -15,16 +15,23 @@ const pySylRegexFragment = `(?:^|\\b|[${consonant}]h?)(?:[${vowel}]+(?:(?:ng?)?)
 // const pyWordRegex = new RegExp(`^(?:${pySylRegexFragment})+$`, 'gi')
 const pySylRegex = new RegExp(`${pySylRegexFragment}`, 'gi')
 
-export const stripTones = (py: string) => py.replace(/[1-5]$/, '')
-
-export const segmentPinyin = (removeTones: boolean) => (py: string) => {
-	const m = py.match(pySylRegex)
-
-	return m ? [...m].map((py) => (removeTones ? stripTones(py) : py)) : null
+export function stripTones(py: string) {
+	return py.replace(/[1-5]$/, '')
 }
 
-export const isPinyinish = (str: string) =>
-	str
+export class PinyinSegmenter {
+	constructor(private removeTones: boolean) {}
+
+	segment(py: string) {
+		const m = py.match(pySylRegex)
+
+		return m ? [...m].map((py) => (this.removeTones ? stripTones(py) : py)) : null
+	}
+}
+
+export function isPinyinish(str: string) {
+	return str
 		.split(/[^a-z0-9]+/i)
 		.filter(Boolean)
-		.every(segmentPinyin(false))
+		.every((s) => new PinyinSegmenter(false).segment(s))
+}

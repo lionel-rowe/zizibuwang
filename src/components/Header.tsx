@@ -19,18 +19,19 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const Header = () => {
+function Header() {
 	const { root, heading, subtitle } = useStyles()
 
 	const { dispatch } = useContext(AppContext)
 
-	const clearQuery = () =>
-		dispatch({
+	function clearQuery() {
+		return dispatch({
 			pendingSearchQuery: '',
 			searchQuery: '',
 			results: null,
 			resultsLoading: false,
 		})
+	}
 
 	return (
 		<header className={root}>

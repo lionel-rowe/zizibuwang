@@ -60,18 +60,18 @@ uan|uang   # w-*
 // type medialVariant =
 //     medialCategory
 
-// interface Initial {
+// type Initial = {
 //     canonical: string
 //     category: initialCategory
 // }
 
-// interface Medial {
+// type Medial = {
 //     canonical: string
 //     category: medialCategory
 //     contexts: initialCategory[]
 // }
 
-// interface Final {
+// type Final = {
 //     canonical: string
 //     contexts: medialCategory[]
 // }

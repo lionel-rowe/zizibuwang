@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
 	root: { margin: '2em auto' },
 }))
 
-const Footer: React.FC = () => {
+function Footer() {
 	const classes = useStyles()
 
 	return (

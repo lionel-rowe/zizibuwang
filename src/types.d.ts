@@ -1,11 +1,11 @@
-interface CedictEntry {
+type CedictEntry = {
 	trad: string
 	simp: string
 	pinyin: string
 	def: string
 }
 
-interface SearchCondition {
+type SearchCondition = {
 	prop: string
 	method: string
 	arg: string

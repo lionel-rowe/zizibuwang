@@ -1,13 +1,15 @@
 import { History } from 'history'
 import { decodeB64UrlSafe, encodeB64UrlSafe } from './b64.ts'
 
-const getQueryParam = (paramName: string) => new URLSearchParams(window.location.search).get(paramName)
+function getQueryParam(paramName: string) {
+	return new URLSearchParams(window.location.search).get(paramName)
+}
 
-const _setAllQueryParams = (
+function _setAllQueryParams(
 	allQueryParams: URLSearchParams,
 	pushNewHistoryItem: boolean,
 	history: History,
-) => {
+) {
 	const newQueryString = Array.from(allQueryParams).length ? '?' + allQueryParams.toString() : ''
 
 	const newPath = window.location.pathname + newQueryString
@@ -15,16 +17,16 @@ const _setAllQueryParams = (
 	history[pushNewHistoryItem ? 'push' : 'replace'](newPath)
 }
 
-const clearAllQueryParams = (pushNewHistoryItem: boolean, history: History) => {
+function clearAllQueryParams(pushNewHistoryItem: boolean, history: History) {
 	_setAllQueryParams(new URLSearchParams([]), pushNewHistoryItem, history)
 }
 
-const setQueryParam = (
+function setQueryParam(
 	paramName: string,
 	newVal: string,
 	pushNewHistoryItem: boolean,
 	history: History,
-) => {
+) {
 	const allQueryParams = new URLSearchParams(window.location.search)
 
 	allQueryParams.set(paramName, newVal)
@@ -32,11 +34,11 @@ const setQueryParam = (
 	_setAllQueryParams(allQueryParams, pushNewHistoryItem, history)
 }
 
-const deleteQueryParam = (
+function deleteQueryParam(
 	paramName: string,
 	pushNewHistoryItem: boolean,
 	history: History,
-) => {
+) {
 	const allQueryParams = new URLSearchParams(window.location.search)
 
 	allQueryParams.delete(paramName)
@@ -44,18 +46,18 @@ const deleteQueryParam = (
 	_setAllQueryParams(allQueryParams, pushNewHistoryItem, history)
 }
 
-const getB64QueryParam = (paramName: string) => {
+function getB64QueryParam(paramName: string) {
 	const val = getQueryParam(paramName)
 
 	return val && decodeB64UrlSafe(val)
 }
 
-const setB64QueryParam = (
+function setB64QueryParam(
 	paramName: string,
 	newVal: string,
 	pushNewHistoryItem: boolean,
 	history: History,
-) => {
+) {
 	const b64 = encodeB64UrlSafe(newVal)
 
 	setQueryParam(paramName, b64, pushNewHistoryItem, history)

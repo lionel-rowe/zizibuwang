@@ -15,9 +15,11 @@ const toneMarks: { [key in vowel]: string } = {
 	V: 'ÜǕǗǙǛ',
 }
 
-const normalize = (syl: string) => syl.replace(/u:|v/g, 'ü')
+function normalize(syl: string) {
+	return syl.replace(/u:|v/g, 'ü')
+}
 
-const addToneMark = (char: vowel | 'ü', tone: number) => {
+function addToneMark(char: vowel | 'ü', tone: number) {
 	if (tone === 5) tone = 0
 
 	if (char === 'ü') char = 'v'
@@ -25,9 +27,11 @@ const addToneMark = (char: vowel | 'ü', tone: number) => {
 	return toneMarks[char][tone]
 }
 
-const isPinyin = (syl: string) => /^[a-hj-tw-z][a-zü:]*\d?$/i.test(syl)
+function isPinyin(syl: string) {
+	return /^[a-hj-tw-z][a-zü:]*\d?$/i.test(syl)
+}
 
-const withToneMark = (syl: string) => {
+function withToneMark(syl: string) {
 	const lastChar = syl.slice(-1)[0]
 
 	if (!/\d/.test(lastChar)) {
@@ -41,11 +45,13 @@ const withToneMark = (syl: string) => {
 		.replace(/(?:a|e|o(?=u)|[iouüv](?![aeiouüv]))/i, (m) => addToneMark(m as vowel | 'ü', tone))
 }
 
-const prettifySyl = (syl: string) => {
+function prettifySyl(syl: string) {
 	return isPinyin(syl) ? withToneMark(normalize(syl)) : syl
 }
 
-const prettify = (word: string) => word.replace(/[a-zü:]+\d?/gi, (s) => prettifySyl(s))
+function prettify(word: string) {
+	return word.replace(/[a-zü:]+\d?/gi, (s) => prettifySyl(s))
+}
 
 export { prettify }
 

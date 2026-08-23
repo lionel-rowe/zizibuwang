@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
-interface StaticAnalyticsProps {
+type StaticAnalyticsProps = {
 	_version: '1'
 	correlationId: string
 }
@@ -25,13 +25,13 @@ const staticProps: StaticAnalyticsProps = {
 	correlationId,
 }
 
-const createLog = (event: EventType) => {
+function createLog(event: EventType) {
 	const msg: Analytics = { ...staticProps, event }
 
 	return JSON.stringify(msg)
 }
 
-const onUnload = (_e: Event) => {
+function onUnload(_e: Event) {
 	if (process.env.NODE_ENV !== 'production') return
 
 	navigator.sendBeacon(analyticsUrl, createLog('unload'))
@@ -39,7 +39,7 @@ const onUnload = (_e: Event) => {
 
 let prevPathAndQuery: string | null = null
 
-const RouteAnalytics: React.FC = () => {
+function RouteAnalytics() {
 	const history = useHistory()
 
 	useEffect(() => {

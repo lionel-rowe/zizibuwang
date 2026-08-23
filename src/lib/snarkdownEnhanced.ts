@@ -1,13 +1,14 @@
 import snarkdown from 'snarkdown'
 
-const slugify = (str: string) =>
-	str
+function slugify(str: string) {
+	return str
 		.toLowerCase()
 		.replace(/[^a-z0-9]+/g, ' ')
 		.trim()
 		.replace(/\s+/g, '-')
+}
 
-export const snarkdownEnhanced = (md: string) => {
+export function snarkdownEnhanced(md: string) {
 	const html = md
 		.split(/((?<=^|\n)```\r?\n[\s\S]*\r?\n```)/)
 		.map((m, i) =>

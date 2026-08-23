@@ -1,5 +1,5 @@
 import { orderedPermute } from './permute.ts'
-import { segmentPinyin } from './segmentPinyin.ts'
+import { PinyinSegmenter } from './segmentPinyin.ts'
 
 const __ = Symbol('__')
 const $0 = Symbol('$0')
@@ -7,11 +7,11 @@ const $0 = Symbol('$0')
 type ReplaceFn = (...args: string[]) => string
 
 type Part = string | null
-type Matcher = Part | RegExp | typeof __
+type MatcherType = Part | RegExp | typeof __
 type Replacer = Part | ReplaceFn | typeof $0
 
 export type Parts = [Part, Part, Part]
-type Matchers = [Matcher, Matcher, Matcher]
+type Matchers = [MatcherType, MatcherType, MatcherType]
 type Replacers = [Replacer, Replacer, Replacer]
 type MatchReplace = [Matchers, Replacers]
 
@@ -90,25 +90,30 @@ const contextMappings: MatchReplace[] = [
 	],
 ]
 
-const isMatch = (matchers: Matchers) => (parts: Parts) => {
-	return matchers.every((matcher, idx) => {
-		const part = parts[idx]
+class Matcher {
+	constructor(private matchers: Matchers) {}
 
-		return matcher === __ ? true : matcher instanceof RegExp ? part && matcher.test(part) : part === matcher
-	})
+	matches(parts: Parts) {
+		return this.matchers.every((matcher, idx) => {
+			const part = parts[idx]
+
+			return matcher === __ ? true : matcher instanceof RegExp ? part && matcher.test(part) : part === matcher
+		})
+	}
 }
 
-const transformParts = (parts: Parts, [matchers, replacers]: MatchReplace) =>
-	parts.map((part, idx) => {
+function transformParts(parts: Parts, [matchers, replacers]: MatchReplace) {
+	return parts.map((part, idx) => {
 		return replacers[idx] === $0
 			? part
 			: matchers[idx] instanceof RegExp
 			? part?.replace(matchers[idx] as RegExp, replacers[idx] as string)
 			: replacers[idx]
 	}) as Parts
+}
 
-export const spellPinyin = (parts: Parts) => {
-	const m = contextMappings.find(([k, _v]) => isMatch(k)(parts))
+export function spellPinyin(parts: Parts) {
+	const m = contextMappings.find(([k, _v]) => new Matcher(k).matches(parts))
 
 	if (!m) {
 		return parts.filter(Boolean).join('')
@@ -117,10 +122,21 @@ export const spellPinyin = (parts: Parts) => {
 	return transformParts(parts, m).filter(Boolean).join('')
 }
 
-const jToZ = (ch: string) => 'zcs'['jqx'.indexOf(ch)]
-const zToJ = (ch: string) => 'jqx'['zcs'.indexOf(ch)]
-const jToZh = (ch: string) => 'zcs'['jqx'.indexOf(ch)] + 'h'
-const zhToJ = (str: string) => 'jqx'['zcs'.indexOf(str[0])]
+function jToZ(ch: string) {
+	return 'zcs'['jqx'.indexOf(ch)]
+}
+
+function zToJ(ch: string) {
+	return 'jqx'['zcs'.indexOf(ch)]
+}
+
+function jToZh(ch: string) {
+	return 'zcs'['jqx'.indexOf(ch)] + 'h'
+}
+
+function zhToJ(str: string) {
+	return 'jqx'['zcs'.indexOf(str[0])]
+}
 
 export const fuzzyReplacements: {
 	id: FuzzyReplacementId
@@ -223,11 +239,11 @@ export const fuzzyReplacements: {
 
 export type FuzzyReplacementId = 'zh-j' | 'z-j' | 'z-zh' | 'n-l' | 'f-hu' | 'n-ng'
 
-const makeAlts = (
+function makeAlts(
 	py: string,
 	pinyinToPartsMapping: Record<string, Parts>,
 	enabledFuzzyReplacementIds: FuzzyReplacementId[],
-) => {
+) {
 	const alts: Parts[] = []
 
 	const parts = pinyinToPartsMapping[py]
@@ -240,7 +256,7 @@ const makeAlts = (
 
 	enabledReplacements.forEach((r) => {
 		r.alts.forEach((a) => {
-			if (isMatch(a[0])(parts)) {
+			if (new Matcher(a[0]).matches(parts)) {
 				alts.push(transformParts(parts, a))
 			}
 		})
@@ -249,56 +265,55 @@ const makeAlts = (
 	return alts
 }
 
-const spellValidAltsWith = (
-	pinyinToPartsMapping: Record<string, Parts>,
-	enabledFuzzyReplacementIds: FuzzyReplacementId[],
-) =>
-(py: string) => {
-	const alts = makeAlts(
-		py,
-		pinyinToPartsMapping,
-		enabledFuzzyReplacementIds,
-	)
+class ValidAltsSpeller {
+	constructor(
+		private pinyinToPartsMapping: Record<string, Parts>,
+		private enabledFuzzyReplacementIds: FuzzyReplacementId[],
+	) {}
 
-	if (!alts) return []
+	spell(py: string) {
+		const alts = makeAlts(py, this.pinyinToPartsMapping, this.enabledFuzzyReplacementIds)
 
-	return (orderedPermute(alts) as Parts[])
-		.map(spellPinyin)
-		.filter((py) => pinyinToPartsMapping[py])
-		.filter((py, idx, arr) => arr.indexOf(py) === idx)
+		if (!alts) return []
+
+		return (orderedPermute(alts) as Parts[])
+			.map(spellPinyin)
+			.filter((py) => this.pinyinToPartsMapping[py])
+			.filter((py, idx, arr) => arr.indexOf(py) === idx)
+	}
 }
 
-export const makeRegexWith = (
-	pinyinToPartsMapping: Record<string, Parts>,
-	enabledFuzzyReplacementIds: FuzzyReplacementId[],
-) =>
-(py: string) => {
-	const spellValidAlts = spellValidAltsWith(
-		pinyinToPartsMapping,
-		enabledFuzzyReplacementIds,
-	)
+export class RegexMaker {
+	constructor(
+		private pinyinToPartsMapping: Record<string, Parts>,
+		private enabledFuzzyReplacementIds: FuzzyReplacementId[],
+	) {}
 
-	console.log(segmentPinyin(true)(py.toLowerCase()))
+	make(py: string) {
+		const speller = new ValidAltsSpeller(this.pinyinToPartsMapping, this.enabledFuzzyReplacementIds)
 
-	const segments = (segmentPinyin(true)(py.toLowerCase()) || [])
-		.filter(Boolean)
-		.map((x) => {
-			const alts = spellValidAlts(x)
-			return alts.length ? `(?:${alts.join('|')})` : `(?:${RegExp.escape(x)})`
-		})
-		.filter(Boolean)
+		console.log(new PinyinSegmenter(true).segment(py.toLowerCase()))
 
-	console.log(segments)
+		const segments = (new PinyinSegmenter(true).segment(py.toLowerCase()) || [])
+			.filter(Boolean)
+			.map((x) => {
+				const alts = speller.spell(x)
+				return alts.length ? `(?:${alts.join('|')})` : `(?:${RegExp.escape(x)})`
+			})
+			.filter(Boolean)
 
-	const regex = segments.length
-		? new RegExp(
-			`^(?:[^a-z]|\\b)${segments.join('[^a-z]+')}(?:\\b|[^a-z])$`,
-			'i',
-		)
-		: null
+		console.log(segments)
 
-	// deno-lint-ignore no-console
-	process.env.NODE_ENV === 'development' && console.info(regex)
+		const regex = segments.length
+			? new RegExp(
+				`^(?:[^a-z]|\\b)${segments.join('[^a-z]+')}(?:\\b|[^a-z])$`,
+				'i',
+			)
+			: null
 
-	return regex
+		// deno-lint-ignore no-console
+		process.env.NODE_ENV === 'development' && console.info(regex)
+
+		return regex
+	}
 }

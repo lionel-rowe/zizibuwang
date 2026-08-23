@@ -6,7 +6,7 @@ import contentMdUrl from '../content/instructions.md'
 import { snarkdownEnhanced } from '../lib/snarkdownEnhanced.ts'
 import { setTitle } from '../lib/setTitle.ts'
 
-interface Sample {
+type Sample = {
 	title: string
 	query: string
 }
@@ -39,7 +39,7 @@ const contentPromise = (async () => {
 	return { _samples, _instructions }
 })()
 
-const DocsPage: React.FC<{ title: string }> = ({ title }) => {
+function DocsPage({ title }: { title: string }) {
 	setTitle(title)
 
 	const [instructions, setInstructions] = useState('')

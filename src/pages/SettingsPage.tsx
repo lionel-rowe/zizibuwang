@@ -17,7 +17,7 @@ const useStyles = makeStyles((_theme) => ({
 	formGroup: { padding: '1em 0' },
 }))
 
-const SettingsPage: React.FC<{ title: string }> = ({ title }) => {
+function SettingsPage({ title }: { title: string }) {
 	setTitle(title)
 
 	const classes = useStyles()

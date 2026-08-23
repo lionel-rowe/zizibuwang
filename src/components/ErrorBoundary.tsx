@@ -1,10 +1,10 @@
 import React from 'react'
 
-interface ErrorInfoObject {
+type ErrorInfoObject = {
 	componentStack: any
 }
 
-interface ErrorBoundaryState {
+type ErrorBoundaryState = {
 	error?: Error
 	errorInfo?: ErrorInfoObject
 }

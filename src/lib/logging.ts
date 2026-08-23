@@ -1,8 +1,12 @@
 let _idx = 0
 
-const getTimeNowMs = () => new Date().valueOf()
+function getTimeNowMs() {
+	return new Date().valueOf()
+}
 
-const getTimeElapsedMs = (prevTimeMs: number) => getTimeNowMs() - prevTimeMs
+function getTimeElapsedMs(prevTimeMs: number) {
+	return getTimeNowMs() - prevTimeMs
+}
 
 enum Result {
 	Error,
@@ -14,14 +18,12 @@ enum Synchronicity {
 	Async,
 }
 
-const withTimeLogging = <T>(fn: T & Function): T => {
-	if (process.env.NODE_ENV !== 'development') {
-		return fn
-	}
+class TimeLogger<T extends Function> {
+	constructor(private fn: T) {}
 
-	return ((...args: any) => {
+	run = (...args: any) => {
 		const idx = _idx++
-		const name = fn.name || '[anonymous]'
+		const name = this.fn.name || '[anonymous]'
 		const startTime = getTimeNowMs()
 
 		const logTimeElapsed = (
@@ -40,7 +42,7 @@ const withTimeLogging = <T>(fn: T & Function): T => {
 		}
 
 		try {
-			const val = fn(...args)
+			const val = this.fn(...args)
 
 			if (val instanceof Promise) {
 				return val
@@ -64,7 +66,15 @@ const withTimeLogging = <T>(fn: T & Function): T => {
 
 			throw e
 		}
-	}) as any as T
+	}
+}
+
+function withTimeLogging<T>(fn: T & Function): T {
+	if (process.env.NODE_ENV !== 'development') {
+		return fn
+	}
+
+	return new TimeLogger(fn).run as any as T
 }
 
 if (process.env.NODE_ENV === 'development') {

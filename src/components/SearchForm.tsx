@@ -7,11 +7,11 @@ import BasicSearch from './BasicSearch.tsx'
 import AdvancedSearch from './AdvancedSearch.tsx'
 import { useHistory } from 'react-router-dom'
 
-const TabPanel: React.FC<{
+function TabPanel({ children, id, active, labelledBy }: React.PropsWithChildren<{
 	id: string
 	active: boolean
 	labelledBy: string
-}> = ({ children, id, active, labelledBy }) => {
+}>) {
 	return (
 		<div id={id} hidden={!active} aria-labelledby={labelledBy}>
 			{children}
@@ -19,7 +19,7 @@ const TabPanel: React.FC<{
 	)
 }
 
-const SearchForm: React.FC = () => {
+function SearchForm() {
 	const { dispatch, state } = useContext(AppContext)
 
 	const history = useHistory()
@@ -28,7 +28,7 @@ const SearchForm: React.FC = () => {
 
 	const searchFormId = useHtmlId('search-form')
 
-	const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
+	async function submitForm(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault()
 
 		loadResultsFromQuery(

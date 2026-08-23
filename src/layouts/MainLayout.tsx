@@ -3,10 +3,10 @@ import Header from '../components/Header.tsx'
 import MainSubLayout from './MainSubLayout.tsx'
 import MainNav from '../components/MainNav.tsx'
 
-const MainLayout: React.FC<{ className: string }> = ({
+function MainLayout({
 	children,
 	className,
-}) => {
+}: React.PropsWithChildren<{ className: string }>) {
 	return (
 		<div className={className}>
 			<MainNav />

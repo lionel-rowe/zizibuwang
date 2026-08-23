@@ -3,7 +3,7 @@ import { Parts } from './makeFuzzyPinyinRegex.ts'
 
 const pinyinSyllablesUrl = new URL('../assets/pinyin-syllables.tsv', import.meta.url)
 
-export const parsePinyinTsv = (txt: string) => {
+export function parsePinyinTsv(txt: string) {
 	const syls = txt.split('\n').map((x) => x.split('\t'))
 
 	const [initials, ...rows] = syls

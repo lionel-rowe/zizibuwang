@@ -10,14 +10,14 @@ import { setQueryParam } from '../lib/queryParams.ts'
 import { useHtmlId } from '../hooks/useHtmlId.ts'
 import { useHistory } from 'react-router-dom'
 import { setTitle } from '../lib/setTitle.ts'
-import { toLocaleString, truncate } from '../lib/formatters.ts'
+import { LocaleStringifier, Truncator } from '../lib/formatters.ts'
 import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config.ts'
 import Link from './Link.tsx'
 
-const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
+function ResultsList({
 	results,
 	page,
-}) => {
+}: { page: number; results: CedictEntry[] }) {
 	return (
 		<>
 			{results
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const ResultsDisplay: React.FC = () => {
+function ResultsDisplay() {
 	const { state, dispatch } = useContext(AppContext)
 
 	const {
@@ -100,7 +100,7 @@ const ResultsDisplay: React.FC = () => {
 	if (results && !resultsLoading) {
 		setTitle(
 			[
-				truncate(TITLE_SEGMENT_TRUNCATE_LENGTH)(searchQuery),
+				new Truncator(TITLE_SEGMENT_TRUNCATE_LENGTH).truncate(searchQuery),
 				page > 1 ? `page ${page}` : '',
 				searchType === 'advanced' ? 'Advanced Search' : 'Search',
 			].filter(Boolean),
@@ -137,7 +137,7 @@ const ResultsDisplay: React.FC = () => {
 									<hr className={halfWidthHr} />
 									<div className={resultsTotalDisplay}>
 										<strong>
-											{toLocaleString('en-US')(
+											{new LocaleStringifier('en-US').stringify(
 												results.length,
 											)}
 										</strong>{' '}

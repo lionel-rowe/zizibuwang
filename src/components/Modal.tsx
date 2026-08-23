@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 
-interface ModalOptions {
+type ModalOptions = {
 	text: string
 	title?: string
 	icon?: React.FC
@@ -11,7 +11,7 @@ interface ModalOptions {
 	cancelButtonText?: string
 }
 
-const Modal = ({
+function Modal({
 	isOpen,
 	onResolve,
 	text,
@@ -20,7 +20,7 @@ const Modal = ({
 	showCancelButton,
 	confirmButtonText,
 	cancelButtonText,
-}: ModalOptions & { isOpen: boolean; onResolve: (val: boolean) => void }) => {
+}: ModalOptions & { isOpen: boolean; onResolve: (val: boolean) => void }) {
 	return (
 		<Dialog
 			open={isOpen}

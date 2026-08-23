@@ -62,8 +62,8 @@ const places = [
 	[QIAN, YII],
 ]
 
-export const toChineseInt = (intStr: string) =>
-	intStr === '0' ? LING : intStr.split('').reduce(
+export function toChineseInt(intStr: string) {
+	return intStr === '0' ? LING : intStr.split('').reduce(
 		({ leadingZeros, outStr }, digit, idx, digits) => {
 			const placeIdx = digits.length - idx - 1
 
@@ -117,9 +117,11 @@ export const toChineseInt = (intStr: string) =>
 		},
 		{ leadingZeros: false, outStr: '' },
 	).outStr
+}
 
-export const toChineseFractional = (fractional: string) =>
-	fractional
+export function toChineseFractional(fractional: string) {
+	return fractional
 		.split('')
 		.map((d) => units[+d])
 		.join('')
+}

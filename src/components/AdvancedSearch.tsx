@@ -32,7 +32,7 @@ const useStyles = makeStyles((_theme) => ({
 	},
 }))
 
-const AdvancedSearch: React.FC = () => {
+function AdvancedSearch() {
 	const { dispatch, state } = useContext(AppContext)
 
 	const { root, label, inputField, searchButton } = useStyles()

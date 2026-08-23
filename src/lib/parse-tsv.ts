@@ -1,4 +1,4 @@
-const parseTsv = (tsv: string) => {
+function parseTsv(tsv: string) {
 	const lines = tsv.trim().split(/\r?\n/)
 
 	return lines.map((line) => {
@@ -8,7 +8,7 @@ const parseTsv = (tsv: string) => {
 	})
 }
 
-const rowHeadingsToProps = (rows: string[][]) => {
+function rowHeadingsToProps(rows: string[][]) {
 	const [headers, ...entries] = rows
 
 	return entries.map((e) => {

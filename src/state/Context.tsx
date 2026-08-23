@@ -1,7 +1,7 @@
 import React, { useMemo, useReducer } from 'react'
 import Cedict from '../repositories/cedict.ts'
 import { advancedSearch, basicSearch } from '../lib/search.ts'
-import fireModal from '../lib/fireModal.ts'
+import { fireModal } from '../lib/fireModal.ts'
 import { setQueryParam } from '../lib/queryParams.ts'
 
 import { History } from 'history'
@@ -9,7 +9,7 @@ import { History } from 'history'
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
 import { FuzzyReplacementId } from '../lib/makeFuzzyPinyinRegex.ts'
 
-export interface AppState {
+export type AppState = {
 	charSet: 'trad' | 'simp'
 	results: CedictEntry[] | null
 	error: Error | null
@@ -40,10 +40,10 @@ const initialState: AppState = {
 	) as Record<FuzzyReplacementId, boolean>,
 }
 
-const reducer = (
+function reducer(
 	state: AppState = initialState,
 	action: SearchActionType,
-): AppState => {
+): AppState {
 	Object.entries(action).forEach(([k, v]) => {
 		;(state as any)[k] = v
 	})
@@ -51,7 +51,7 @@ const reducer = (
 	return { ...state }
 }
 
-interface LoadResultsFromQueryOptions {
+type LoadResultsFromQueryOptions = {
 	pushNewHistoryItem?: boolean
 	searchType: 'advanced' | 'basic'
 	history: History
@@ -59,7 +59,7 @@ interface LoadResultsFromQueryOptions {
 
 let queryResultIncrementer = 0
 
-const loadResultsFromQuery = async (
+async function loadResultsFromQuery(
 	query: string,
 	{
 		dispatch,
@@ -73,7 +73,7 @@ const loadResultsFromQuery = async (
 		searchType,
 		history,
 	}: LoadResultsFromQueryOptions,
-) => {
+) {
 	const data = await Cedict.all
 
 	const currentQueryResult = ++queryResultIncrementer
@@ -112,6 +112,7 @@ const loadResultsFromQuery = async (
 			return
 		}
 
+		// @ts-ignore TODO: fix types
 		fireModal({ text: (e as Error).message, icon: ErrorOutlineIcon })
 
 		return dispatch({ results: null, resultsLoading: false })
@@ -125,7 +126,7 @@ const AppContext = React.createContext(
 	},
 )
 
-const AppStateProvider: React.FC = ({ children }) => {
+function AppStateProvider({ children }: React.PropsWithChildren<{}>) {
 	const [state, dispatch] = useReducer(reducer, initialState)
 
 	const value = useMemo(() => ({ state, dispatch }), [state, dispatch])

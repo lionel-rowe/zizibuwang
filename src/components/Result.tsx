@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
 	headwordNoRuby: { fontSize: '2.5em' },
 }))
 
-const Result: React.FC<{
+function Result({ entry, isLast }: {
 	entry: CedictEntry
 	isLast: boolean
-}> = ({ entry, isLast }) => {
+}) {
 	const classes = useStyles()
 
 	const { state } = useContext(AppContext)

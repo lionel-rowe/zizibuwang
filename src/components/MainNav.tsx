@@ -59,7 +59,7 @@ const links = [
 	},
 ]
 
-const MainNav: React.FC = () => {
+function MainNav() {
 	const classes = useStyles()
 
 	const { dispatch } = useContext(AppContext)

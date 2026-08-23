@@ -16,7 +16,7 @@ const useStyles = makeStyles((_theme) => ({
 
 let prevPathName: string | null = null
 
-const FocusOnRouteChange: React.FC = ({ children }) => {
+function FocusOnRouteChange({ children }: React.PropsWithChildren<{}>) {
 	const history = useHistory()
 
 	const { focusOnRouteChange } = useStyles()
@@ -44,10 +44,13 @@ const FocusOnRouteChange: React.FC = ({ children }) => {
 /**
  * Redirects preserving query string, hash, etc.
  */
-const RedirectPathname: React.FC<{ from: string; to: string }> = ({
+function RedirectPathname({
 	from,
 	to,
-}) => {
+}: {
+	from: string
+	to: string
+}) {
 	return (
 		<Route
 			exact
@@ -57,7 +60,7 @@ const RedirectPathname: React.FC<{ from: string; to: string }> = ({
 	)
 }
 
-const AppRouter: React.FC = () => {
+function AppRouter() {
 	return (
 		<Router basename={process.env.PUBLIC_URL}>
 			<Route path='/'>

@@ -1,4 +1,4 @@
-import { toLocaleString } from '../lib/formatters.ts'
+import { LocaleStringifier } from '../lib/formatters.ts'
 import { assertEquals } from '@std/assert'
 
 const testData = [
@@ -40,10 +40,10 @@ Deno.test('toLocaleString works for en-US', () => {
 			(value): value is number => typeof value === 'number' && Number.isInteger(value),
 		)
 	) {
-		assertEquals(toLocaleString('en-US')(value), value.toLocaleString('en-US'))
+		assertEquals(new LocaleStringifier('en-US').stringify(value), value.toLocaleString('en-US'))
 	}
 })
 
 Deno.test('toLocaleString preserves fractional input digits', () => {
-	assertEquals(toLocaleString('en-US')(2_002.2002), '2,002.2002')
+	assertEquals(new LocaleStringifier('en-US').stringify(2_002.2002), '2,002.2002')
 })

@@ -17,8 +17,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-export default () => {
+function PageBackground() {
 	const { root } = useStyles()
 
 	return <div className={root} />
 }
+
+export default PageBackground

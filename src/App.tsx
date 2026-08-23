@@ -14,7 +14,7 @@ import ModalContainer from 'react-modal-promise'
 import AppRouter from './AppRouter.tsx'
 import GlobalStyles from './layouts/GlobalStyles.tsx'
 
-const App: React.FC = () => {
+function App() {
 	return (
 		// TODO - re-enable StrictMode (dependant on MUI https://github.com/mui-org/material-ui/issues/13394)
 		// <React.StrictMode>
