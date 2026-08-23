@@ -1,13 +1,13 @@
 import React, { useMemo, useReducer } from 'react'
-import Cedict from '../repositories/cedict'
-import { advancedSearch, basicSearch } from '../lib/search'
-import fireModal from '../lib/fireModal'
-import { setQueryParam } from '../lib/queryParams'
+import Cedict from '../repositories/cedict.ts'
+import { advancedSearch, basicSearch } from '../lib/search.ts'
+import fireModal from '../lib/fireModal.ts'
+import { setQueryParam } from '../lib/queryParams.ts'
 
 import { History } from 'history'
 
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline'
-import { FuzzyReplacementId } from '../lib/makeFuzzyPinyinRegex'
+import { FuzzyReplacementId } from '../lib/makeFuzzyPinyinRegex.ts'
 
 export interface AppState {
 	charSet: 'trad' | 'simp'

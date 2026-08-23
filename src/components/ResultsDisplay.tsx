@@ -4,15 +4,15 @@ import HelpIcon from '@material-ui/icons/Help'
 
 import Pagination from '@material-ui/lab/Pagination'
 
-import Result from '../components/Result'
-import { AppContext } from '../state/Context'
-import { setQueryParam } from '../lib/queryParams'
-import { useHtmlId } from '../hooks/useHtmlId'
+import Result from '../components/Result.tsx'
+import { AppContext } from '../state/Context.tsx'
+import { setQueryParam } from '../lib/queryParams.ts'
+import { useHtmlId } from '../hooks/useHtmlId.ts'
 import { useHistory } from 'react-router-dom'
-import { setTitle } from '../lib/setTitle'
-import { toLocaleString, truncate } from '../lib/formatters'
-import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config'
-import Link from './Link'
+import { setTitle } from '../lib/setTitle.ts'
+import { toLocaleString, truncate } from '../lib/formatters.ts'
+import { RESULTS_PER_PAGE, TITLE_SEGMENT_TRUNCATE_LENGTH } from '../config.ts'
+import Link from './Link.tsx'
 
 const ResultsList: React.FC<{ page: number; results: CedictEntry[] }> = ({
 	results,

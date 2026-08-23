@@ -1,6 +1,6 @@
 import { deleteDB, openDB } from 'idb'
-import { prettify } from './lib/pinyinize'
-import { Cedict, db, seedDb } from './repositories/cedict'
+import { prettify } from './lib/pinyinize.ts'
+import { Cedict, db, seedDb } from './repositories/cedict.ts'
 
 export function exposeDebugVars() {
 	const _window = window as any

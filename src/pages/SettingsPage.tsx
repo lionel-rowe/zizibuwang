@@ -9,9 +9,9 @@ import {
 	Radio,
 	RadioGroup,
 } from '@material-ui/core'
-import { AppContext } from '../state/Context'
-import { fuzzyReplacements } from '../lib/makeFuzzyPinyinRegex'
-import { setTitle } from '../lib/setTitle'
+import { AppContext } from '../state/Context.tsx'
+import { fuzzyReplacements } from '../lib/makeFuzzyPinyinRegex.ts'
+import { setTitle } from '../lib/setTitle.ts'
 
 const useStyles = makeStyles((_theme) => ({
 	formGroup: { padding: '1em 0' },

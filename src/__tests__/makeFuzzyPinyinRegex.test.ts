@@ -1,30 +1,23 @@
-import { parsePinyinTsv } from '../lib/pinyinToPartsMapping'
+import { parsePinyinTsv } from '../lib/pinyinToPartsMapping.ts'
 
-import { Parts, spellPinyin } from '../lib/makeFuzzyPinyinRegex'
+import { Parts, spellPinyin } from '../lib/makeFuzzyPinyinRegex.ts'
+import { assertEquals, assertGreater } from '@std/assert'
 
-import fs from 'fs'
-import path from 'path'
-
-const pinyinSyllables = fs.readFileSync(
-	path.join(__dirname, '../assets/pinyin-syllables.tsv'),
-	'utf8',
+const pinyinSyllables = await Deno.readTextFile(
+	new URL('../assets/pinyin-syllables.tsv', import.meta.url),
 )
 
 let pinyinToPartsMapping: Record<string, Parts>
 
-describe('parsePinyinTsv', () => {
-	it('works', () => {
-		pinyinToPartsMapping = parsePinyinTsv(pinyinSyllables)
-		expect(Object.keys(pinyinToPartsMapping).length).toBeGreaterThan(400)
-	})
+Deno.test('parsePinyinTsv works', () => {
+	pinyinToPartsMapping = parsePinyinTsv(pinyinSyllables)
+	assertGreater(Object.keys(pinyinToPartsMapping).length, 400)
 })
 
-describe('pinyinToPartsMapping', () => {
-	it('has no discrepencies', () => {
-		const discrepencies = Object.entries(pinyinToPartsMapping)
-			.map(([k, v]) => [k, spellPinyin(v)])
-			.filter((a) => a[0] !== a[1])
+Deno.test('pinyinToPartsMapping has no discrepancies', () => {
+	const discrepancies = Object.entries(pinyinToPartsMapping)
+		.map(([key, value]) => [key, spellPinyin(value)])
+		.filter(([key, spelling]) => key !== spelling)
 
-		expect(discrepencies.length).toBe(0)
-	})
+	assertEquals(discrepancies.length, 0)
 })

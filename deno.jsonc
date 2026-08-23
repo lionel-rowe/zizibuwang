@@ -1,9 +1,19 @@
 {
+	"name": "zizibuwang",
+	"version": "0.1.0",
 	"lock": false,
 	"exports": {},
 	"tasks": {
+		"start": "deno run -A npm:react-scripts start",
+		"build": "deno run -A npm:react-scripts build",
+		"test": "deno test --allow-read",
+		"predeploy": "deno task build",
+		"deploy": "deno task test && deno run -A npm:gh-pages -d build",
+		"parse-cedict": "deno run --allow-read --allow-write scripts/parse-cc-cedict.ts",
+		"db-bump": "deno run --allow-write scripts/db-bump.ts"
 	},
 	"imports": {
+		"@std/assert": "jsr:@std/assert@^1.0.19"
 	},
 	"fmt": {
 		"semiColons": false,

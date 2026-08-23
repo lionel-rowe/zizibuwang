@@ -1,7 +1,7 @@
 // modified from http://pinyin.info/rules/initials_finals.html
-import pinyinSyllablesUrl from '../assets/pinyin-syllables.tsv'
+import { Parts } from './makeFuzzyPinyinRegex.ts'
 
-import { Parts } from './makeFuzzyPinyinRegex'
+const pinyinSyllablesUrl = new URL('../assets/pinyin-syllables.tsv', import.meta.url)
 
 export const parsePinyinTsv = (txt: string) => {
 	const syls = txt.split('\n').map((x) => x.split('\t'))
@@ -27,13 +27,11 @@ export const parsePinyinTsv = (txt: string) => {
 	return pinyinToPartsMapping
 }
 
-export const pinyinToPartsMappingPromise = new Promise<Record<string, Parts>>(
-	async (resolve) => {
-		const res = await fetch(pinyinSyllablesUrl)
-		const txt = await res.text()
+export const pinyinToPartsMappingPromise = (async () => {
+	const deno = (globalThis as {
+		Deno?: { readTextFile(path: URL): Promise<string> }
+	}).Deno
+	const txt = deno ? await deno.readTextFile(pinyinSyllablesUrl) : await (await fetch(pinyinSyllablesUrl.href)).text()
 
-		const pinyinToPartsMapping = parsePinyinTsv(txt)
-
-		resolve(pinyinToPartsMapping)
-	},
-)
+	return parsePinyinTsv(txt)
+})()

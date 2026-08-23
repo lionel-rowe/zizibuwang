@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { Tab, Tabs } from '@material-ui/core'
-import { AppContext, loadResultsFromQuery } from '../state/Context'
-import { deleteQueryParam } from '../lib/queryParams'
-import { useHtmlId } from '../hooks/useHtmlId'
-import BasicSearch from './BasicSearch'
-import AdvancedSearch from './AdvancedSearch'
+import { AppContext, loadResultsFromQuery } from '../state/Context.tsx'
+import { deleteQueryParam } from '../lib/queryParams.ts'
+import { useHtmlId } from '../hooks/useHtmlId.ts'
+import BasicSearch from './BasicSearch.tsx'
+import AdvancedSearch from './AdvancedSearch.tsx'
 import { useHistory } from 'react-router-dom'
 
 const TabPanel: React.FC<{

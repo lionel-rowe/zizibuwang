@@ -1,5 +1,5 @@
 import { createModal } from 'react-modal-promise'
-import Modal from '../components/Modal'
+import Modal from '../components/Modal.tsx'
 
 const fireModal = createModal(Modal)
 

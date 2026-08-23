@@ -2,11 +2,11 @@
 // import { render } from '@testing-library/react'
 // import App from './App'
 
-export {}
+import { assert } from '@std/assert'
 
-it('TODO - needs mocking of browser globals', () => {
+Deno.test('TODO - needs mocking of browser globals', () => {
 	// TODO - needs mocking of browser globals
-	expect(true).toBe(true)
+	assert(true)
 })
 
 // it('app renders without crashing', () => {

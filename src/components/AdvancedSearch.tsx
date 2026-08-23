@@ -11,8 +11,8 @@ import {
 	Tooltip,
 } from '@material-ui/core'
 
-import { useHtmlId } from '../hooks/useHtmlId'
-import { AppContext } from '../state/Context'
+import { useHtmlId } from '../hooks/useHtmlId.ts'
+import { AppContext } from '../state/Context.tsx'
 
 const useStyles = makeStyles((_theme) => ({
 	root: { margin: '1em 0' },

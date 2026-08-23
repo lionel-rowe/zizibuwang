@@ -1,10 +1,10 @@
-import { MAX_TIMEOUT } from '../config'
-import { withTimeLogging } from './logging'
+import { MAX_TIMEOUT } from '../config.ts'
+import { withTimeLogging } from './logging.ts'
 
-import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping'
-import { FuzzyReplacementId, makeRegexWith } from './makeFuzzyPinyinRegex'
-import { isPinyinish, segmentPinyin } from './segmentPinyin'
-import { normalizeQuery } from './formatters'
+import { pinyinToPartsMappingPromise } from './pinyinToPartsMapping.ts'
+import { FuzzyReplacementId, makeRegexWith } from './makeFuzzyPinyinRegex.ts'
+import { isPinyinish, segmentPinyin } from './segmentPinyin.ts'
+import { normalizeQuery } from './formatters.ts'
 
 const _basicSearch = async (
 	query: string,

@@ -1,7 +1,7 @@
 import React from 'react'
-import Header from '../components/Header'
-import MainSubLayout from './MainSubLayout'
-import MainNav from '../components/MainNav'
+import Header from '../components/Header.tsx'
+import MainSubLayout from './MainSubLayout.tsx'
+import MainNav from '../components/MainNav.tsx'
 
 const MainLayout: React.FC<{ className: string }> = ({
 	children,

@@ -1,14 +1,14 @@
 import React, { useRef } from 'react'
 
-import SearchPage from './pages/SearchPage'
-import MainLayout from './layouts/MainLayout'
+import SearchPage from './pages/SearchPage.tsx'
+import MainLayout from './layouts/MainLayout.tsx'
 
 import { BrowserRouter as Router, Redirect, Route, useHistory } from 'react-router-dom'
 
-import DocsPage from './pages/DocsPage'
-import SettingsPage from './pages/SettingsPage'
+import DocsPage from './pages/DocsPage.tsx'
+import SettingsPage from './pages/SettingsPage.tsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import RouteAnalytics from './components/RouteAnalytics'
+import RouteAnalytics from './components/RouteAnalytics.tsx'
 
 const useStyles = makeStyles((_theme) => ({
 	focusOnRouteChange: { outline: 'none' },

@@ -1,5 +1,5 @@
 import { History } from 'history'
-import { decodeB64UrlSafe, encodeB64UrlSafe } from './b64'
+import { decodeB64UrlSafe, encodeB64UrlSafe } from './b64.ts'
 
 const getQueryParam = (paramName: string) => new URLSearchParams(window.location.search).get(paramName)
 

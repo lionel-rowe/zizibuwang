@@ -1,5 +1,5 @@
-import { orderedPermute } from './permute'
-import { segmentPinyin } from './segmentPinyin'
+import { orderedPermute } from './permute.ts'
+import { segmentPinyin } from './segmentPinyin.ts'
 
 const __ = Symbol('__')
 const $0 = Symbol('$0')

@@ -1,4 +1,5 @@
-import { isPinyinish, segmentPinyin } from '../lib/segmentPinyin'
+import { isPinyinish, segmentPinyin } from '../lib/segmentPinyin.ts'
+import { assert, assertEquals } from '@std/assert'
 
 const tests = [
 	{ word: '\t\tbeifang\t', segments: ['bei', 'fang'] },
@@ -28,20 +29,12 @@ const tests = [
 
 const segmentPinyinRmTones = segmentPinyin(true)
 
-describe('segmentPinyin', () => {
-	tests.forEach(({ word, segments }) => {
-		it(`${word} segments correctly`, () => {
-			expect(segmentPinyinRmTones(word)?.join('-')).toEqual(
-				segments.join('-'),
-			)
-		})
+for (const { word, segments } of tests) {
+	Deno.test(`segmentPinyin: ${word} segments correctly`, () => {
+		assertEquals(segmentPinyinRmTones(word)?.join('-'), segments.join('-'))
 	})
-})
 
-describe('isPinyinish', () => {
-	tests.forEach(({ word }) => {
-		it(`${word} is pinyinish`, () => {
-			expect(isPinyinish(word)).toBe(true)
-		})
+	Deno.test(`isPinyinish: ${word} is pinyinish`, () => {
+		assert(isPinyinish(word))
 	})
-})
+}

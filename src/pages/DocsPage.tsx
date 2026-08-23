@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Link from '../components/Link'
+import Link from '../components/Link.tsx'
 
 import contentMdUrl from '../content/instructions.md'
-import { snarkdownEnhanced } from '../lib/snarkdownEnhanced'
-import { setTitle } from '../lib/setTitle'
+import { snarkdownEnhanced } from '../lib/snarkdownEnhanced.ts'
+import { setTitle } from '../lib/setTitle.ts'
 
 interface Sample {
 	title: string

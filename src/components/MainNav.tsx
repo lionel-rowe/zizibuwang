@@ -7,7 +7,7 @@ import InfoIcon from '@material-ui/icons/Info'
 import SettingsIcon from '@material-ui/icons/Settings'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { AppContext } from '../state/Context'
+import { AppContext } from '../state/Context.tsx'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const useStyles = makeStyles((theme) => ({

@@ -1,18 +1,18 @@
-import './lib/viewportHeightAdjuster'
+import './lib/viewportHeightAdjuster.ts'
 
 import React from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 
-import { theme } from './lib/theme'
+import { theme } from './lib/theme.ts'
 
-import PageBackground from './components/PageBackground'
+import PageBackground from './components/PageBackground.tsx'
 
 import { Container } from '@material-ui/core'
-import Footer from './components/Footer'
-import { AppStateProvider } from './state/Context'
+import Footer from './components/Footer.tsx'
+import { AppStateProvider } from './state/Context.tsx'
 import ModalContainer from 'react-modal-promise'
-import AppRouter from './AppRouter'
-import GlobalStyles from './layouts/GlobalStyles'
+import AppRouter from './AppRouter.tsx'
+import GlobalStyles from './layouts/GlobalStyles.tsx'
 
 const App: React.FC = () => {
 	return (

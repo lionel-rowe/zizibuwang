@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
-import { exposeDebugVars } from './debug'
-import * as serviceWorker from './serviceWorker'
+import App from './App.tsx'
+import { exposeDebugVars } from './debug.ts'
+import * as serviceWorker from './serviceWorker.js'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 

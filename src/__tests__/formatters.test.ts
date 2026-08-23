@@ -1,4 +1,5 @@
-import { toLocaleString } from '../lib/formatters'
+import { toLocaleString } from '../lib/formatters.ts'
+import { assertEquals } from '@std/assert'
 
 const testData = [
 	Number.MAX_SAFE_INTEGER,
@@ -33,10 +34,16 @@ const testData = [
 	...new Array(20).fill(null).map((_, i) => parseInt('9'.repeat(i + 1))),
 ]
 
-describe('toLocaleString', () => {
-	it('works for en-US', () => {
-		testData.every(
-			(d) => d.toLocaleString('en-US') === toLocaleString('en-US')(d),
+Deno.test('toLocaleString works for en-US', () => {
+	for (
+		const value of testData.filter(
+			(value): value is number => typeof value === 'number' && Number.isInteger(value),
 		)
-	})
+	) {
+		assertEquals(toLocaleString('en-US')(value), value.toLocaleString('en-US'))
+	}
+})
+
+Deno.test('toLocaleString preserves fractional input digits', () => {
+	assertEquals(toLocaleString('en-US')(2_002.2002), '2,002.2002')
 })

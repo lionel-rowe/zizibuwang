@@ -1,4 +1,4 @@
-import { PAGE_TITLE, TITLE_DELIMITER } from '../config'
+import { PAGE_TITLE, TITLE_DELIMITER } from '../config.ts'
 
 const setTitle = (newTitle: string | string[]) => {
 	const titleSegments = typeof newTitle === 'string' ? [newTitle] : newTitle

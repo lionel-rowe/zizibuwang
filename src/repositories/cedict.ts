@@ -1,10 +1,10 @@
-import { parseTsv, rowHeadingsToProps } from '../lib/parse-tsv'
-import { CEDICT_TABLE_NAME, DB_NAME, DB_VERSION } from '../config'
+import { parseTsv, rowHeadingsToProps } from '../lib/parse-tsv.ts'
+import { CEDICT_TABLE_NAME, DB_NAME, DB_VERSION } from '../config.ts'
 import { IDBPDatabase, openDB } from 'idb'
 
 import cedictUrl from '../assets/cc-cedict.tsv'
-import { NoDataError } from '../lib/errors'
-import fireModal from '../lib/fireModal'
+import { NoDataError } from '../lib/errors.ts'
+import fireModal from '../lib/fireModal.ts'
 
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 

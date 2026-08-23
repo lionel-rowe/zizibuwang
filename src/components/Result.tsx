@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { prettify } from '../lib/pinyinize'
+import { prettify } from '../lib/pinyinize.ts'
 import { makeStyles } from '@material-ui/core/styles'
-import { AppContext } from '../state/Context'
+import { AppContext } from '../state/Context.tsx'
 
 const useStyles = makeStyles((theme) => ({
 	root: { marginBottom: '2em' },
