@@ -278,13 +278,17 @@ export const makeRegexWith = (
 		enabledFuzzyReplacementIds,
 	)
 
+	console.log(segmentPinyin(true)(py.toLowerCase()))
+
 	const segments = (segmentPinyin(true)(py.toLowerCase()) || [])
 		.filter(Boolean)
 		.map((x) => {
 			const alts = spellValidAlts(x)
-			return alts.length ? `(?:${alts.join('|')})` : null
+			return alts.length ? `(?:${alts.join('|')})` : `(?:${RegExp.escape(x)})`
 		})
 		.filter(Boolean)
+
+	console.log(segments)
 
 	const regex = segments.length
 		? new RegExp(
@@ -293,6 +297,7 @@ export const makeRegexWith = (
 		)
 		: null
 
+	// deno-lint-ignore no-console
 	process.env.NODE_ENV === 'development' && console.info(regex)
 
 	return regex
