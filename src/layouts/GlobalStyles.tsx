@@ -1,4 +1,3 @@
-import React from 'react'
 import ZhiMangXing from '../assets/ZhiMangXing-Regular-subset.ttf'
 import { makeStyles } from '@material-ui/core'
 

@@ -28,6 +28,8 @@
 	"compilerOptions": {
 		"strict": true,
 		"useUnknownInCatchVariables": true,
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
 		"lib": [
 			"deno.window",
 			"deno.unstable",

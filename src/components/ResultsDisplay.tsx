@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { CircularProgress, makeStyles } from '@material-ui/core'
 import HelpIcon from '@material-ui/icons/Help'
 
@@ -115,6 +115,7 @@ function ResultsDisplay() {
 						to='/instructions#advanced-search'
 						className={helpLink}
 					>
+						{/* @ts-ignore TODO: types */}
 						<HelpIcon className={helpIcon} />
 						Help
 					</Link>
@@ -149,6 +150,7 @@ function ResultsDisplay() {
 								</div>
 								{results.length > 0 && <ResultsList page={page} results={results} />}
 
+								{/* @ts-ignore TODO: types */}
 								<Pagination
 									page={page}
 									onChange={(_e: any, n: number) => {

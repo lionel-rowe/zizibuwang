@@ -21,14 +21,14 @@ class ErrorBoundary extends React.Component {
 		this.state = state
 	}
 
-	componentDidCatch(error: Error, errorInfo: ErrorInfoObject) {
+	override componentDidCatch(error: Error, errorInfo: ErrorInfoObject) {
 		this.setState({
 			error: error,
 			errorInfo: errorInfo,
 		})
 	}
 
-	render() {
+	override render() {
 		const { error, errorInfo } = this.state as ErrorBoundaryState
 		const { children } = this.props
 

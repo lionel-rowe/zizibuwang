@@ -1,6 +1,5 @@
 import './lib/viewportHeightAdjuster.ts'
 
-import React from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 
 import { theme } from './lib/theme.ts'
@@ -21,6 +20,7 @@ function App() {
 		<AppStateProvider>
 			<ThemeProvider theme={theme}>
 				<GlobalStyles />
+				{/* @ts-ignore TODO: types */}
 				<ModalContainer />
 				<PageBackground />
 				<div className='everything-container'>

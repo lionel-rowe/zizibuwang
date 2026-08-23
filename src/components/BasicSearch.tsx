@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import SearchIcon from '@material-ui/icons/Search'
 
 import {
@@ -63,6 +63,7 @@ function BasicSearch() {
 								aria-label='Search'
 								className={searchButton}
 							>
+								{/* @ts-ignore TODO: types */}
 								<SearchIcon />
 							</IconButton>
 						</Tooltip>

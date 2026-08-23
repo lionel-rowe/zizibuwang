@@ -10,6 +10,7 @@ import SettingsPage from './pages/SettingsPage.tsx'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import RouteAnalytics from './components/RouteAnalytics.tsx'
 
+// @ts-ignore TODO: types
 const useStyles = makeStyles((_theme) => ({
 	focusOnRouteChange: { outline: 'none' },
 }))

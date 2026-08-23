@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "es5",
+		"target": "es2025",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -14,7 +14,7 @@
 		"allowImportingTsExtensions": true,
 		"isolatedModules": true,
 		"noEmit": true,
-		"jsx": "react",
+		"jsx": "react-jsx",
 		"strictNullChecks": true
 	},
 	"include": ["src"]

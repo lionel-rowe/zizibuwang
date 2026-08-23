@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Typography } from '@material-ui/core'
 import { deleteQueryParam, getQueryParam } from '../lib/queryParams.ts'

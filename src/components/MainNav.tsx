@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { IconButton, makeStyles } from '@material-ui/core'
 
 import Tooltip from '@material-ui/core/Tooltip'
@@ -90,6 +90,7 @@ function MainNav() {
 
 					return (
 						<li key={idx}>
+							{/* @ts-ignore TODO: types */}
 							<Tooltip placement='left' title={text} arrow>
 								<IconButton
 									className={isMatch
@@ -111,6 +112,7 @@ function MainNav() {
 									}}
 									aria-label={text}
 								>
+									{/* @ts-ignore TODO: types */}
 									<Icon />
 								</IconButton>
 							</Tooltip>

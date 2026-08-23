@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Link from '../components/Link.tsx'
@@ -35,6 +35,7 @@ function Header() {
 
 	return (
 		<header className={root}>
+			{/* @ts-ignore TODO: types */}
 			<Typography variant='h1' component='h1' className={heading}>
 				<Link
 					tabIndex={-1}
@@ -45,6 +46,7 @@ function Header() {
 					字字不忘
 				</Link>
 			</Typography>
+			{/* @ts-ignore TODO: types */}
 			<Typography
 				className={subtitle}
 				variant='subtitle2'

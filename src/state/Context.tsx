@@ -112,8 +112,12 @@ async function loadResultsFromQuery(
 			return
 		}
 
-		// @ts-ignore TODO: fix types
-		fireModal({ text: (e as Error).message, icon: ErrorOutlineIcon })
+		fireModal({
+			text: (e as Error).message,
+			// @ts-ignore TODO: fix types
+			icon: ErrorOutlineIcon,
+			confirmButtonText: 'OK',
+		})
 
 		return dispatch({ results: null, resultsLoading: false })
 	}
